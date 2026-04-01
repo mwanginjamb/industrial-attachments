@@ -2,10 +2,8 @@
 
 /** @var yii\web\View $this */
 /** @var string $content */
-
+use frontend\assets\AppAsset;
 use yii\helpers\Html;
-use yii\bootstrap5\Nav;
-use yii\bootstrap5\NavBar;
 use yii\widgets\Breadcrumbs;
 
 $this->registerCsrfMetaTags();
@@ -19,81 +17,7 @@ $this->registerLinkTag(['rel' => 'preconnect', 'href' => 'https://fonts.gstatic.
 $this->registerLinkTag(['rel' => 'stylesheet', 'href' => 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap']);
 $this->registerLinkTag(['rel' => 'stylesheet', 'href' => 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@700;800&display=swap']);
 
-// Tailwind CDN (with plugins)
-$this->registerJsFile('https://cdn.tailwindcss.com?plugins=forms,container-queries', ['position' => \yii\web\View::POS_HEAD]);
-
-// Tailwind config (must come after the CDN script)
-$tailwindConfig = <<<JS
-tailwind.config = {
-  darkMode: "class",
-  theme: {
-    extend: {
-      colors: {
-        "tertiary-container": "#ab5d00",
-        "on-primary-container": "#f4f7ff",
-        "surface-tint": "#0061a6",
-        "on-error-container": "#93000a",
-        "inverse-primary": "#a0c9ff",
-        "on-tertiary-container": "#fff5ef",
-        "error": "#ba1a1a",
-        "background": "#f8f9ff",
-        "on-primary-fixed-variant": "#00497f",
-        "on-secondary-container": "#00476f",
-        "inverse-surface": "#2d3136",
-        "secondary-fixed": "#cde5ff",
-        "primary-container": "#1f74bf",
-        "surface-dim": "#d8dae1",
-        "on-secondary-fixed-variant": "#004b74",
-        "secondary-fixed-dim": "#94ccff",
-        "surface-container-lowest": "#ffffff",
-        "on-primary": "#ffffff",
-        "on-tertiary": "#ffffff",
-        "surface-bright": "#f8f9ff",
-        "error-container": "#ffdad6",
-        "outline-variant": "#c1c7d3",
-        "on-background": "#191c21",
-        "on-primary-fixed": "#001c37",
-        "secondary-container": "#5cb8ff",
-        "surface-container-highest": "#e0e2e9",
-        "tertiary-fixed-dim": "#ffb77c",
-        "on-tertiary-fixed": "#2e1500",
-        "secondary": "#006399",
-        "on-secondary-fixed": "#001d32",
-        "on-surface": "#191c21",
-        "outline": "#717782",
-        "tertiary": "#874800",
-        "primary-fixed": "#d2e4ff",
-        "surface-container-low": "#f2f3fa",
-        "on-tertiary-fixed-variant": "#6d3900",
-        "surface-variant": "#e0e2e9",
-        "on-secondary": "#ffffff",
-        "primary": "#005b9d",
-        "on-surface-variant": "#414751",
-        "surface-container-high": "#e6e8ef",
-        "tertiary-fixed": "#ffdcc2",
-        "inverse-on-surface": "#eff0f7",
-        "surface-container": "#eceef4",
-        "primary-fixed-dim": "#a0c9ff",
-        "on-error": "#ffffff",
-        "surface": "#f8f9ff"
-      },
-      fontFamily: {
-        "headline": ["Manrope"],
-        "body": ["Inter"],
-        "label": ["Inter"]
-      },
-      borderRadius: {
-        "DEFAULT": "0.125rem",
-        "lg": "0.25rem",
-        "xl": "0.5rem",
-        "full": "0.75rem"
-      },
-    },
-  },
-};
-JS;
-$this->registerJs($tailwindConfig, \yii\web\View::POS_HEAD);
-
+AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -101,14 +25,7 @@ $this->registerJs($tailwindConfig, \yii\web\View::POS_HEAD);
 <head>
     <title><?= Html::encode($this->title) ?> | <?= Html::encode(Yii::$app->name) ?></title>
     <?php $this->head() ?>
-    <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            vertical-align: middle;
-        }
-        body { font-family: 'Inter', sans-serif; }
-        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
-    </style>
+    
 </head>
 
 <body class="bg-surface text-on-surface min-h-screen flex overflow-hidden">
@@ -283,7 +200,7 @@ $this->registerJs($tailwindConfig, \yii\web\View::POS_HEAD);
         <?php foreach (Yii::$app->session->getAllFlashes() as $type => $messages): ?>
             <?php
             // Map Yii flash types → Tailwind color tokens
-            $alertConfig = match($type) {
+            $alertConfig = match($type) { 
                 'success' => ['bg' => 'bg-secondary-fixed',      'text' => 'text-on-secondary-fixed', 'icon' => 'check_circle',      'dot' => 'bg-primary'],
                 'error',
                 'danger'  => ['bg' => 'bg-error-container',      'text' => 'text-on-error-container', 'icon' => 'error',             'dot' => 'bg-error'],
