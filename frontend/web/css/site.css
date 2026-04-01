@@ -101,3 +101,31 @@ a.desc:after {
 {
     text-decoration: none;
 }
+
+
+/* Custom styles */
+
+/* Google Material Symbols Configuration */
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+}
+
+/* Glassmorphism Effect for Cards */
+.glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+/* Brand Hero Gradient */
+.hero-gradient {
+    background: linear-gradient(135deg, #005b9d 0%, #1f74bf 100%);
+}
+
+/* Optional: Smooth transitions for interactive elements */
+.transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
