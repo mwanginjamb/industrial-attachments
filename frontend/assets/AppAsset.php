@@ -9,9 +9,14 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap',
+        'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap',
+        // Main Font Families
+        'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@700;800&display=swap',
+        // Material Symbols
         'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap',
         'css/site.css', // Custom CSS for glass-card and hero-gradient
+        // Compiled Tailwind — no more CDN
+        'css/tailwind.css',
     ];
     public $js = [
         'https://cdn.tailwindcss.com?plugins=forms,container-queries',

@@ -46,3 +46,10 @@ phpunit.phar
 /backend/web/robots.txt
 
 .env
+
+node_modules/
+package-lock.json
+
+# OS / editor noise (if not already present)
+.DS_Store
+Thumbs.db
