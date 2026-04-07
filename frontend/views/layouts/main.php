@@ -229,6 +229,7 @@ AppAsset::register($this);
             <?php endforeach; ?>
         <?php endforeach; ?>
 
+         <?= Alert::widget() ?>
         <!-- ★ Page content injected here ★ -->
         <?= $content ?>
 

@@ -19,8 +19,8 @@ class AppAsset extends AssetBundle
         'css/tailwind.css',
     ];
     public $js = [
-        'https://cdn.tailwindcss.com?plugins=forms,container-queries',
-        'js/tailwind.config.js'
+        //'https://cdn.tailwindcss.com?plugins=forms,container-queries',
+        //'js/tailwind.config.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

@@ -48,6 +48,10 @@
         font-family: 'Manrope', sans-serif;
     }
 
+    .primary-gradient {
+        background: linear-gradient(135deg, #005b9d 0%, #1f74bf 100%);
+    }
+
     /* Optional: Smooth transitions for interactive elements */
     .transition-all {
         transition-property: all;

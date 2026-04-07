@@ -37,13 +37,13 @@ $this->title = 'Register | Create an Account';
 
             <?= $form->field($model, 'username')->textInput([
                 'autofocus' => true,
-                'placeholder' => 'student.name@university.edu'
-            ])->label('Institutional Email') ?>
+                'placeholder' => 'Username'
+            ])->label('Your Username') ?>
 
-            <?= $form->field($model, 'username')->textInput([
+            <?= $form->field($model, 'email')->textInput([
                 'type' => 'email',
                 'placeholder' => 'Your E-mail Address'
-            ])->label('Institutional Email') ?>
+            ])->label('Email') ?>
 
             <?= $form->field($model, 'password')->passwordInput([
                 'placeholder' => '••••••••'
