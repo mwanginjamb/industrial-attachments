@@ -2,7 +2,7 @@
 
 /** @var yii\web\View $this */
 /** @var yii\bootstrap5\ActiveForm $form */
-/** @var app\models\LoginForm $model */
+/** @var common\models\LoginForm $model */
 
 use yii\bootstrap5\ActiveForm;
 use yii\helpers\Html;
@@ -11,7 +11,7 @@ $this->title = 'Login | Academic Curator';
 ?>
 
 <div class="min-h-screen flex flex-col md:flex-row">
-   
+
 
     <section class="w-full md:w-3/4 lg:w-4/5 flex items-center justify-center p-2 md:p-4 bg-surface">
         <div class="w-full max-w-md">
@@ -30,42 +30,44 @@ $this->title = 'Login | Academic Curator';
                 ],
             ]); ?>
 
-                <?= $form->field($model, 'username')->textInput([
-                    'autofocus' => true, 
-                    'placeholder' => 'student.name@university.edu'
-                ])->label('Institutional Email') ?>
+            <?= $form->errorSummary($model) ?>
 
-                <?= $form->field($model, 'password')->passwordInput([
-                    'placeholder' => '••••••••'
+            <?= $form->field($model, 'username')->textInput([
+                'autofocus' => true,
+                'placeholder' => 'student.name@university.edu'
+            ])->label('Your Username') ?>
+
+            <?= $form->field($model, 'password')->passwordInput([
+                'placeholder' => '••••••••'
+            ]) ?>
+
+            <div class="flex items-center justify-between py-2">
+                <?= $form->field($model, 'rememberMe')->checkbox([
+                    'template' => "<div class=\"flex items-center gap-3\">{input} {label}</div>\n{error}",
+                    'class' => 'w-5 h-5 rounded border-outline-variant text-primary'
                 ]) ?>
 
-                <div class="flex items-center justify-between py-2">
-                    <?= $form->field($model, 'rememberMe')->checkbox([
-                        'template' => "<div class=\"flex items-center gap-3\">{input} {label}</div>\n{error}",
-                        'class' => 'w-5 h-5 rounded border-outline-variant text-primary'
-                    ]) ?>
-                    
-                   
-                
-                </div>
 
-                <div class="mt-2 flex flex-col gap-1">
-                    <?= Html::a('Forgot password?', ['site/request-password-reset'], [
-                        'class' => 'text-xs font-semibold text-primary hover:underline'
-                    ]) ?>
+
+            </div>
+
+            <div class="mt-2 flex flex-col gap-1">
+                <?= Html::a('Forgot password?', ['site/request-password-reset'], [
+                    'class' => 'text-xs font-semibold text-primary hover:underline'
+                ]) ?>
 
                 <div class="text-xs text-gray-500">
-                    Need new verification email? 
+                    Need new verification email?
                     <?= Html::a('Resend', ['site/resend-verification-email'], [
                         'class' => 'font-semibold text-primary hover:underline'
                     ]) ?>
                 </div>
-</div>
+            </div>
 
-                <?= Html::submitButton('Sign In to Portal <span class="material-symbols-outlined">arrow_forward</span>', [
-                    'class' => 'w-full py-4 bg-primary text-white font-headline font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-primary-container transition-all flex items-center justify-center gap-2', 
-                    'name' => 'login-button'
-                ]) ?>
+            <?= Html::submitButton('Sign In to Portal <span class="material-symbols-outlined">arrow_forward</span>', [
+                'class' => 'w-full py-4 bg-primary text-white font-headline font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-primary-container transition-all flex items-center justify-center gap-2',
+                'name' => 'login-button'
+            ]) ?>
 
             <?php ActiveForm::end(); ?>
 

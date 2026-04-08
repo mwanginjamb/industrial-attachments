@@ -14,16 +14,15 @@ class AppAsset extends AssetBundle
         'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@700;800&display=swap',
         // Material Symbols
         'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap',
-        'css/site.css', // Custom CSS for glass-card and hero-gradient
-        // Compiled Tailwind — no more CDN
+        // Compiled Tailwind CSS with custom configuration
         'css/tailwind.css',
     ];
     public $js = [
-        'https://cdn.tailwindcss.com?plugins=forms,container-queries',
-        'js/tailwind.config.js'
+        //'https://cdn.tailwindcss.com?plugins=forms,container-queries',
+        //'js/tailwind.config.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
-        'yii\bootstrap5\BootstrapAsset',
+        // 'yii\bootstrap5\BootstrapAsset',
     ];
 }

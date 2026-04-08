@@ -2,7 +2,7 @@
 
 /** @var yii\web\View $this */
 /** @var yii\bootstrap5\ActiveForm $form */
-/** @var app\models\LoginForm $model */
+/** @var common\models\LoginForm $model */
 
 use yii\bootstrap5\ActiveForm;
 use yii\helpers\Html;
@@ -17,8 +17,9 @@ $this->title = 'Register | Create an Account';
         <div class="w-full max-w-md">
             <div class="mb-10">
                 <h3 class="font-headline text-3xl font-bold text-on-surface mb-2 tracking-tight">
-                    
-                    <?= Html::encode($this->title) ?></h3>
+
+                    <?= Html::encode($this->title) ?>
+                </h3>
                 <p class="text-on-surface-variant font-body">Please fill out the following fields to signup:</p>
             </div>
 
@@ -37,10 +38,10 @@ $this->title = 'Register | Create an Account';
 
             <?= $form->field($model, 'username')->textInput([
                 'autofocus' => true,
-                'placeholder' => 'student.name@university.edu'
-            ])->label('Institutional Email') ?>
+                'placeholder' => 'Your Username'
+            ])->label('Username') ?>
 
-            <?= $form->field($model, 'username')->textInput([
+            <?= $form->field($model, 'email')->textInput([
                 'type' => 'email',
                 'placeholder' => 'Your E-mail Address'
             ])->label('Institutional Email') ?>
