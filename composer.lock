@@ -5924,12 +5924,21 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
+<<<<<<< HEAD
     "stability-flags": [],
+=======
+    "stability-flags": {},
+>>>>>>> 534df7ed4e4875c0ee17e8884e31c8cec2ed5499
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": ">=7.4.0"
     },
+<<<<<<< HEAD
     "platform-dev": [],
     "plugin-api-version": "2.3.0"
+=======
+    "platform-dev": {},
+    "plugin-api-version": "2.9.0"
+>>>>>>> 534df7ed4e4875c0ee17e8884e31c8cec2ed5499
 }

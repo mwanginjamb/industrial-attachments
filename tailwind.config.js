@@ -5,18 +5,10 @@ module.exports = {
     './frontend/widgets/**/*.php',
     './frontend/web/js/**/*.js',
   ],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
-        "primary": "#005b9d",
-        "primary-container": "#1f74bf",
-        "secondary-fixed": "#cde5ff",
-        "background": "#f8f9ff",
-        "on-background": "#191c21",
-        "surface": "#f8f9ff",
-        "surface-container": "#eceef4",
-        "outline": "#717782",
-        "outline-variant": "#c1c7d3",
         "tertiary-container": "#ab5d00",
         "on-primary-container": "#f4f7ff",
         "surface-tint": "#0061a6",

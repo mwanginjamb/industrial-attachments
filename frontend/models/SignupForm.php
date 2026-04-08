@@ -36,6 +36,9 @@ class SignupForm extends Model
 
             ['password', 'required'],
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
+
+            ['passwordConfirm', 'required'],
+            ['passwordConfirm', 'compare', 'compareAttribute' => 'password', 'message' => 'Passwords do not match'],
         ];
     }
 
