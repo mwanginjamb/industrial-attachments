@@ -30,6 +30,14 @@ class Lot extends \yii\db\ActiveRecord
         return 'lot';
     }
 
+    public function behaviors()
+    {
+        return [
+            \yii\behaviors\BlameableBehavior::class,
+            \yii\behaviors\TimestampBehavior::class,
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */

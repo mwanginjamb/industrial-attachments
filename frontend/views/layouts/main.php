@@ -5,7 +5,11 @@
 use frontend\assets\AppAsset;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
+<<<<<<< HEAD
 use common\widgets\Alert;
+=======
+use yii\bootstrap5\Alert;
+>>>>>>> 38a59121b9783eb05835abf67881f927c9173a0b
 
 $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');

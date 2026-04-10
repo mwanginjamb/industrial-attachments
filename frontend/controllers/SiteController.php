@@ -29,7 +29,11 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
+<<<<<<< HEAD
                 'only' => ['logout', 'signup', 'index'],
+=======
+                'only' => ['logout', 'signup','index'],
+>>>>>>> 38a59121b9783eb05835abf67881f927c9173a0b
                 'rules' => [
                     [
                         'actions' => ['signup'],
@@ -37,8 +41,12 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
+<<<<<<< HEAD
 
                         'actions' => ['logout', 'index'],
+=======
+                        'actions' => ['logout','index'],
+>>>>>>> 38a59121b9783eb05835abf67881f927c9173a0b
                         'allow' => true,
                         'roles' => ['@'],
                     ],

@@ -10,8 +10,17 @@ return [
         'cache' => [
             'class' => \yii\caching\FileCache::class,
         ],
+<<<<<<< HEAD
         'assetManager' => [
             'appendTimestamp' => true,
+=======
+        'db' => [
+            'class' => \yii\db\Connection::class,
+            'dsn' => 'mysql:host=127.0.0.1;dbname=industrial_attachments;port=3309',
+            'username' => env('DB_USER'),
+            'password' => env('DB_PASSWORD'),
+            'charset' => 'utf8',
+>>>>>>> 38a59121b9783eb05835abf67881f927c9173a0b
         ],
         'mailer' => [
             'class' => \yii\symfonymailer\Mailer::class,
@@ -33,7 +42,11 @@ return [
             ],
 
         ],
+<<<<<<< HEAD
 
 
+=======
+        
+>>>>>>> 38a59121b9783eb05835abf67881f927c9173a0b
     ],
 ];

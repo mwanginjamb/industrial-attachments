@@ -47,6 +47,12 @@ class LotController extends Controller
         ]);
     }
 
+    public function actionDashboard()
+    {
+        $this->layout = 'dashboard';
+        return $this->render('dashboard');
+    }
+
     /**
      * Displays a single lot model.
      * @param int $id ID
