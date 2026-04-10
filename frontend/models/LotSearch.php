@@ -43,6 +43,11 @@ class LotSearch extends lot
     {
         $query = lot::find();
 
+        // All users except admin will see only those lots that are in the future
+        if (!\Yii::$app->user->can('admin')) {
+            $query->andWhere(['>=', 'closing_date' => date('Y-m-d H:i:s')]);
+        }
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([

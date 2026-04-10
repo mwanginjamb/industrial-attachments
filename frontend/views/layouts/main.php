@@ -5,11 +5,7 @@
 use frontend\assets\AppAsset;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
-<<<<<<< HEAD
-use common\widgets\Alert;
-=======
 use yii\bootstrap5\Alert;
->>>>>>> 38a59121b9783eb05835abf67881f927c9173a0b
 
 $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
@@ -31,7 +27,7 @@ AppAsset::register($this);
     
 </head>
 
-<body class="bg-surface text-on-surface min-h-screen flex overflow-hidden">
+<body class="bg-surface text-on-surface h-screen flex flex-col overflow-hidden">
 <?php $this->beginBody() ?>
 
 <!-- ═══════════════════════════════════════════
@@ -105,7 +101,7 @@ AppAsset::register($this);
 <!-- ═══════════════════════════════════════════
      MAIN CONTENT WRAPPER
 ═══════════════════════════════════════════ -->
-<div class="flex-1 ml-64 flex flex-col min-h-screen">
+<div class="flex-1 ml-64 flex flex-col overflow-hidden">
 
     <!-- ─────────────────────────────────────
          TOP NAVIGATION BAR
@@ -182,7 +178,7 @@ AppAsset::register($this);
     <!-- ─────────────────────────────────────
          CONTENT CANVAS
     ───────────────────────────────────── -->
-    <main class="p-8 max-w-screen-2xl mx-auto w-full flex-1">
+    <main class="p-8 max-w-screen-2xl mx-auto w-full flex-1 overflow-y-auto">
 
         <!-- Breadcrumbs Widget -->
         <?php if (!empty($this->params['breadcrumbs'])): ?>
@@ -191,7 +187,7 @@ AppAsset::register($this);
                 'links'               => $this->params['breadcrumbs'] ?? [],
                 'homeLink'            => ['label' => 'Admin', 'url' => Yii::$app->homeUrl],
                 'tag'                 => false,   // render as flat content, no <ul>
-                'itemTemplate'        => "<span>{link}</span>\n",
+                'itemTemplate'        => "<span>{link} </span>". '<span class="material-symbols-outlined">chevron_right</span>' . "\n",
                 'activeItemTemplate'  => '<span class="text-on-surface">{link}</span>' . "\n",
                 'encodeLabels'        => true,
                 'options'             => ['class' => 'contents'],  // no wrapper element
@@ -234,7 +230,7 @@ AppAsset::register($this);
             <?php endforeach; ?>
         <?php endforeach; ?>
 
-         <?= Alert::widget() ?>
+         <?php Alert::widget() ?>
         <!-- ★ Page content injected here ★ -->
         <?= $content ?>
 

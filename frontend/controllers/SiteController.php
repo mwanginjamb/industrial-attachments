@@ -29,24 +29,15 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-<<<<<<< HEAD
-                'only' => ['logout', 'signup', 'index'],
-=======
-                'only' => ['logout', 'signup','index'],
->>>>>>> 38a59121b9783eb05835abf67881f927c9173a0b
+                'only' => ['logout', 'signup', 'index', 'listing'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['signup', 'listing'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
                     [
-<<<<<<< HEAD
-
-                        'actions' => ['logout', 'index'],
-=======
-                        'actions' => ['logout','index'],
->>>>>>> 38a59121b9783eb05835abf67881f927c9173a0b
+                        'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -86,7 +77,20 @@ class SiteController extends Controller
     {
 
         $this->layout = 'dashboard';
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/listing']);
+        }
         return $this->render('index');
+    }
+
+    public function actionListing()
+    {
+        $this->layout = 'dashboard';
+        // Get all lots with their related applications and applicants
+        $lots = \app\models\Lot::find()->all();
+        return $this->render('listing', [
+            'lots' => $lots
+        ]);
     }
 
     /**
