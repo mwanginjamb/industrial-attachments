@@ -10,12 +10,6 @@ return [
         'cache' => [
             'class' => \yii\caching\FileCache::class,
         ],
-<<<<<<< HEAD
-        'assetManager' => [
-            'appendTimestamp' => true,
-        ],
-
-=======
         'db' => [
             'class' => \yii\db\Connection::class,
             'dsn' => 'mysql:host=127.0.0.1;dbname=industrial_attachments;port=3309',
@@ -44,6 +38,5 @@ return [
             
         ],
         
->>>>>>> 534df7ed4e4875c0ee17e8884e31c8cec2ed5499
     ],
 ];
