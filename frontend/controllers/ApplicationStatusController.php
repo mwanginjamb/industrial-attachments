@@ -1,9 +1,9 @@
 <?php
 
-namespace app\controllers;
+namespace frontend\controllers;
 
-use app\models\ApplicationStatus;
-use app\models\ApplicationStatusSearch;
+use frontend\models\ApplicationStatus;
+use frontend\models\ApplicationStatusSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

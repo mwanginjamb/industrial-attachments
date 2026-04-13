@@ -1,7 +1,7 @@
 <?php
-$this->title = 'Listing';
+$this->title = 'Industrial Attachment Vacancies';
 $this->params['breadcrumbs'][] = $this->title;
-
+use yii\helpers\Html;
 ?>
 
 <!-- Hero Section -->
@@ -97,14 +97,24 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <span
                                         class="font-semibold text-on-surface"><?= Yii::$app->formatter->asDatetime($lot->closing_date) ?></span>
                                 </div>
-                                <button
+                                <!-- <button
                                     class="w-full py-4 hero-gradient text-on-primary font-headline font-bold rounded-xl transition-all hover:brightness-110 active:scale-[0.98]">Apply
-                                    Now</button>
+                                    Now</button> -->
+
+                                    <?= Html::a('Apply Now', ['/application/apply', 'lot' => $lot->id], [
+    'class' => 'block text-center w-full py-4 hero-gradient text-on-primary font-headline font-bold rounded-xl transition-all hover:brightness-110 active:scale-[0.98]'
+]) ?>
                             </div>
                         </div>
                         <?php
                     endforeach;
-                endif; ?>
+
+                else:
+                    '<p>No active lots found</p>';
+                endif;
+                
+                
+                ?>
                 <!-- Card 2 -->
 
                 <!-- Card 3 -->

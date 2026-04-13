@@ -1,6 +1,6 @@
 <?php
 
-use app\models\lot;
+use frontend\models\lot;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;

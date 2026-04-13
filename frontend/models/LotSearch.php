@@ -1,10 +1,10 @@
 <?php
 
-namespace app\models;
+namespace frontend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\lot;
+use frontend\models\lot;
 
 /**
  * LotSearch represents the model behind the search form of `app\models\lot`.
@@ -45,7 +45,7 @@ class LotSearch extends lot
 
         // All users except admin will see only those lots that are in the future
         if (!\Yii::$app->user->can('admin')) {
-            $query->andWhere(['>=', 'closing_date' => date('Y-m-d H:i:s')]);
+            $query->andWhere(['>=', 'closing_date', date('Y-m-d H:i:s')]);
         }
 
         // add conditions that should always apply here

@@ -1,8 +1,10 @@
 <?php
 
-namespace app\models;
+namespace frontend\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
 
 /**
  * This is the model class for table "application_status".
@@ -26,6 +28,15 @@ class ApplicationStatus extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'application_status';
+    }
+
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+            BlameableBehavior::class
+        ];
     }
 
     /**

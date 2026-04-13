@@ -1,10 +1,10 @@
 <?php
 
-namespace app\models;
+namespace frontend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\ApplicationStatus;
+use frontend\models\ApplicationStatus;
 
 /**
  * ApplicationStatusSearch represents the model behind the search form of `app\models\ApplicationStatus`.

@@ -1,6 +1,6 @@
 <?php
 
-use app\models\ApplicationStatus;
+use frontend\models\ApplicationStatus;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -29,11 +29,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            //'id',
             'description',
-            'created_at',
-            'updated_at',
-            'created_by',
+            'created_at:datetime',
+            'updated_at:datetime',
+           // 'created_by',
             //'updated_by',
             [
                 'class' => ActionColumn::className(),

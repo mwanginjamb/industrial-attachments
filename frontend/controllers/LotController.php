@@ -2,11 +2,12 @@
 
 namespace frontend\controllers;
 
-use app\models\lot;
-use app\models\LotSearch;
+use frontend\models\lot;
+use frontend\models\LotSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * LotController implements the CRUD actions for lot model.
@@ -27,6 +28,23 @@ class LotController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
+                 'access' => [
+                'class' => AccessControl::class,
+                'only' => ['logout', 'signup', 'index'],
+                'rules' => [
+                    [
+                        'actions' => ['signup'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['logout','index'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+           
             ]
         );
     }

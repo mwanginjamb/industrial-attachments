@@ -7,6 +7,9 @@ use app\models\ApplicationSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use app\models\Attachee;
+use Yii;
 
 /**
  * ApplicationController implements the CRUD actions for Application model.
@@ -21,6 +24,22 @@ class ApplicationController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'only' => ['logout', 'signup', 'apply'],
+                    'rules' => [
+                        [
+                            'actions' => ['signup'],
+                            'allow' => true,
+                            'roles' => ['?'],
+                        ],
+                        [
+                            'actions' => ['logout','apply'],
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -114,6 +133,31 @@ class ApplicationController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * A user with a complete Attachee profile applying for a job
+     */
+
+    public function actionApply($lot)
+    {
+        // check if the user has a complete Attachee profile
+        $attachee = Attachee::findOne(['user_id' => Yii::$app->user->id]);
+        // if not, redirect to the Attachee profile page
+        if (!$attachee) {
+            return $this->redirect(['attachee/create']);
+        }
+        // if yes, make an application entry
+        $application = new Application();
+        $application->attachee_id = $attachee->id;
+        $application->lot_id = $lot;
+        if($application->save()){
+            // redirect to site/index - dashboard
+            Yii::$app->session->addFlash('success', 'Application submitted successfully');
+            }else{
+                Yii::$app->session->addFlash('error', 'Application submission failed');
+            }
+            return $this->redirect(['site/index']);
     }
 
     /**
