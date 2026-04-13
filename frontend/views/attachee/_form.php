@@ -6,35 +6,250 @@ use yii\widgets\ActiveForm;
 /** @var yii\web\View $this */
 /** @var app\models\Attachee $model */
 /** @var yii\widgets\ActiveForm $form */
+
+
+/* @var $this yii\web\View */
+/* @var $model app\models\attachee */
+
+// Shared field config — preserves the "bottom-border only" input aesthetic
+$fieldConfig = [
+    'template' => "<div class=\"space-y-2\">\n{label}\n{input}\n{error}\n</div>",
+    'labelOptions' => ['class' => 'block text-sm font-medium font-label text-on-surface-variant'],
+    'errorOptions' => ['class' => 'text-xs text-error mt-1'],
+];
+
+// Shared input classes
+$inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-transparent '
+    . 'focus:ring-0 focus:border-primary-container p-3 rounded-t-lg transition-all';
 ?>
 
 <div class="attachee-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'id' => 'profile-editor-form',
+        'options' => ['class' => 'space-y-12'],
+        // Suppress Yii's default Bootstrap field wrappers
+        'fieldConfig' => $fieldConfig,
+    ]); ?>
 
-    <?= $form->field($model, 'user_id')->textInput() ?>
+    <!-- ═══════════════════════════════════════════════════════
+     Section 1: Personal & Academic Information
+     ═══════════════════════════════════════════════════════ -->
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <section class="bg-surface-container-low rounded-xl p-8 space-y-8">
 
-    <?= $form->field($model, 'year_of_study')->textInput(['maxlength' => true]) ?>
+        <div class="flex items-center gap-4 mb-2">
+            <div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary-container">school</span>
+            </div>
+            <h2 class="font-headline font-bold text-2xl text-on-surface">Personal &amp; Academic Information</h2>
+        </div>
 
-    <?= $form->field($model, 'course_name')->textInput(['maxlength' => true]) ?>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
 
-    <?= $form->field($model, 'expected_completion_date')->textInput() ?>
+            <!-- Name -->
+            <?= $form->field($model, 'name', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => 'Enter your full name',
+                ]) ?>
 
-    <?= $form->field($model, 'area_of_interest')->textarea(['rows' => 6]) ?>
+            <!-- Course Name -->
+            <?= $form->field($model, 'course_name', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => 'e.g. Computer Science',
+                ]) ?>
 
-    <?= $form->field($model, 'created_at')->textInput() ?>
+            <!-- Year of Study -->
+            <?= $form->field($model, 'year_of_study', $fieldConfig)
+                ->dropDownList(
+                    [
+                        '1' => 'Year 1',
+                        '2' => 'Year 2',
+                        '3' => 'Year 3',
+                        '4' => 'Year 4',
+                    ],
+                    ['class' => $inputClass]
+                ) ?>
 
-    <?= $form->field($model, 'updated_at')->textInput() ?>
+            <!-- Level of Education -->
+            <?= $form->field($model, 'level_of_education', $fieldConfig)
+                ->dropDownList(
+                    [
+                        1 => 'Diploma',
+                        2 => 'Undergraduate Degree',
+                        3 => 'Masters',
+                        4 => 'PhD',
+                    ],
+                    ['class' => $inputClass]
+                ) ?>
 
-    <?= $form->field($model, 'created_by')->textInput() ?>
+            <!-- Expected Completion Date -->
+            <?= $form->field($model, 'expected_completion_date', $fieldConfig)
+                ->input('date', ['class' => $inputClass]) ?>
 
-    <?= $form->field($model, 'updated_by')->textInput() ?>
+            <!-- Area of Interest -->
+            <?= $form->field($model, 'area_of_interest', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => 'e.g. Data Science, UI/UX',
+                ]) ?>
 
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+        </div>
+
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════
+     Section 2: Document Uploads
+     ═══════════════════════════════════════════════════════ -->
+
+    <section class="bg-surface-container-low rounded-xl p-8 space-y-6">
+
+
+        <div class="flex items-center gap-4 mb-4">
+            <div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary-container">description</span>
+            </div>
+            <h2 class="font-headline font-bold text-2xl text-on-surface">Document Uploads</h2>
+        </div>
+
+        <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(25,28,33,0.03)]">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr
+                        class="bg-surface-container-high text-on-surface-variant font-label text-xs uppercase tracking-widest">
+                        <th class="px-6 py-4 font-semibold">Document Name</th>
+                        <th class="px-6 py-4 font-semibold">Status</th>
+                        <th class="px-6 py-4 font-semibold text-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant/10">
+
+                    <!-- Row 1: Application Letter — Uploaded -->
+                    <tr class="hover:bg-surface-container-low/50 transition-colors">
+                        <td class="px-6 py-5 font-medium text-on-surface">Application Letter</td>
+                        <td class="px-6 py-5">
+                            <span
+                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-secondary-fixed text-on-secondary-fixed">
+                                <span class="material-symbols-outlined text-[14px] mr-1">check_circle</span> Uploaded
+                            </span>
+                        </td>
+                        <td class="px-6 py-5 text-right">
+                            <?= $form->field($model, 'application_letter', [
+                                'template' => '{input}{error}',
+                                'errorOptions' => ['class' => 'text-xs text-error mt-1 text-right'],
+                            ])->fileInput([
+                                        'id' => 'application-letter-input',
+                                        'class' => 'hidden',
+                                    ])->label(false) ?>
+                            <label for="application-letter-input"
+                                class="text-primary-container font-semibold text-sm hover:underline flex items-center gap-1 justify-end ml-auto cursor-pointer">
+                                <span class="material-symbols-outlined text-[18px]">cloud_upload</span> Replace
+                            </label>
+                        </td>
+                    </tr>
+
+                    <!-- Row 2: Letter from School — Uploaded -->
+                    <tr class="hover:bg-surface-container-low/50 transition-colors">
+                        <td class="px-6 py-5 font-medium text-on-surface">Letter from School</td>
+                        <td class="px-6 py-5">
+                            <span
+                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-secondary-fixed text-on-secondary-fixed">
+                                <span class="material-symbols-outlined text-[14px] mr-1">check_circle</span> Uploaded
+                            </span>
+                        </td>
+                        <td class="px-6 py-5 text-right">
+                            <?= $form->field($model, 'school_letter', [
+                                'template' => '{input}{error}',
+                                'errorOptions' => ['class' => 'text-xs text-error mt-1 text-right'],
+                            ])->fileInput([
+                                        'id' => 'school-letter-input',
+                                        'class' => 'hidden',
+                                    ])->label(false) ?>
+                            <label for="school-letter-input"
+                                class="text-primary-container font-semibold text-sm hover:underline flex items-center gap-1 justify-end ml-auto cursor-pointer">
+                                <span class="material-symbols-outlined text-[18px]">cloud_upload</span> Replace
+                            </label>
+                        </td>
+                    </tr>
+
+                    <!-- Row 3: Copy of National ID — Missing (prominent Upload Now CTA) -->
+                    <tr class="hover:bg-surface-container-low/50 transition-colors">
+                        <td class="px-6 py-5 font-medium text-on-surface">Copy of National ID</td>
+                        <td class="px-6 py-5">
+                            <span
+                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-error-container text-on-error-container">
+                                <span class="material-symbols-outlined text-[14px] mr-1">warning</span> Missing
+                            </span>
+                        </td>
+                        <td class="px-6 py-5 text-right">
+                            <?= $form->field($model, 'national_id', [
+                                'template' => '{input}{error}',
+                                'errorOptions' => ['class' => 'text-xs text-error mt-1 text-right'],
+                            ])->fileInput([
+                                        'id' => 'national-id-input',
+                                        'class' => 'hidden',
+                                    ])->label(false) ?>
+                            <label for="national-id-input"
+                                class="inline-block px-4 py-2 bg-primary-container text-on-primary-container rounded-lg font-bold text-xs shadow-sm hover:shadow-md transition-all cursor-pointer">
+                                Upload Now
+                            </label>
+                        </td>
+                    </tr>
+
+                    <!-- Row 4: Personal Insurance Cover — Pending Review (no upload, view only) -->
+                    <tr class="hover:bg-surface-container-low/50 transition-colors">
+                        <td class="px-6 py-5 font-medium text-on-surface">Personal Insurance Cover</td>
+                        <td class="px-6 py-5">
+                            <span
+                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-surface-container-high text-on-surface-variant">
+                                <span class="material-symbols-outlined text-[14px] mr-1">hourglass_empty</span> Pending
+                                Review
+                            </span>
+                        </td>
+                        <td class="px-6 py-5 text-right">
+                            <?= Html::a(
+                                '<span class="material-symbols-outlined text-[18px]">visibility</span> View',
+                                ['document/view', 'type' => 'insurance'],   // adjust route as needed
+                                [
+                                    'class' => 'text-primary-container font-semibold text-sm hover:underline flex items-center gap-1 justify-end ml-auto',
+                                    'encode' => false,
+                                ]
+                            ) ?>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <p class="text-xs text-on-surface-variant italic px-2">Allowed formats: PDF, PNG, JPG (Max 5MB each)</p>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         Form Actions
+     ═══════════════════════════════════════════════════════ -->
+    <div class="flex items-center justify-end gap-6 pt-6 border-t border-outline-variant/20">
+
+        <?= Html::a(
+            'Cancel',
+            ['attachee/create'],   // adjust route as needed
+            ['class' => 'px-8 py-3 font-semibold text-on-surface-variant hover:text-primary transition-colors']
+        ) ?>
+
+        <?= Html::submitButton(
+            'Save Changes',
+            [
+                'class' => 'px-10 py-3 bg-gradient-to-br from-primary to-primary-container '
+                    . 'text-on-primary-container rounded-xl font-headline font-bold shadow-lg '
+                    . 'hover:-translate-y-0.5 transition-all active:translate-y-0',
+            ]
+        ) ?>
+
     </div>
+
 
     <?php ActiveForm::end(); ?>
 

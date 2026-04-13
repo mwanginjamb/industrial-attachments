@@ -17,7 +17,8 @@
         vertical-align: middle;
     }
 
-        material-symbols-outlined
+    material-symbols-outlined
+
     /* Glassmorphism Effect for Cards */
     .glass-card {
         background: rgba(255, 255, 255, 0.8);
@@ -58,5 +59,20 @@
         transition-property: all;
         transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         transition-duration: 150ms;
+    }
+
+    /* Form UI Customizations*/
+
+
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .tonal-shift {
+        background-color: #f2f3fa;
+    }
+
+    .no-border {
+        border: none !important;
     }
 }

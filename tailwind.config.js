@@ -103,14 +103,21 @@ module.exports = {
         "surface-container": "#eceef4",
         "primary-fixed-dim": "#a0c9ff",
         "on-error": "#ffffff",
-        "surface": "#f8f9ff"
+        "surface": "#f8f9ff",
+
+
       },
       fontFamily: {
         "headline": ["Manrope"],
         "body": ["Inter"],
         "label": ["Inter"]
       },
-      borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+      borderRadius: {
+        "DEFAULT": "0.125rem",
+        "lg": "0.25rem",
+        "xl": "0.5rem",
+        "full": "0.75rem"
+      },
     },
   },
   plugins: [

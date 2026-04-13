@@ -17,8 +17,8 @@ class AttacheeSearch extends Attachee
     public function rules()
     {
         return [
-            [['id', 'user_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['name', 'year_of_study', 'course_name', 'expected_completion_date', 'area_of_interest'], 'safe'],
+            [['id', 'user_id', 'created_at', 'updated_at', 'created_by', 'updated_by', 'level_of_education'], 'integer'],
+            [['name', 'year_of_study', 'course_name', 'expected_completion_date', 'area_of_interest', 'attachee_reference'], 'safe'],
         ];
     }
 
@@ -66,12 +66,15 @@ class AttacheeSearch extends Attachee
             'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
+            'level_of_education' => $this->level_of_education,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'year_of_study', $this->year_of_study])
             ->andFilterWhere(['like', 'course_name', $this->course_name])
-            ->andFilterWhere(['like', 'area_of_interest', $this->area_of_interest]);
+            ->andFilterWhere(['like', 'area_of_interest', $this->area_of_interest])
+            ->andFilterWhere(['like', 'level_of_education', $this->level_of_education])
+            ->andFilterWhere(['like', 'attachee_reference', $this->attachee_reference]);
 
         return $dataProvider;
     }

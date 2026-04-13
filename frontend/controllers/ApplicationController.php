@@ -34,7 +34,7 @@ class ApplicationController extends Controller
                             'roles' => ['?'],
                         ],
                         [
-                            'actions' => ['logout','apply'],
+                            'actions' => ['logout', 'apply'],
                             'allow' => true,
                             'roles' => ['@'],
                         ],
@@ -145,19 +145,24 @@ class ApplicationController extends Controller
         $attachee = Attachee::findOne(['user_id' => Yii::$app->user->id]);
         // if not, redirect to the Attachee profile page
         if (!$attachee) {
-            return $this->redirect(['attachee/create']);
+            // add flash message for profile completion
+            Yii::$app->session->setFlash('info', 'Please complete your profile before applying for Industrial Attachment.');
+            // do minimal profile save  - save the user id
+            $attachee = $this->saveAttacheeProfile(Yii::$app->user->id);
+            // redirect to attache update page
+            return $this->redirect(['attachee/update', 'id' => $attachee->id]);
         }
         // if yes, make an application entry
         $application = new Application();
         $application->attachee_id = $attachee->id;
         $application->lot_id = $lot;
-        if($application->save()){
+        if ($application->save()) {
             // redirect to site/index - dashboard
             Yii::$app->session->addFlash('success', 'Application submitted successfully');
-            }else{
-                Yii::$app->session->addFlash('error', 'Application submission failed');
-            }
-            return $this->redirect(['site/index']);
+        } else {
+            Yii::$app->session->addFlash('error', 'Application submission failed');
+        }
+        return $this->redirect(['site/index']);
     }
 
     /**
@@ -174,5 +179,16 @@ class ApplicationController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    // save attachee minimal profile
+    protected function saveAttacheeProfile($userId)
+    {
+        $attachee = new Attachee();
+        $attachee->user_id = $userId;
+        if ($attachee->save()) {
+            return $attachee;
+        }
+        return null;
     }
 }

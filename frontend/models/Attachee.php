@@ -18,6 +18,8 @@ use Yii;
  * @property int|null $updated_at
  * @property int|null $created_by
  * @property int|null $updated_by
+ * @property int|null $level_of_education
+ * @property string|null $attachee_reference
  *
  * @property Application[] $applications
  * @property AttacheeDocuments[] $attacheeDocuments
@@ -26,6 +28,9 @@ use Yii;
 class Attachee extends \yii\db\ActiveRecord
 {
 
+    public $application_letter;
+    public $school_letter;
+    public $national_id;
 
     /**
      * {@inheritdoc}
@@ -33,6 +38,15 @@ class Attachee extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'attachee';
+    }
+
+
+    public function behaviors()
+    {
+        return [
+            \yii\behaviors\TimestampBehavior::class,
+            \yii\behaviors\BlameableBehavior::class,
+        ];
     }
 
     /**
@@ -49,6 +63,9 @@ class Attachee extends \yii\db\ActiveRecord
             [['year_of_study'], 'string', 'max' => 20],
             [['course_name'], 'string', 'max' => 250],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            ['user_id', 'required'],
+            ['level_of_education', 'integer'],
+            ['attachee_reference', 'string', 'max' => 50],
         ];
     }
 
@@ -69,6 +86,8 @@ class Attachee extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
+            'level_of_education' => 'Level Of Education',
+            'attachee_reference' => 'Attachee Reference',
         ];
     }
 
@@ -100,6 +119,19 @@ class Attachee extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    // Add attachee reference generation logic in the form "ATTACHEEYYYYMMDDHHMMSS"
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($insert) {
+                // Generate attachee reference only for new records
+                $this->attachee_reference = 'ATTACHEE' . date('YmdHis');
+            }
+            return true;
+        }
+        return false;
     }
 
 }

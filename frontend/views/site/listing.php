@@ -101,9 +101,9 @@ use yii\helpers\Html;
                                     class="w-full py-4 hero-gradient text-on-primary font-headline font-bold rounded-xl transition-all hover:brightness-110 active:scale-[0.98]">Apply
                                     Now</button> -->
 
-                                    <?= Html::a('Apply Now', ['/application/apply', 'lot' => $lot->id], [
-    'class' => 'block text-center w-full py-4 hero-gradient text-on-primary font-headline font-bold rounded-xl transition-all hover:brightness-110 active:scale-[0.98]'
-]) ?>
+                                <?= Html::a('Apply Now', ['/application/apply', 'lot' => $lot->id], [
+                                    'class' => 'block text-center w-full py-4 hero-gradient text-on-primary font-headline font-bold rounded-xl transition-all hover:brightness-110 active:scale-[0.98]'
+                                ]) ?>
                             </div>
                         </div>
                         <?php
@@ -112,8 +112,8 @@ use yii\helpers\Html;
                 else:
                     '<p>No active lots found</p>';
                 endif;
-                
-                
+
+
                 ?>
                 <!-- Card 2 -->
 
@@ -171,9 +171,14 @@ use yii\helpers\Html;
                                                 class="px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-full"><?= Yii::$app->formatter->asDatetime($lot->closing_date) ?>
                                             </span>
                                         </td>
-                                        <td class="p-6 text-right"><button
-                                                class="px-4 py-2 bg-[#1f74bf] text-white text-sm font-bold rounded-lg">Apply
-                                                Now</button></td>
+                                        <td class="p-6 text-right">
+
+
+                                            <?= Html::a('Apply Now', ['/application/apply', 'lot' => $lot->id], [
+                                                'class' => 'block text-center text-sm px-4 py-2 hero-gradient text-on-primary font-bold rounded-lg transition-all hover:brightness-110 active:scale-[0.98]'
+                                            ]) ?>
+
+                                        </td>
                                     </tr>
 
                                     <?php
