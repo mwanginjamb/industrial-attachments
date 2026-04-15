@@ -53,3 +53,7 @@ package-lock.json
 # OS / editor noise (if not already present)
 .DS_Store
 Thumbs.db
+
+# certificates
+/certs
+.pem
