@@ -2,13 +2,13 @@
 
 namespace frontend\controllers;
 
-use app\models\Application;
-use app\models\ApplicationSearch;
+use frontend\models\Application;
+use frontend\models\ApplicationSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use app\models\Attachee;
+use frontend\models\Attachee;
 use Yii;
 
 /**

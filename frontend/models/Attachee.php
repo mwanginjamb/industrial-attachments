@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace frontend\models;
 
 use Yii;
 
@@ -62,7 +62,7 @@ class Attachee extends \yii\db\ActiveRecord
             [['name'], 'string', 'max' => 150],
             [['year_of_study'], 'string', 'max' => 20],
             [['course_name'], 'string', 'max' => 250],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \common\models\User::class, 'targetAttribute' => ['user_id' => 'id']],
             ['user_id', 'required'],
             ['level_of_education', 'integer'],
             ['attachee_reference', 'string', 'max' => 50],

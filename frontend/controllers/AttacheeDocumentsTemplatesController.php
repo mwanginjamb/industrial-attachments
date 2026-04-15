@@ -1,9 +1,9 @@
 <?php
 
-namespace app\controllers;
+namespace frontend\controllers;
 
-use app\models\AttacheeDocumentsTemplates;
-use app\models\SearchAttacheeDocumentsTemplates;
+use frontend\models\AttacheeDocumentsTemplates;
+use frontend\models\SearchAttacheeDocumentsTemplates;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

@@ -2,11 +2,19 @@
 
 namespace frontend\controllers;
 
-use app\models\Attachee;
-use app\models\AttacheeSearch;
+use frontend\models\Attachee;
+use frontend\models\AttacheeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\FileHelper;
+use frontend\models\AttacheeDocuments;
+use frontend\models\AttacheeDocumentsTemplates;
+
+
+
+
+use Yii;
 
 /**
  * AttacheeController implements the CRUD actions for Attachee model.
@@ -29,6 +37,19 @@ class AttacheeController extends Controller
                 ],
             ]
         );
+    }
+
+
+    public function beforeAction($action)
+    {
+        $ExceptedActions = [
+            'upload',
+        ];
+
+        if (in_array($action->id, $ExceptedActions)) {
+            $this->enableCsrfValidation = false;
+        }
+        return parent::beforeAction($action);
     }
 
     /**
@@ -99,6 +120,7 @@ class AttacheeController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'fileModel' => new \frontend\models\File()
         ]);
     }
 
@@ -130,5 +152,89 @@ class AttacheeController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+
+    public function actionUpload()
+    {
+
+        $targetPath = '';
+        if ($_FILES) {
+            $uploadedFile = $_FILES['attachment']['name'];
+            list($pref, $ext) = explode('.', $uploadedFile);
+            $targetPath = './plogs/' . Yii::$app->utility->processPath($pref) . '.' . $ext; // Create unique target upload path
+            $attachmentName = Yii::$app->utility->processPath($pref) . '.' . $ext;
+            // Create upload directory if it dnt exist.
+            if (!is_dir(dirname($targetPath))) {
+                FileHelper::createDirectory(dirname($targetPath));
+                chmod(dirname($targetPath), 0755);
+            }
+        }
+
+        // Upload
+        if (Yii::$app->request->isPost) {
+            $DocumentService = new AttacheeDocuments();
+            $DocumentService->attachee_id = Yii::$app->request->post('attachee_reference');
+            $DocumentService->document_type = Yii::$app->request->post('document_type');
+            $DocumentService->save();
+            
+            $parentDocument = Attachee::findOne(['attachee_reference' => Yii::$app->request->post('attachee_reference')])   ;
+          // Yii::$app->utility->printrr($parentDocument);
+            $metadata = [];
+            if (is_object($parentDocument) && isset($parentDocument->attachee_reference)) {
+                $metadata = [
+                    'Attachee' => $parentDocument->attachee_reference,
+                    'AttacheeName' => $parentDocument->user_id,
+                    'DocumentType' => AttacheeDocumentsTemplates::findOne(['id' => Yii::$app->request->post('document_type')])->document_description,
+                    ];
+                    }
+                    Yii::$app->session->set('metadata', $metadata);
+                    
+                    // Create a directory to store attachee docs - attachee_Reference
+                    $folder = Yii::$app->sharepoint->createFolder($parentDocument->attachee_reference);
+                    //Yii::$app->utility->printrr($folder);
+            
+
+            $file = $_FILES['attachment']['tmp_name'];
+            $binary = file_get_contents($file);
+            //Return JSON
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            if ($binary) {
+                // Upload to sharepoint
+                $spResult = Yii::$app->sharepoint->attach_toLibrary(env('SP_LIBRARY') . '\\' . $parentDocument->attachee_reference, $binary, $attachmentName, $metadata = [], TRUE);
+                Yii::$app->session->set('SP_PATH', $spResult);
+                return [
+                    'status' => 'success',
+                    'message' => 'File Uploaded Successfully. :- ' . $spResult,
+                    'filePath' => $spResult
+                ];
+            } else {
+                return [
+                    'status' => 'error',
+                    'message' => 'Could not upload file at the moment.'
+                ];
+            }
+        }
+
+
+        // Update  - attacheDocument Table Get Request
+        if (Yii::$app->request->isGet) {
+            $fileName = basename(Yii::$app->request->get('filePath'));
+
+           // $AttacheDocument = AttacheeDocuments::findOne(['attachee_id' => Yii::$app->request->get('No')]);
+           $AttacheDocument = new AttacheeDocuments();
+           $AttacheDocument->attachee_id = Yii::$app->request->get('No');
+           $AttacheDocument->path = Yii::$app->request->get('filePath');
+           $AttacheDocument->document_type = Yii::$app->request->get('documentType');
+            
+           $result = $AttacheDocument->save();
+
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            if ($result) {
+                return ['status' => 'success', 'message' => 'Document saved successfully'];
+            } else {
+                return ['status' => 'error', 'message' => json_encode($AttacheDocument->getErrors())];
+            }
+        }
     }
 }

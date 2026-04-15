@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace frontend\models;
 
 use Yii;
 
@@ -9,7 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property string|null $path
- * @property int|null $attachee_id
+ * @property string|null $attachee_id
  * @property int|null $document_type
  * @property int|null $created_at
  * @property int|null $updated_at
@@ -37,10 +37,11 @@ class AttacheeDocuments extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['path', 'attachee_id', 'document_type', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'default', 'value' => null],
-            [['attachee_id', 'document_type', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['path','document_type', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'default', 'value' => null],
+            [['document_type', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['path'], 'string', 'max' => 250],
-            [['attachee_id'], 'exist', 'skipOnError' => true, 'targetClass' => Attachee::class, 'targetAttribute' => ['attachee_id' => 'id']],
+            [['attachee_id'], 'string', 'max' => 250],
+            //[['attachee_id'], 'exist', 'skipOnError' => true, 'targetClass' => Attachee::class, 'targetAttribute' => ['attachee_id' => 'id']],
             [['document_type'], 'exist', 'skipOnError' => true, 'targetClass' => AttacheeDocumentsTemplates::class, 'targetAttribute' => ['document_type' => 'id']],
         ];
     }

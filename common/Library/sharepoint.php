@@ -88,7 +88,8 @@ class Sharepoint extends Component
         try {
 
             //$ctx = $this->connectWithUserCredentials(Yii::$app->params['sharepointUrl'] . '/' . env('SP_SITE'), env('SP_USERNAME'), env('SP_PASSWORD'));
-            $ctx = $this->connectWithAppOnlyToken(env('SP_URL') . '/' . env('SP_SITE'), env('SP_CLIENTID'), env('SP_CLIENTSECRET'));
+            //$ctx = $this->connectWithAppOnlyToken(env('SP_URL') . '/' . env('SP_SITE'), env('SP_CLIENTID'), env('SP_CLIENTSECRET'));
+            $ctx = $this->connectWithCertificate();
             $site = $ctx->getSite();
             // GET USER
             $user = $ctx->getWeb()->getSiteUsers()->getByEmail(env('SP_USERNAME'))->get()->executeQuery();
@@ -131,7 +132,8 @@ class Sharepoint extends Component
         try {
 
             // $ctx = $this->connectWithUserCredentials(env('SP_URL') . '/' . env('SP_SITE'), env('SP_USERNAME'), env('SP_PASSWORD'));
-            $ctx = $this->connectWithAppOnlyToken(env('SP_URL') . '/' . env('SP_SITE'), env('SP_CLIENTID'), env('SP_CLIENTSECRET'));
+           // $ctx = $this->connectWithAppOnlyToken(env('SP_URL') . '/' . env('SP_SITE'), env('SP_CLIENTID'), env('SP_CLIENTSECRET'));
+           $ctx = $this->connectWithCertificate();
             // Set the binary content directly instead of using a file path
             $binaryContent = $binary; // Assuming file content is received through POST request
 
@@ -173,7 +175,8 @@ class Sharepoint extends Component
 
             $relativePath = "/sites//" . env('SP_SITE') . "/" . env('SP_LIBRARY');
             //$ctx = $this->connectWithUserCredentials(env('SP_URL') . '/' . env('SP_SITE'), env('SP_USERNAME'), env('SP_PASSWORD'));
-            $ctx = $this->connectWithAppOnlyToken(env('SP_URL') . '/' . env('SP_SITE'), env('SP_CLIENTID'), env('SP_CLIENTSECRET'));
+            //$ctx = $this->connectWithAppOnlyToken(env('SP_URL') . '/' . env('SP_SITE'), env('SP_CLIENTID'), env('SP_CLIENTSECRET'));
+            $ctx = $this->connectWithCertificate();
             $rootFolder = $ctx->getWeb()->getFolderByServerRelativeUrl($relativePath);
 
             // Check if the folder already exists

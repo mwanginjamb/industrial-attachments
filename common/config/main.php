@@ -40,6 +40,12 @@ return [
             ],
 
         ],
+         'utility' => [
+            'class' => \common\Library\Utility::class,
+        ],
+        'sharepoint' => [
+            'class' => \common\Library\Sharepoint::class
+        ],
 
     ],
 ];

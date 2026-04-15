@@ -1,6 +1,6 @@
 <?php
 
-use app\models\AttacheeDocumentsTemplates;
+use frontend\models\AttacheeDocumentsTemplates;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;

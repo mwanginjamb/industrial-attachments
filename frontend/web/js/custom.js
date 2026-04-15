@@ -5,7 +5,7 @@
 
 
 //make all selectboxes searchable
-$('select').select2();
+//$('select').select2();
 //Initialize Sweet Alert
 
 const Toast = Swal.mixin({
@@ -1078,17 +1078,16 @@ function removeNotificationInline(form, timeout = 2000) {
 
 
 // inline file upload
-
+// documentService can be a recepient webservice or ORM model
 async function InlineGlobalUpload(attachmentService, entity, fieldName, documentService = false, form = false, endpoint = false) {
     //const formField = '.field-' + entity.toLowerCase() + '-' + fieldName.toLowerCase();
     const formField = '.' + $(form).find('input[type="file"]').parent()[0].classList[1];
     //console.log(formField); return ;
     const model = entity.toLowerCase();
-    const key = $(form).find(`#${model}-key`).val()
-    const no = $(form).find(`#${model}-no`).val()
-    const projectNo = $(form).find(`#${model}-project_no`).val()
-    const resourceID = $(form).find(`#${model}-resource_id`).val()
-    // const fileInput = document.querySelector(`#${model}-${fieldName}`);
+    const attacheeReference = $(form).find(`#${model}-attachee_id`).val()
+    const docummentType = $(form).find(`#${model}-document_type`).val()
+
+
     var endPoint = './upload/';
     if (endpoint !== false) {
         var endPoint = './' + endpoint + '/';
@@ -1096,12 +1095,7 @@ async function InlineGlobalUpload(attachmentService, entity, fieldName, document
     console.log(`Endopoint: ${endPoint}`);
 
     let error = false;
-    const navPayload = {
-        "Key": key,
-        "No": no,
-        "Service": attachmentService,
-        "documentService": documentService
-    }
+
 
     let formFields = $(form).serializeArray();
     let attachment = $(form).find('input[type="file"]').get(0).files[0];
@@ -1113,11 +1107,10 @@ async function InlineGlobalUpload(attachmentService, entity, fieldName, document
 
     const formData = new FormData();
     formData.append("attachment", attachment);
-    formData.append("Key", key);
-    formData.append("No", no);
-    formData.append("DocumentService", documentService);
-    formData.append("Resource_ID", resourceID);
-    formData.append("Project_No", projectNo);
+    formData.append("attachee_reference", attacheeReference);
+    formData.append("document_type", docummentType);
+    formData.append("documentService", documentService);
+
 
     // Validate file you are uploading
     let file = attachment;
@@ -1166,8 +1159,8 @@ async function InlineGlobalUpload(attachmentService, entity, fieldName, document
 
 
 
-        // Do a Nav Request
-        endPoint = `${endPoint}?Key=${navPayload.Key}&No=${navPayload.No}&Service=${navPayload.Service}&filePath=${filePath}&documentService=${navPayload.documentService}`
+        // Do a Nav Request Webservice or ORM controller action
+        endPoint = `${endPoint}?No=${formData.get('attachee_reference')}&filePath=${filePath}&documentType=${formData.get('document_type')}`
         const navReq = await fetch(endPoint, {
             method: "GET",
             headers: new Headers({
@@ -1179,7 +1172,7 @@ async function InlineGlobalUpload(attachmentService, entity, fieldName, document
         console.log(`Nav Request Response`);
         console.log(NavResp);
         console.info(navReq.ok);
-        if (navReq.ok) {
+        if (navReq.ok && NavResp.status === 'success') {
             // Remove upload indicator
             removeUploadIndicator();
 
@@ -1196,7 +1189,7 @@ async function InlineGlobalUpload(attachmentService, entity, fieldName, document
         } else {
             Toast.fire({
                 type: 'error',
-                title: 'Attachment could not be uploaded.'
+                title: NavResp.message
             })
         }
 

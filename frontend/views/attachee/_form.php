@@ -98,6 +98,32 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
 
         </div>
 
+        
+    <!-- ═══════════════════════════════════════════════════════
+         Form Actions
+     ═══════════════════════════════════════════════════════ -->
+    <div class="flex items-center justify-end gap-6 pt-6 border-t border-outline-variant/20">
+
+        <?= Html::a(
+            'Cancel',
+            ['attachee/create'],   // adjust route as needed
+            ['class' => 'px-8 py-3 font-semibold text-on-surface-variant hover:text-primary transition-colors']
+        ) ?>
+
+        <?= Html::submitButton(
+            'Save Changes',
+            [
+                'class' => 'px-10 py-3 bg-gradient-to-br from-primary to-primary-container '
+                    . 'text-on-primary-container rounded-xl font-headline font-bold shadow-lg '
+                    . 'hover:-translate-y-0.5 transition-all active:translate-y-0',
+            ]
+        ) ?>
+
+    </div>
+
+
+    <?php ActiveForm::end(); ?>
+
     </section>
 
     <!-- ═══════════════════════════════════════════════════════
@@ -184,7 +210,11 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
                             </span>
                         </td>
                         <td class="px-6 py-5 text-right">
-                            <?= $form->field($model, 'national_id', [
+                            <?php $form = ActiveForm::begin(['id' => 'national-id-form', 'options' => ['name' => $file->formName()]]); ?>
+                            <?= $form->field($file, 'attachee_id')->hiddenInput(['value' => $model->attachee_reference])->label(false) ?>
+                            <?= $form->field($file, 'document_type')->hiddenInput(['value' => 4])->label(false) ?>
+                            
+                            <?= $form->field($file, 'attachment', [
                                 'template' => '{input}{error}',
                                 'errorOptions' => ['class' => 'text-xs text-error mt-1 text-right'],
                             ])->fileInput([
@@ -195,6 +225,7 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
                                 class="inline-block px-4 py-2 bg-primary-container text-on-primary-container rounded-lg font-bold text-xs shadow-sm hover:shadow-md transition-all cursor-pointer">
                                 Upload Now
                             </label>
+                            <?php ActiveForm::end(); ?>
                         </td>
                     </tr>
 
@@ -228,29 +259,21 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
     </section>
 
 
-    <!-- ═══════════════════════════════════════════════════════
-         Form Actions
-     ═══════════════════════════════════════════════════════ -->
-    <div class="flex items-center justify-end gap-6 pt-6 border-t border-outline-variant/20">
-
-        <?= Html::a(
-            'Cancel',
-            ['attachee/create'],   // adjust route as needed
-            ['class' => 'px-8 py-3 font-semibold text-on-surface-variant hover:text-primary transition-colors']
-        ) ?>
-
-        <?= Html::submitButton(
-            'Save Changes',
-            [
-                'class' => 'px-10 py-3 bg-gradient-to-br from-primary to-primary-container '
-                    . 'text-on-primary-container rounded-xl font-headline font-bold shadow-lg '
-                    . 'hover:-translate-y-0.5 transition-all active:translate-y-0',
-            ]
-        ) ?>
-
-    </div>
-
-
-    <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php
+$this->registerJsFile('@web/js/custom.js', ['depends' => [\yii\web\YiiAsset::class]]);
+
+
+$script = <<<JS
+// Add any custom JavaScript here
+ $('input[type=file]').change(function(e){
+        const form = e.target.closest('form');
+        let Service = $(form).find("input[id=file-service]").val();
+        InlineGlobalUpload(Service,'file','attachment','AttacheeDocuments', form);   
+    });
+JS;
+
+$this->registerJs($script);
+?>

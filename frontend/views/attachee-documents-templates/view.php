@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var app\models\AttacheeDocumentsTemplates $model */
+/** @var frontend\models\AttacheeDocumentsTemplates $model */
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Attachee Documents Templates'), 'url' => ['index']];

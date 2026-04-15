@@ -1,10 +1,10 @@
 <?php
 
-namespace app\models;
+namespace frontend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\AttacheeDocuments;
+use frontend\models\AttacheeDocuments;
 
 /**
  * AttacheeDocumentsSearch represents the model behind the search form of `app\models\AttacheeDocuments`.
@@ -17,8 +17,8 @@ class AttacheeDocumentsSearch extends AttacheeDocuments
     public function rules()
     {
         return [
-            [['id', 'attachee_id', 'document_type', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['path'], 'safe'],
+            [['id','document_type', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['path','attachee_id'], 'safe'],
         ];
     }
 
