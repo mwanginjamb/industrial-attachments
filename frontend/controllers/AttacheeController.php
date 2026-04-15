@@ -11,9 +11,6 @@ use yii\helpers\FileHelper;
 use frontend\models\AttacheeDocuments;
 use frontend\models\AttacheeDocumentsTemplates;
 
-
-
-
 use Yii;
 
 /**
@@ -120,7 +117,13 @@ class AttacheeController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'fileModel' => new \frontend\models\File()
+            'fileModel' => new \frontend\models\File(),
+            'docTemplates' => \frontend\models\AttacheeDocumentsTemplates::find()->With(['attacheeDocument' => function ($query) {
+                $query->andWhere(['not', ['path' => null]])
+                    ->andWhere(['not', ['path' => '']])
+                    ->andWhere(['not', ['attachee_id' => null]])
+                    ->andWhere(['not', ['attachee_id' => '']]);
+            }])->all(),
         ]);
     }
 
@@ -236,5 +239,18 @@ class AttacheeController extends Controller
                 return ['status' => 'error', 'message' => json_encode($AttacheDocument->getErrors())];
             }
         }
+    }
+
+    // Read - attacheDocument Table Get Request and return base64 encoded content to view
+    public function actionRead($link,$profileId)
+    {
+        $link = Yii::$app->request->get('link');
+        $file = Yii::$app->sharepoint->getBinary($link);
+        $model = Attachee::findOne(['id' => $profileId]);
+       return $this->render('read', [
+            'content' => $file,
+            'profileId' => $profileId,
+            'model' => $model
+        ]);
     }
 }

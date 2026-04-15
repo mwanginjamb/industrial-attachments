@@ -286,7 +286,12 @@ class Sharepoint extends Component
         return $fileContent;
     }
 
-    /** Generate a reletive path from file absolute link */
+    /*
+     * Read a file from a library path and return base64 encoded content
+     * @param string $Link The absolute URL of the file
+     * @return string Base64 encoded file content
+
+     */
     public function getBinary($Link)
     {
         $url = $Link;

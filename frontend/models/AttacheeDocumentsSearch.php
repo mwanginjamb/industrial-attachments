@@ -45,6 +45,10 @@ class AttacheeDocumentsSearch extends AttacheeDocuments
 
         // add conditions that should always apply here
 
+        // fetch all documents with a path and attachee_id
+        $query->andWhere(['not', ['path' => null]]);
+        $query->andWhere(['not', ['attachee_id' => null]]);
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

@@ -21,6 +21,10 @@ $fieldConfig = [
 // Shared input classes
 $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-transparent '
     . 'focus:ring-0 focus:border-primary-container p-3 rounded-t-lg transition-all';
+
+
+
+   // Yii::$app->utility->printrr($templates);
 ?>
 
 <div class="attachee-form">
@@ -152,57 +156,15 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
                 </thead>
                 <tbody class="divide-y divide-outline-variant/10">
 
-                    <!-- Row 1: Application Letter — Uploaded -->
-                    <tr class="hover:bg-surface-container-low/50 transition-colors">
-                        <td class="px-6 py-5 font-medium text-on-surface">Application Letter</td>
-                        <td class="px-6 py-5">
-                            <span
-                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-secondary-fixed text-on-secondary-fixed">
-                                <span class="material-symbols-outlined text-[14px] mr-1">check_circle</span> Uploaded
-                            </span>
-                        </td>
-                        <td class="px-6 py-5 text-right">
-                            <?= $form->field($model, 'application_letter', [
-                                'template' => '{input}{error}',
-                                'errorOptions' => ['class' => 'text-xs text-error mt-1 text-right'],
-                            ])->fileInput([
-                                        'id' => 'application-letter-input',
-                                        'class' => 'hidden',
-                                    ])->label(false) ?>
-                            <label for="application-letter-input"
-                                class="text-primary-container font-semibold text-sm hover:underline flex items-center gap-1 justify-end ml-auto cursor-pointer">
-                                <span class="material-symbols-outlined text-[18px]">cloud_upload</span> Replace
-                            </label>
-                        </td>
-                    </tr>
 
-                    <!-- Row 2: Letter from School — Uploaded -->
-                    <tr class="hover:bg-surface-container-low/50 transition-colors">
-                        <td class="px-6 py-5 font-medium text-on-surface">Letter from School</td>
-                        <td class="px-6 py-5">
-                            <span
-                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-secondary-fixed text-on-secondary-fixed">
-                                <span class="material-symbols-outlined text-[14px] mr-1">check_circle</span> Uploaded
-                            </span>
-                        </td>
-                        <td class="px-6 py-5 text-right">
-                            <?= $form->field($model, 'school_letter', [
-                                'template' => '{input}{error}',
-                                'errorOptions' => ['class' => 'text-xs text-error mt-1 text-right'],
-                            ])->fileInput([
-                                        'id' => 'school-letter-input',
-                                        'class' => 'hidden',
-                                    ])->label(false) ?>
-                            <label for="school-letter-input"
-                                class="text-primary-container font-semibold text-sm hover:underline flex items-center gap-1 justify-end ml-auto cursor-pointer">
-                                <span class="material-symbols-outlined text-[18px]">cloud_upload</span> Replace
-                            </label>
-                        </td>
-                    </tr>
+                  
+                    <?php if(is_array($templates) && count($templates) > 0): ?>
+                        <?php foreach($templates as $t): ?>
+                        
 
                     <!-- Row 3: Copy of National ID — Missing (prominent Upload Now CTA) -->
                     <tr class="hover:bg-surface-container-low/50 transition-colors">
-                        <td class="px-6 py-5 font-medium text-on-surface">Copy of National ID</td>
+                        <td class="px-6 py-5 font-medium text-on-surface"><?= $t['document_description'] ?></td>
                         <td class="px-6 py-5">
                             <span
                                 class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-error-container text-on-error-container">
@@ -210,46 +172,39 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
                             </span>
                         </td>
                         <td class="px-6 py-5 text-right">
-                            <?php $form = ActiveForm::begin(['id' => 'national-id-form', 'options' => ['name' => $file->formName()]]); ?>
-                            <?= $form->field($file, 'attachee_id')->hiddenInput(['value' => $model->attachee_reference])->label(false) ?>
-                            <?= $form->field($file, 'document_type')->hiddenInput(['value' => 4])->label(false) ?>
-                            
-                            <?= $form->field($file, 'attachment', [
-                                'template' => '{input}{error}',
-                                'errorOptions' => ['class' => 'text-xs text-error mt-1 text-right'],
-                            ])->fileInput([
-                                        'id' => 'national-id-input',
-                                        'class' => 'hidden',
-                                    ])->label(false) ?>
-                            <label for="national-id-input"
-                                class="inline-block px-4 py-2 bg-primary-container text-on-primary-container rounded-lg font-bold text-xs shadow-sm hover:shadow-md transition-all cursor-pointer">
-                                Upload Now
-                            </label>
-                            <?php ActiveForm::end(); ?>
+                            <div class="flex items-center gap-4 justify-end">
+                                <?= Html::a(
+                                    '<span class="material-symbols-outlined text-[18px]">visibility</span> View',
+                                    ['attachee/read', 'link' => $t->attacheeDocument?->path,'profileId' => $model->id],   // adjust route as needed
+                                    [
+                                        'class' => 'text-primary-container outline outline-1 outline-primary-container/30 rounded-lg px-3 py-1 font-semibold text-sm hover:underline flex items-center gap-1 justify-end ml-auto',
+                                        'encode' => false,
+                                    ]
+                                ) ?>
+                            <!-- inline upload form -->
+                                <?php $form = ActiveForm::begin(['id' => 'national-id-form', 'options' => ['name' => $file->formName()]]); ?>
+                                        <?= $form->field($file, 'attachee_id')->hiddenInput(['value' => $model->attachee_reference])->label(false) ?>
+                                        <?= $form->field($file, 'document_type')->hiddenInput(['value' => 4])->label(false) ?>
+                                        <?= $form->field($file, 'attachment', [
+                                            'template' => '{input}{error}',
+                                            'errorOptions' => ['class' => 'text-xs text-error mt-1 text-right'],
+                                        ])->fileInput([
+                                                    'id' => 'national-id-input',
+                                                    'class' => 'hidden',
+                                                ])->label(false) ?>
+                                        <label for="national-id-input"
+                                            class="inline-block px-4 py-2 bg-primary-container text-on-primary-container rounded-lg font-bold text-xs shadow-sm hover:shadow-md transition-all cursor-pointer">
+                                            Upload Now
+                                        </label>
+                                <?php ActiveForm::end(); ?>
+
+                            <!-- end inline upload form -->
+                                </div>
                         </td>
                     </tr>
 
-                    <!-- Row 4: Personal Insurance Cover — Pending Review (no upload, view only) -->
-                    <tr class="hover:bg-surface-container-low/50 transition-colors">
-                        <td class="px-6 py-5 font-medium text-on-surface">Personal Insurance Cover</td>
-                        <td class="px-6 py-5">
-                            <span
-                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-surface-container-high text-on-surface-variant">
-                                <span class="material-symbols-outlined text-[14px] mr-1">hourglass_empty</span> Pending
-                                Review
-                            </span>
-                        </td>
-                        <td class="px-6 py-5 text-right">
-                            <?= Html::a(
-                                '<span class="material-symbols-outlined text-[18px]">visibility</span> View',
-                                ['document/view', 'type' => 'insurance'],   // adjust route as needed
-                                [
-                                    'class' => 'text-primary-container font-semibold text-sm hover:underline flex items-center gap-1 justify-end ml-auto',
-                                    'encode' => false,
-                                ]
-                            ) ?>
-                        </td>
-                    </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
 
                 </tbody>
             </table>

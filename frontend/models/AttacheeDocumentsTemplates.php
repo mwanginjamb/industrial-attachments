@@ -88,4 +88,15 @@ class AttacheeDocumentsTemplates extends \yii\db\ActiveRecord
         return $this->hasMany(AttacheeDocuments::class, ['document_type' => 'id']);
     }
 
+    /**
+     * Get a single attache document given a specific attachee id and document type
+     * 
+     * @param int $attacheeId
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAttacheeDocument()
+    {
+        return $this->hasOne(AttacheeDocuments::class, ['document_type' => 'id']);
+    }
+
 }
