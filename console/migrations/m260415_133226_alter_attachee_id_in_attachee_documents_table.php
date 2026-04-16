@@ -9,8 +9,8 @@ class m260415_133226_alter_attachee_id_in_attachee_documents_table extends Migra
      */
     public function safeUp()
     {
-        
-        //$this->dropForeignKey('{{%fk-attachee_documents-attachee_id}}', '{{%attachee_documents}}');
+
+        $this->dropForeignKey('{{%fk-attachee_documents-attachee_id}}', '{{%attachee_documents}}');
         $this->alterColumn('{{%attachee_documents}}', 'attachee_id', $this->string(255));
     }
 

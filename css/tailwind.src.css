@@ -87,4 +87,13 @@
             background-position: -200% 0;
         }
     }
+
+    /* Mobile menu transition */
+    #mobile-menu-overlay {
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    #mobile-sidebar {
+        transition: transform 0.3s ease-in-out;
+    }
 }

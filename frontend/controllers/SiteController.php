@@ -37,7 +37,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout','index'],
+                        'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -80,12 +80,21 @@ class SiteController extends Controller
         if (Yii::$app->user->isGuest) {
             return $this->redirect(\yii\helpers\Url::to(['site/listing']));
         }
-        return $this->render('index');
+        return $this->render('index', [
+            'docTemplates' => \frontend\models\AttacheeDocumentsTemplates::find()->With([
+                'attacheeDocument' => function ($query) {
+                    $query->andWhere(['not', ['path' => null]])
+                        ->andWhere(['not', ['path' => '']])
+                        ->andWhere(['not', ['attachee_id' => null]])
+                        ->andWhere(['not', ['attachee_id' => '']]);
+                }
+            ])->all()
+        ]);
     }
 
     public function actionListing()
     {
-        
+
         $this->layout = 'dashboard';
         // Get all lots with their related applications and applicants
         $lots = \frontend\models\Lot::find()->all();
