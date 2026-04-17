@@ -118,12 +118,14 @@ class AttacheeController extends Controller
         return $this->render('update', [
             'model' => $model,
             'fileModel' => new \frontend\models\File(),
-            'docTemplates' => \frontend\models\AttacheeDocumentsTemplates::find()->With(['attacheeDocument' => function ($query) {
-                $query->andWhere(['not', ['path' => null]])
-                    ->andWhere(['not', ['path' => '']])
-                    ->andWhere(['not', ['attachee_id' => null]])
-                    ->andWhere(['not', ['attachee_id' => '']]);
-            }])->all(),
+            'docTemplates' => \frontend\models\AttacheeDocumentsTemplates::find()->With([
+                'attacheeDocument' => function ($query) {
+                    $query->andWhere(['not', ['path' => null]])
+                        ->andWhere(['not', ['path' => '']])
+                        ->andWhere(['not', ['attachee_id' => null]])
+                        ->andWhere(['not', ['attachee_id' => '']]);
+                }
+            ])->all(),
         ]);
     }
 
@@ -180,23 +182,23 @@ class AttacheeController extends Controller
             $DocumentService->attachee_id = Yii::$app->request->post('attachee_reference');
             $DocumentService->document_type = Yii::$app->request->post('document_type');
             $DocumentService->save();
-            
-            $parentDocument = Attachee::findOne(['attachee_reference' => Yii::$app->request->post('attachee_reference')])   ;
-          // Yii::$app->utility->printrr($parentDocument);
+
+            $parentDocument = Attachee::findOne(['attachee_reference' => Yii::$app->request->post('attachee_reference')]);
+            // Yii::$app->utility->printrr($parentDocument);
             $metadata = [];
             if (is_object($parentDocument) && isset($parentDocument->attachee_reference)) {
                 $metadata = [
                     'Attachee' => $parentDocument->attachee_reference,
                     'AttacheeName' => $parentDocument->user_id,
                     'DocumentType' => AttacheeDocumentsTemplates::findOne(['id' => Yii::$app->request->post('document_type')])->document_description,
-                    ];
-                    }
-                    Yii::$app->session->set('metadata', $metadata);
-                    
-                    // Create a directory to store attachee docs - attachee_Reference
-                    $folder = Yii::$app->sharepoint->createFolder($parentDocument->attachee_reference);
-                    //Yii::$app->utility->printrr($folder);
-            
+                ];
+            }
+            Yii::$app->session->set('metadata', $metadata);
+
+            // Create a directory to store attachee docs - attachee_Reference
+            $folder = Yii::$app->sharepoint->createFolder($parentDocument->attachee_reference);
+            //Yii::$app->utility->printrr($folder);
+
 
             $file = $_FILES['attachment']['tmp_name'];
             $binary = file_get_contents($file);
@@ -224,13 +226,13 @@ class AttacheeController extends Controller
         if (Yii::$app->request->isGet) {
             $fileName = basename(Yii::$app->request->get('filePath'));
 
-           // $AttacheDocument = AttacheeDocuments::findOne(['attachee_id' => Yii::$app->request->get('No')]);
-           $AttacheDocument = new AttacheeDocuments();
-           $AttacheDocument->attachee_id = Yii::$app->request->get('No');
-           $AttacheDocument->path = Yii::$app->request->get('filePath');
-           $AttacheDocument->document_type = Yii::$app->request->get('documentType');
-            
-           $result = $AttacheDocument->save();
+            // $AttacheDocument = AttacheeDocuments::findOne(['attachee_id' => Yii::$app->request->get('No')]);
+            $AttacheDocument = new AttacheeDocuments();
+            $AttacheDocument->attachee_id = Yii::$app->request->get('No');
+            $AttacheDocument->path = Yii::$app->request->get('filePath');
+            $AttacheDocument->document_type = Yii::$app->request->get('documentType');
+
+            $result = $AttacheDocument->save();
 
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             if ($result) {
@@ -242,12 +244,12 @@ class AttacheeController extends Controller
     }
 
     // Read - attacheDocument Table Get Request and return base64 encoded content to view
-    public function actionRead($link,$profileId)
+    public function actionRead($link, $profileId)
     {
         $link = Yii::$app->request->get('link');
         $file = Yii::$app->sharepoint->getBinary($link);
         $model = Attachee::findOne(['id' => $profileId]);
-       return $this->render('read', [
+        return $this->render('read', [
             'content' => $file,
             'profileId' => $profileId,
             'model' => $model

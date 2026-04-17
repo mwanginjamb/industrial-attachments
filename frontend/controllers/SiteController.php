@@ -88,7 +88,22 @@ class SiteController extends Controller
                         ->andWhere(['not', ['attachee_id' => null]])
                         ->andWhere(['not', ['attachee_id' => '']]);
                 }
-            ])->all()
+            ])->all(),
+            'lots' => \frontend\models\Lot::find()->all(),
+            'docTemplates' => \frontend\models\AttacheeDocumentsTemplates::find()->With([
+                'attacheeDocument' => function ($query) {
+                    $query->andWhere(['not', ['path' => null]])
+                        ->andWhere(['not', ['path' => '']])
+                        ->andWhere(['not', ['attachee_id' => null]])
+                        ->andWhere(['not', ['attachee_id' => '']]);
+                }
+            ])->all(),
+            'icons' => [
+                1 => 'description',
+                2 => 'school',
+                3 => 'badge',
+                4 => 'health_and_safety'
+            ]
         ]);
     }
 

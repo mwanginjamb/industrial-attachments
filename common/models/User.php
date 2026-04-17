@@ -211,4 +211,11 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+    // get Attachee based on attachee.user_id
+
+    public function getAttachee()
+    {
+        return $this->hasOne(\frontend\models\Attachee::class, ['user_id' => 'id']);
+    }
 }

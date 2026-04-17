@@ -24,7 +24,7 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
 
 
 
-   // Yii::$app->utility->printrr($templates);
+// Yii::$app->utility->printrr($templates);
 ?>
 
 <div class="attachee-form">
@@ -102,31 +102,31 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
 
         </div>
 
-        
-    <!-- ═══════════════════════════════════════════════════════
+
+        <!-- ═══════════════════════════════════════════════════════
          Form Actions
      ═══════════════════════════════════════════════════════ -->
-    <div class="flex items-center justify-end gap-6 pt-6 border-t border-outline-variant/20">
+        <div class="flex items-center justify-end gap-6 pt-6 border-t border-outline-variant/20">
 
-        <?= Html::a(
-            'Cancel',
-            ['attachee/create'],   // adjust route as needed
-            ['class' => 'px-8 py-3 font-semibold text-on-surface-variant hover:text-primary transition-colors']
-        ) ?>
+            <?= Html::a(
+                'Cancel',
+                ['attachee/create'],   // adjust route as needed
+                ['class' => 'px-8 py-3 font-semibold text-on-surface-variant hover:text-primary transition-colors']
+            ) ?>
 
-        <?= Html::submitButton(
-            'Save Changes',
-            [
-                'class' => 'px-10 py-3 bg-gradient-to-br from-primary to-primary-container '
-                    . 'text-on-primary-container rounded-xl font-headline font-bold shadow-lg '
-                    . 'hover:-translate-y-0.5 transition-all active:translate-y-0',
-            ]
-        ) ?>
+            <?= Html::submitButton(
+                'Save Changes',
+                [
+                    'class' => 'px-10 py-3 bg-gradient-to-br from-primary to-primary-container '
+                        . 'text-on-primary-container rounded-xl font-headline font-bold shadow-lg '
+                        . 'hover:-translate-y-0.5 transition-all active:translate-y-0',
+                ]
+            ) ?>
 
-    </div>
+        </div>
 
 
-    <?php ActiveForm::end(); ?>
+        <?php ActiveForm::end(); ?>
 
     </section>
 
@@ -157,34 +157,34 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
                 <tbody class="divide-y divide-outline-variant/10">
 
 
-                  
-                    <?php if(is_array($templates) && count($templates) > 0): ?>
-                        <?php foreach($templates as $t): ?>
-                        
 
-                    <!-- Row 3: Copy of National ID — Missing (prominent Upload Now CTA) -->
-                    <tr class="hover:bg-surface-container-low/50 transition-colors">
-                        <td class="px-6 py-5 font-medium text-on-surface"><?= $t['document_description'] ?></td>
-                        <td class="px-6 py-5">
-                            <span
-                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-error-container text-on-error-container">
-                                <span class="material-symbols-outlined text-[14px] mr-1">warning</span> Missing
-                            </span>
-                        </td>
-                        <td class="px-6 py-5 text-right">
-                            <div class="flex items-center gap-4 justify-end">
-                                <?= Html::a(
-                                    '<span class="material-symbols-outlined text-[18px]">visibility</span> View',
-                                    ['attachee/read', 'link' => $t->attacheeDocument?->path,'profileId' => $model->id],   // adjust route as needed
-                                    [
-                                        'class' => 'text-primary-container outline outline-1 outline-primary-container/30 rounded-lg px-3 py-1 font-semibold text-sm hover:underline flex items-center gap-1 justify-end ml-auto',
-                                        'encode' => false,
-                                    ]
-                                ) ?>
-                            <!-- inline upload form -->
-                                <?php $form = ActiveForm::begin(['id' => 'national-id-form', 'options' => ['name' => $file->formName()]]); ?>
+                    <?php if (is_array($templates) && count($templates) > 0): ?>
+                        <?php foreach ($templates as $t): ?>
+
+
+                            <!-- Row 3: Copy of National ID — Missing (prominent Upload Now CTA) -->
+                            <tr class="hover:bg-surface-container-low/50 transition-colors">
+                                <td class="px-6 py-5 font-medium text-on-surface"><?= $t['document_description'] ?></td>
+                                <td class="px-6 py-5">
+                                    <span
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-error-container text-on-error-container">
+                                        <span class="material-symbols-outlined text-[14px] mr-1">warning</span> Missing
+                                    </span>
+                                </td>
+                                <td class="px-6 py-5 text-right">
+                                    <div class="flex items-center gap-4 justify-end">
+                                        <?= Html::a(
+                                            '<span class="material-symbols-outlined text-[18px]">visibility</span> View',
+                                            ['attachee/read', 'link' => $t->attacheeDocument?->path, 'profileId' => $model->id],   // adjust route as needed
+                                            [
+                                                'class' => 'text-primary-container outline outline-1 outline-primary-container/30 rounded-lg px-3 py-1 font-semibold text-sm hover:underline flex items-center gap-1 justify-end ml-auto',
+                                                'encode' => false,
+                                            ]
+                                        ) ?>
+                                        <!-- inline upload form -->
+                                        <?php $form = ActiveForm::begin(['id' => 'national-id-form', 'options' => ['name' => $file->formName()]]); ?>
                                         <?= $form->field($file, 'attachee_id')->hiddenInput(['value' => $model->attachee_reference])->label(false) ?>
-                                        <?= $form->field($file, 'document_type')->hiddenInput(['value' => 4])->label(false) ?>
+                                        <?= $form->field($file, 'document_type')->hiddenInput(['value' => $t['id']])->label(false) ?>
                                         <?= $form->field($file, 'attachment', [
                                             'template' => '{input}{error}',
                                             'errorOptions' => ['class' => 'text-xs text-error mt-1 text-right'],
@@ -196,12 +196,12 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
                                             class="inline-block px-4 py-2 bg-primary-container text-on-primary-container rounded-lg font-bold text-xs shadow-sm hover:shadow-md transition-all cursor-pointer">
                                             Upload Now
                                         </label>
-                                <?php ActiveForm::end(); ?>
+                                        <?php ActiveForm::end(); ?>
 
-                            <!-- end inline upload form -->
-                                </div>
-                        </td>
-                    </tr>
+                                        <!-- end inline upload form -->
+                                    </div>
+                                </td>
+                            </tr>
 
                         <?php endforeach; ?>
                     <?php endif; ?>

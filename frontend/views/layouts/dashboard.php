@@ -102,7 +102,7 @@ $this->beginPage();
 
 
                             <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                                href="<?= Url::to(['/student/profile']) ?>">
+                                href="<?= Url::to(['/attachee/update', 'id' => Yii::$app->user->identity->attachee->id]) ?>">
                                 <span class="material-symbols-outlined text-primary">person_outline</span>
                                 View Profile
                             </a>
