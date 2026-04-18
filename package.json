@@ -1,0 +1,21 @@
+{
+  "name": "industrial-attachments",
+  "version": "1.0.0",
+  "description": "<p align=\"center\">\r     <a href=\"https://github.com/yiisoft\" target=\"_blank\">\r         <img src=\"https://avatars0.githubusercontent.com/u/993323\" height=\"100px\">\r     </a>\r     <h1 align=\"center\">Yii 2 Advanced Project Template</h1>\r     <br>\r </p>",
+  "main": "tailwind.config.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "tailwindcss -i ./css/tailwind.src.css -o ./frontend/web/css/tailwind.css --watch",
+    "build": "tailwindcss -i ./css/tailwind.src.css -o ./frontend/web/css/tailwind.css --minify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@tailwindcss/container-queries": "^0.1.1",
+    "@tailwindcss/forms": "^0.5.11",
+    "tailwindcss": "^3.4.19"
+  }
+}

@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'adminEmail' => 'admin@example.com',
-    'supportEmail' => 'support@example.com',
-    'senderEmail' => 'noreply@example.com',
-    'senderName' => 'Example.com mailer',
+    'adminEmail' => env('SMTP_USERNAME'),
+    'supportEmail' => env('SMTP_USERNAME'),
+    'senderEmail' => env('SMTP_USERNAME'),
+    'senderName' => 'KEMRI Mailer',
     'user.passwordResetTokenExpire' => 3600,
     'user.passwordMinLength' => 8,
 ];

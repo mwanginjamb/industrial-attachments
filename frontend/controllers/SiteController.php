@@ -29,15 +29,15 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup'],
+                'only' => ['logout', 'signup', 'index', 'listing'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['signup', 'listing'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -75,7 +75,44 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+
+        $this->layout = 'dashboard';
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(\yii\helpers\Url::to(['site/listing']));
+        }
+        $attachee = \frontend\models\Attachee::findOne(['user_id' => Yii::$app->user->id]);
+        $total_templates = \frontend\models\AttacheeDocumentsTemplates::getTotalTemplates();
+        $total_attachee_documents = \frontend\models\AttacheeDocuments::getDocumentsCount($attachee->id);
+        return $this->render('index', [
+            'model' => $attachee,
+            'docTemplates' => \frontend\models\AttacheeDocumentsTemplates::find()->With([
+                'attacheeDocument' => function ($query) {
+                    $query->andWhere(['not', ['path' => null]])
+                        ->andWhere(['not', ['path' => '']])
+                        ->andWhere(['attachee_id' => Yii::$app->user->id]);
+                }
+            ])->all(),
+            'lots' => \frontend\models\Lot::find()->all(),
+            'total_templates' => $total_templates,
+            'total_attachee_documents' => $total_attachee_documents,
+            'icons' => [
+                1 => 'description',
+                2 => 'school',
+                3 => 'badge',
+                4 => 'health_and_safety'
+            ]
+        ]);
+    }
+
+    public function actionListing()
+    {
+
+        $this->layout = 'dashboard';
+        // Get all lots with their related applications and applicants
+        $lots = \frontend\models\Lot::find()->all();
+        return $this->render('listing', [
+            'lots' => $lots
+        ]);
     }
 
     /**
@@ -257,6 +294,88 @@ class SiteController extends Controller
         }
 
         return $this->render('resendVerificationEmail', [
+            'model' => $model
+        ]);
+    }
+
+    public function actionUpload()
+    {
+        // Upload
+        if (Yii::$app->request->isPost) {
+            $DocumentService = new AttacheeDocuments();
+            $DocumentService->attachee_id = Yii::$app->request->post('attachee_reference');
+            $DocumentService->document_type = Yii::$app->request->post('document_type');
+            $DocumentService->save();
+
+            $parentDocument = Attachee::findOne(['attachee_reference' => Yii::$app->request->post('attachee_reference')]);
+            // Yii::$app->utility->printrr($parentDocument);
+            $metadata = [];
+            if (is_object($parentDocument) && isset($parentDocument->attachee_reference)) {
+                $metadata = [
+                    'Attachee' => $parentDocument->attachee_reference,
+                    'AttacheeName' => $parentDocument->user_id,
+                    'DocumentType' => AttacheeDocumentsTemplates::findOne(['id' => Yii::$app->request->post('document_type')])->document_description,
+                ];
+            }
+            Yii::$app->session->set('metadata', $metadata);
+
+            // Create a directory to store attachee docs - attachee_Reference
+            $folder = Yii::$app->sharepoint->createFolder($parentDocument->attachee_reference);
+            //Yii::$app->utility->printrr($folder);
+
+
+            $file = $_FILES['attachment']['tmp_name'];
+            $binary = file_get_contents($file);
+            //Return JSON
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            if ($binary) {
+                // Upload to sharepoint
+                $spResult = Yii::$app->sharepoint->attach_toLibrary(env('SP_LIBRARY') . '\\' . $parentDocument->attachee_reference, $binary, $attachmentName, $metadata = [], TRUE);
+                Yii::$app->session->set('SP_PATH', $spResult);
+                return [
+                    'status' => 'success',
+                    'message' => 'File Uploaded Successfully. :- ' . $spResult,
+                    'filePath' => $spResult
+                ];
+            } else {
+                return [
+                    'status' => 'error',
+                    'message' => 'Could not upload file at the moment.'
+                ];
+            }
+        }
+
+
+        // Update  - attacheDocument Table Get Request
+        if (Yii::$app->request->isGet) {
+            $fileName = basename(Yii::$app->request->get('filePath'));
+
+            // $AttacheDocument = AttacheeDocuments::findOne(['attachee_id' => Yii::$app->request->get('No')]);
+            $AttacheDocument = new AttacheeDocuments();
+            $AttacheDocument->attachee_id = Yii::$app->request->get('No');
+            $AttacheDocument->path = Yii::$app->request->get('filePath');
+            $AttacheDocument->document_type = Yii::$app->request->get('documentType');
+
+            $result = $AttacheDocument->save();
+
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            if ($result) {
+                return ['status' => 'success', 'message' => 'Document saved successfully'];
+            } else {
+                return ['status' => 'error', 'message' => json_encode($AttacheDocument->getErrors())];
+            }
+        }
+    }
+
+    // Read - attacheDocument Table Get Request and return base64 encoded content to view
+    public function actionRead($link, $profileId)
+    {
+        $link = Yii::$app->request->get('link');
+        $file = Yii::$app->sharepoint->getBinary($link);
+        $model = Attachee::findOne(['id' => $profileId]);
+        return $this->render('read', [
+            'content' => $file,
+            'profileId' => $profileId,
             'model' => $model
         ]);
     }
