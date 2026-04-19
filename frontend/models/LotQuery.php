@@ -29,6 +29,22 @@ class LotQuery extends \yii\db\ActiveQuery
         ]);
     }
 
+    // Add a scope for ordering by active state
+    public function orderByActive($date = null)
+    {
+        $date = $date ?: date('Y-m-d');
+        $days = Yii::$app->params['lotApplicationWindowDays'];
+
+        return $this->addOrderBy(new \yii\db\Expression("
+            CASE 
+                WHEN '{$date}' >= DATE_SUB(opening_date, INTERVAL {$days} DAY)
+                AND '{$date}' < opening_date
+                THEN 1
+                ELSE 0
+            END DESC
+        "));
+    }
+
     /**
      * {@inheritdoc}
      * @return Lot[]|array

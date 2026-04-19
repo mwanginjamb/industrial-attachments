@@ -108,7 +108,7 @@ class SiteController extends Controller
                         ->andWhere(['attachee_id' => Yii::$app->user->id]);
                 }
             ])->all(),
-            'lots' => \frontend\models\Lot::find()->all(),
+            'lots' => \frontend\models\Lot::find()->active()->all(),
             'total_templates' => $total_templates,
             'total_attachee_documents' => $total_attachee_documents,
             'icons' => [
@@ -125,7 +125,7 @@ class SiteController extends Controller
 
         $this->layout = 'dashboard';
         // Get all lots with their related applications and applicants
-        $lots = \frontend\models\Lot::find()->all();
+        $lots = \frontend\models\Lot::find()->orderByActive()->all();
         return $this->render('listing', [
             'lots' => $lots
         ]);

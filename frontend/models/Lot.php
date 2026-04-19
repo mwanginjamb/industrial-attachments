@@ -95,7 +95,6 @@ class Lot extends \yii\db\ActiveRecord
     {
         if (!$this->closing_date) {
             return null;
-
         }
 
         return date('Y-m-d', strtotime($this->closing_date . ' -2 weeks'));
@@ -137,15 +136,11 @@ public function getIsActive()
       if (empty($this->opening_date)) {
         return false;
     }
-
     // Application window (days)
     $days = Yii::$app->params['lotApplicationWindowDays'];
-
     $today = new \DateTime();
     $opening = new \DateTime($this->opening_date);
-
     $start = (clone $opening)->modify("-{$days} days");
-
     return ($today >= $start && $today < $opening);
 }
 
