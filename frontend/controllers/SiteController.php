@@ -16,6 +16,10 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 
+use frontend\models\Attachee;
+use frontend\models\AttacheeDocuments;
+use frontend\models\AttacheeDocumentsTemplates;
+
 /**
  * Site controller
  */
@@ -29,10 +33,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup', 'index', 'listing'],
+                'only' => ['logout', 'signup', 'index'],
                 'rules' => [
                     [
-                        'actions' => ['signup', 'listing'],
+                        'actions' => ['signup'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -66,6 +70,18 @@ class SiteController extends Controller
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
+    }
+
+    public function beforeAction($action)
+    {
+        $ExceptedActions = [
+            'upload',
+        ];
+
+        if (in_array($action->id, $ExceptedActions)) {
+            $this->enableCsrfValidation = false;
+        }
+        return parent::beforeAction($action);
     }
 
     /**
@@ -302,7 +318,7 @@ class SiteController extends Controller
     {
         // Upload
         if (Yii::$app->request->isPost) {
-            $DocumentService = new AttacheeDocuments();
+            $DocumentService = new \frontend\models\AttacheeDocuments();
             $DocumentService->attachee_id = Yii::$app->request->post('attachee_reference');
             $DocumentService->document_type = Yii::$app->request->post('document_type');
             $DocumentService->save();
@@ -323,7 +339,7 @@ class SiteController extends Controller
             $folder = Yii::$app->sharepoint->createFolder($parentDocument->attachee_reference);
             //Yii::$app->utility->printrr($folder);
 
-
+            $attachmentName = $_FILES['attachment']['name'];
             $file = $_FILES['attachment']['tmp_name'];
             $binary = file_get_contents($file);
             //Return JSON

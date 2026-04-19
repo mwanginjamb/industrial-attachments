@@ -7,4 +7,6 @@ return [
     'senderName' => 'KEMRI Mailer',
     'user.passwordResetTokenExpire' => 3600,
     'user.passwordMinLength' => 8,
+    'lotApplicationWindowDays' => env('LOT_APPLICATION_WINDOW_DAYS', 14),
 ];
+

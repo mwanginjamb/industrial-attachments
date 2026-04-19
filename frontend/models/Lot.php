@@ -48,6 +48,8 @@ class Lot extends \yii\db\ActiveRecord
             [['description'], 'string'],
             [['opening_date', 'closing_date'], 'safe'],
             [['created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            // make description unique
+            [['description'], 'unique'],
         ];
     }
 
@@ -127,6 +129,30 @@ class Lot extends \yii\db\ActiveRecord
             ],
         ];
     }
+
+
+// Check if lot is active
+public function getIsActive()
+{
+      if (empty($this->opening_date)) {
+        return false;
+    }
+
+    // Application window (days)
+    $days = Yii::$app->params['lotApplicationWindowDays'];
+
+    $today = new \DateTime();
+    $opening = new \DateTime($this->opening_date);
+
+    $start = (clone $opening)->modify("-{$days} days");
+
+    return ($today >= $start && $today < $opening);
+}
+
+public static function find()
+{
+    return new LotQuery(get_called_class());
+}
 
 
 

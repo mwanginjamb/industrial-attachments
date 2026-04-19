@@ -41,12 +41,7 @@ class LotSearch extends lot
      */
     public function search($params, $formName = null)
     {
-        $query = lot::find();
-
-        // All users except admin will see only those lots that are in the future
-        if (!\Yii::$app->user->can('admin')) {
-            $query->andWhere(['>=', 'closing_date', date('Y-m-d H:i:s')]);
-        }
+        $query = lot::find()->active();
 
         // add conditions that should always apply here
 
@@ -74,6 +69,7 @@ class LotSearch extends lot
         ]);
 
         $query->andFilterWhere(['like', 'description', $this->description]);
+        
 
         return $dataProvider;
     }

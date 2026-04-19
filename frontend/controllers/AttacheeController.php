@@ -71,9 +71,10 @@ class AttacheeController extends Controller
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($attachee_id)
+    public function actionView($id)
     {
-        $model = \frontend\models\Attachee::find()->where(['attachee_reference' => $attachee_id])->one();
+        $model = \frontend\models\Attachee::find()->where(['id' => $id])->one();
+        //Yii::$app->utility->printrr($model, 10, true);
         $templates = \frontend\models\AttacheeDocumentsTemplates::find()->With([
             'attacheeDocument' => function ($query) use ($model) {
                 $query->andWhere(['not', ['path' => null]])
@@ -198,7 +199,7 @@ class AttacheeController extends Controller
             $folder = Yii::$app->sharepoint->createFolder($parentDocument->attachee_reference);
             //Yii::$app->utility->printrr($folder);
 
-
+            $attachmentName = $_FILES['attachment']['name'];
             $file = $_FILES['attachment']['tmp_name'];
             $binary = file_get_contents($file);
             //Return JSON

@@ -28,3 +28,4 @@ use yii\helpers\Url;
 <?php ActiveForm::end(); ?>
 
 <!-- end inline upload form -->
+

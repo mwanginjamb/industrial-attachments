@@ -216,7 +216,7 @@ use frontend\models\File;
             </aside>
             <!-- Help & Guidance Card -->
             <section class="bg-surface-container-low rounded-xl p-8 border border-outline-variant/20">
-                <h3 class="font-headline text-xl font-bold text-on-surface mb-6">Curated Resources</h3>
+                <h3 class="font-headline text-xl font-bold text-on-surface mb-6">Active Attachment Opportunities</h3>
                 <div class="grid grid-cols-1 gap-4">
                     <a class="flex items-center gap-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
                         href="#">
