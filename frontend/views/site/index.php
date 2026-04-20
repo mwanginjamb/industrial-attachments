@@ -101,8 +101,8 @@ use frontend\models\File;
                 </div>
                 <!-- Document Templates -->
                 <div class="space-y-4">
-                    <?php foreach ($docTemplates as $doc): ?>
-                        <?php $uploaded = ($doc->attacheeDocument && $doc->attacheeDocument->path) ? true : false; ?>
+                    <?php foreach ($docTemplates as $k => $doc): ?>
+                        <?php $uploaded = ($doc?->attacheeDocument && $doc?->attacheeDocument?->path) ? true : false; ?>
 
                         <div class="group 
                         flex items-center justify-between  <!-- FIX: match boilerplate (remove flex-col) -->

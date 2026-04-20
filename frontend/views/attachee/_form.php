@@ -162,16 +162,20 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
 
 
                     <?php if (is_array($templates) && count($templates) > 0): ?>
-                        <?php foreach ($templates as $t): ?>
-
+                        <?php foreach ($templates as $key => $t): ?>
+                            <?php 
+                            $uploaded = $t->attacheeDocument?->path !== null; 
+                            $status = $uploaded ? '<span class="material-symbols-outlined text-[14px] mr-1">check</span> Uploaded' : ' <span class="material-symbols-outlined text-[14px] mr-1">warning</span> Missing';
+                           $statusClass = $uploaded ? 'text-green-600 bg-green-50' : 'bg-error-container text-on-error-container';
+                           ?>
 
                             <!-- Row 3: Copy of National ID — Missing (prominent Upload Now CTA) -->
                             <tr class="hover:bg-surface-container-low/50 transition-colors">
                                 <td class="px-6 py-5 font-medium text-on-surface"><?= $t['document_description'] ?></td>
                                 <td class="px-6 py-5">
                                     <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-error-container text-on-error-container">
-                                        <span class="material-symbols-outlined text-[14px] mr-1">warning</span> Missing
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold <?= $statusClass ?>">
+                                        <?= $status ?>
                                     </span>
                                 </td>
                                 <td class="px-6 py-5 text-right">
@@ -185,17 +189,17 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
                                             ]
                                         ) ?>
                                         <!-- inline upload form -->
-                                        <?php $form = ActiveForm::begin(['id' => 'national-id-form', 'options' => ['name' => $file->formName()]]); ?>
+                                        <?php $form = ActiveForm::begin(['id' => 'national-id-form-'.$t['id'], 'options' => ['name' => $file->formName()]]); ?>
                                         <?= $form->field($file, 'attachee_id')->hiddenInput(['value' => $model->attachee_reference])->label(false) ?>
                                         <?= $form->field($file, 'document_type')->hiddenInput(['value' => $t['id']])->label(false) ?>
                                         <?= $form->field($file, 'attachment', [
                                             'template' => '{input}{error}',
                                             'errorOptions' => ['class' => 'text-xs text-error mt-1 text-right'],
                                         ])->fileInput([
-                                                    'id' => 'national-id-input',
+                                                    'id' => 'national-id-input-'.$t['id'],
                                                     'class' => 'hidden',
                                                 ])->label(false) ?>
-                                        <label for="national-id-input"
+                                        <label for="national-id-input-<?= $t['id'] ?>"
                                             class="inline-block px-4 py-2 bg-primary-container text-on-primary-container rounded-lg font-bold text-xs shadow-sm hover:shadow-md transition-all cursor-pointer">
                                             Upload Now
                                         </label>

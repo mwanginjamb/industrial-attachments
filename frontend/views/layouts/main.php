@@ -6,6 +6,7 @@ use frontend\assets\AppAsset;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
 use yii\bootstrap5\Alert;
+use yii\helpers\Url;
 
 $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
@@ -36,7 +37,7 @@ AppAsset::register($this);
 <aside class="h-screen w-64 fixed left-0 top-0 overflow-y-auto bg-slate-100 dark:bg-slate-950 flex flex-col gap-2 p-4 border-r border-slate-200/10 z-40">
 
     <!-- Brand  -->
-     <a href="<?= Yii::$app->homeUrl ?>">
+     <a href="<?= Url::toRoute('site/index') ?>">
     <div class="mb-8 px-2">
         <h2 class="font-['Manrope'] font-bold text-lg text-slate-900 dark:text-slate-50">
             <?= Html::encode(Yii::$app->name) ?>

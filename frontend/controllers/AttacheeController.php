@@ -178,10 +178,18 @@ class AttacheeController extends Controller
     {
         // Upload
         if (Yii::$app->request->isPost) {
-            $DocumentService = new AttacheeDocuments();
-            $DocumentService->attachee_id = Yii::$app->request->post('attachee_reference');
-            $DocumentService->document_type = Yii::$app->request->post('document_type');
-            $DocumentService->save();
+            $attachee_id = Yii::$app->request->post('attachee_reference');
+            $document_type = Yii::$app->request->post('document_type');
+            // implement updateOrCreate pattern
+            $model = \frontend\models\AttacheeDocuments::findOne([
+            'attachee_id' => $attachee_id,
+            'document_type' => $document_type,
+            ]) ?? new \frontend\models\AttacheeDocuments([
+                'attachee_id' => $attachee_id,
+                'document_type' => $document_type,
+            ]);
+
+            $model->save();
 
             $parentDocument = Attachee::findOne(['attachee_reference' => Yii::$app->request->post('attachee_reference')]);
             // Yii::$app->utility->printrr($parentDocument);
@@ -226,19 +234,26 @@ class AttacheeController extends Controller
         if (Yii::$app->request->isGet) {
             $fileName = basename(Yii::$app->request->get('filePath'));
 
-            // $AttacheDocument = AttacheeDocuments::findOne(['attachee_id' => Yii::$app->request->get('No')]);
-            $AttacheDocument = new AttacheeDocuments();
-            $AttacheDocument->attachee_id = Yii::$app->request->get('No');
-            $AttacheDocument->path = Yii::$app->request->get('filePath');
-            $AttacheDocument->document_type = Yii::$app->request->get('documentType');
+            
+ $model = \frontend\models\AttacheeDocuments::findOne([
+            'attachee_id' => Yii::$app->request->get('No'),
+            'document_type' => Yii::$app->request->get('documentType'),
+            ]) ?? new \frontend\models\AttacheeDocuments([
+                'attachee_id' => Yii::$app->request->get('No'),
+                'document_type' => Yii::$app->request->get('documentType'),
+            ]);
+            $model->attributes = [
+                'path' => Yii::$app->request->get('filePath')
+            ];
+           $result =  $model->save();
 
-            $result = $AttacheDocument->save();
+
 
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             if ($result) {
                 return ['status' => 'success', 'message' => 'Document saved successfully'];
             } else {
-                return ['status' => 'error', 'message' => json_encode($AttacheDocument->getErrors())];
+                return ['status' => 'error', 'message' => json_encode($model->getErrors())];
             }
         }
     }
