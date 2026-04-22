@@ -15,9 +15,9 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use frontend\models\User;
 
 use frontend\models\Attachee;
-use frontend\models\AttacheeDocuments;
 use frontend\models\AttacheeDocumentsTemplates;
 
 /**
@@ -100,14 +100,14 @@ class SiteController extends Controller
         $total_templates = \frontend\models\AttacheeDocumentsTemplates::getTotalTemplates();
         $total_attachee_documents = \frontend\models\AttacheeDocuments::getDocumentsCount($attachee->attachee_reference);
         $attachedDocuments = \frontend\models\AttacheeDocumentsTemplates::find()->With([
-                'attacheeDocument' => function ($query) {
-                    $query->andWhere(['not', ['path' => null]])
-                        ->andWhere(['not', ['path' => '']])
-                        ->andWhere(['attachee_id' => Yii::$app->user->identity->attachee->attachee_reference]);
-                }
-            ])->all();
+            'attacheeDocument' => function ($query) {
+                $query->andWhere(['not', ['path' => null]])
+                    ->andWhere(['not', ['path' => '']])
+                    ->andWhere(['attachee_id' => Yii::$app->user->identity->attachee->attachee_reference]);
+            }
+        ])->all();
 
-       // Yii::$app->utility->printrr($attachedDocuments);
+        // Yii::$app->utility->printrr($attachedDocuments);
         return $this->render('index', [
             'model' => $attachee,
             'docTemplates' => $attachedDocuments,
@@ -325,12 +325,12 @@ class SiteController extends Controller
             $document_type = Yii::$app->request->post('document_type');
             // implement updateOrCreate pattern
             $model = \frontend\models\AttacheeDocuments::findOne([
-            'attachee_id' => $attachee_id,
-            'document_type' => $document_type,
-            ]) ?? new \frontend\models\AttacheeDocuments([
                 'attachee_id' => $attachee_id,
                 'document_type' => $document_type,
-            ]);
+            ]) ?? new \frontend\models\AttacheeDocuments([
+                    'attachee_id' => $attachee_id,
+                    'document_type' => $document_type,
+                ]);
 
             $model->save();
 
@@ -377,18 +377,18 @@ class SiteController extends Controller
         if (Yii::$app->request->isGet) {
             $fileName = basename(Yii::$app->request->get('filePath'));
 
-            
-        $model = \frontend\models\AttacheeDocuments::findOne([
-            'attachee_id' => Yii::$app->request->get('No'),
-            'document_type' => Yii::$app->request->get('documentType'),
-            ]) ?? new \frontend\models\AttacheeDocuments([
+
+            $model = \frontend\models\AttacheeDocuments::findOne([
                 'attachee_id' => Yii::$app->request->get('No'),
                 'document_type' => Yii::$app->request->get('documentType'),
-            ]);
+            ]) ?? new \frontend\models\AttacheeDocuments([
+                    'attachee_id' => Yii::$app->request->get('No'),
+                    'document_type' => Yii::$app->request->get('documentType'),
+                ]);
             $model->attributes = [
                 'path' => Yii::$app->request->get('filePath')
             ];
-           $result =  $model->save();
+            $result = $model->save();
 
 
 
@@ -412,6 +412,14 @@ class SiteController extends Controller
             'content' => $file,
             'profileId' => $profileId,
             'model' => $model
+        ]);
+    }
+
+    public function actionUsers()
+    {
+        $users = User::find()->select(['id', 'username', 'email', 'created_at', 'status'])->orderBy(['created_at' => SORT_DESC])->all();
+        return $this->render('users', [
+            'users' => $users
         ]);
     }
 }

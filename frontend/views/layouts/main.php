@@ -46,39 +46,113 @@ AppAsset::register($this);
     </div>
     </a>
 
-    <!-- Primary Nav -->
+    <!-- Primary Navigation -->
     <nav class="flex-1 space-y-1">
-        <?php
-        /*
-         * Build sidebar links dynamically.
-         * Each item: ['label' => '...', 'url' => [...], 'icon' => 'material_symbol_name']
-         * Add the `active` key (true/false) or rely on Yii's route matching below.
-         */
-        $sideNavItems = [
-            ['label' => 'Overview',         'url' => ['/site/index'],       'icon' => 'dashboard'],
-            ['label' => 'Student List',     'url' => ['/student/index'],    'icon' => 'group'],
-            ['label' => 'Company Partners', 'url' => ['/company/index'],    'icon' => 'business_center'],
-            ['label' => 'Document Review',  'url' => ['/document/index'],   'icon' => 'description'],
-            ['label' => 'System Logs',      'url' => ['/log/index'],        'icon' => 'analytics'],
-        ];
+    <?php
+    $sideNavItems = [
+        ['label' => 'Overview',         'url' => ['/site/index'],       'icon' => 'dashboard'],
+        ['label' => 'Student List',     'url' => ['/student/index'],    'icon' => 'group'],
+        ['label' => 'Company Partners', 'url' => ['/company/index'],    'icon' => 'business_center'],
+        ['label' => 'Document Review',  'url' => ['/document/index'],   'icon' => 'description'],
+        ['label' => 'System Logs',      'url' => ['/log/index'],        'icon' => 'analytics'],
 
-        $currentRoute = '/' . Yii::$app->controller->id . '/' . Yii::$app->controller->action->id;
+        // ── Nested group: add a 'children' key, no 'url' ──
+        [
+            'label'    => 'RBAC Mgt',
+            'icon'     => 'admin_panel_settings',  // icon for the group header (optional)
+            'group'    => true,                    // flag to render as accordion
+            'children' => [
+                ['label' => 'User Role Assignment', 'url' => ['/rbac/user-roles'],   'icon' => 'manage_accounts'],
+                ['label' => 'Roles',  'url' => ['/rbac/index'],        'icon' => 'security_update_good'],
+                ['label' => 'Permissions',         'url' => ['/rbac/permissions'],        'icon' => 'security'],
+                ['label' => 'System Users',           'url' => ['/site/users'],        'icon' => 'group'],
+            ],
+        ],
+    ];
 
-        foreach ($sideNavItems as $item):
-            $isActive = (Yii::$app->urlManager->createUrl($item['url']) === Yii::$app->urlManager->createUrl([$currentRoute]));
-            $activeClasses   = 'bg-white dark:bg-slate-900 text-blue-700 dark:text-blue-400 rounded-lg shadow-sm font-bold';
-            $inactiveClasses = 'text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 hover:pl-2 transition-all duration-300 font-medium';
-        ?>
+    $currentRoute = '/' . Yii::$app->controller->id . '/' . Yii::$app->controller->action->id;
+    $activeClasses   = 'bg-white dark:bg-slate-900 text-blue-700 dark:text-blue-400 rounded-lg shadow-sm font-bold';
+    $inactiveClasses = 'text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 hover:pl-2 transition-all duration-300 font-medium';
+
+    foreach ($sideNavItems as $idx => $item):
+
+        // ── GROUP / ACCORDION ──────────────────────────────────────────────────
+        if (!empty($item['group'])):
+            /*
+             * Check if ANY child is active — if so, open the accordion by default
+             * so the active child is visible on page load.
+             */
+            $groupHasActive = false;
+            foreach ($item['children'] as $child) {
+                if (Yii::$app->urlManager->createUrl($child['url']) === Yii::$app->urlManager->createUrl([$currentRoute])) {
+                    $groupHasActive = true;
+                    break;
+                }
+            }
+            $groupId = 'nav-group-' . $idx;
+    ?>
+        <div class="space-y-1">
+            <!-- Group toggle button -->
+            <button
+                data-accordion-toggle="<?= $groupId ?>"
+                aria-expanded="<?= $groupHasActive ? 'true' : 'false' ?>"
+                aria-controls="<?= $groupId ?>"
+                class="w-full flex items-center justify-between px-4 pt-4 pb-2 group"
+            >
+                <span class="material-symbols-outlined text-xl">
+                    <?= $item['icon'] ?>
+                </span>
+                
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider group-hover:text-slate-600 transition-colors">
+                    <?= Html::encode($item['label']) ?>
+                </p>
+                <span class="material-symbols-outlined text-slate-400 text-sm accordion-chevron <?= $groupHasActive ? 'rotate-180' : '' ?>"
+                      style="transition: transform 260ms cubic-bezier(.4,0,.2,1);">
+                    expand_more
+                </span>
+            </button>
+
+            <!-- Collapsible submenu -->
+            <div
+                id="<?= $groupId ?>"
+                class="nav-accordion-panel space-y-1 <?= $groupHasActive ? 'open' : '' ?>"
+            >
+                <div class="inner">
+                    <?php foreach ($item['children'] as $child):
+                        $isActive = Yii::$app->urlManager->createUrl($child['url']) === Yii::$app->urlManager->createUrl([$currentRoute]);
+                    ?>
+                        <?= Html::a(
+                            '<span class="material-symbols-outlined text-xl">' . $child['icon'] . '</span>'
+                            . '<span>' . Html::encode($child['label']) . '</span>',
+                            $child['url'],
+                            [
+                                'class'  => 'flex items-center gap-3 px-4 py-2.5 text-sm ml-2 rounded-lg '
+                                          . ($isActive ? $activeClasses : $inactiveClasses),
+                                'encode' => false,
+                            ]
+                        ) ?>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+
+    <?php
+        // ── FLAT LINK ──────────────────────────────────────────────────────────
+        else:
+            $isActive = Yii::$app->urlManager->createUrl($item['url']) === Yii::$app->urlManager->createUrl([$currentRoute]);
+    ?>
         <?= Html::a(
-            '<span class="material-symbols-outlined">' . $item['icon'] . '</span><span>' . Html::encode($item['label']) . '</span>',
+            '<span class="material-symbols-outlined">' . $item['icon'] . '</span>'
+            . '<span>' . Html::encode($item['label']) . '</span>',
             $item['url'],
             [
-                'class' => 'flex items-center gap-3 px-3 py-2 font-[\'Inter\'] text-sm ' . ($isActive ? $activeClasses : $inactiveClasses),
+                'class'  => 'flex items-center gap-3 px-3 py-2 text-sm ' . ($isActive ? $activeClasses : $inactiveClasses),
                 'encode' => false,
             ]
         ) ?>
-        <?php endforeach; ?>
-    </nav>
+    <?php endif; ?>
+    <?php endforeach; ?>
+</nav>
 
     <!-- Bottom Actions -->
     <div class="mt-auto pt-4 space-y-1">

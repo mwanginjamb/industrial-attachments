@@ -20,7 +20,8 @@ class AppAsset extends AssetBundle
     public $js = [
         //'https://cdn.tailwindcss.com?plugins=forms,container-queries',
         //'js/tailwind.config.js'
-        '//cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js',
+        //'//cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js',
+        'js/menu-toggle.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

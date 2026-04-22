@@ -1,0 +1,331 @@
+yii\data\ArrayDataProvider Object
+(
+    [_events:yii\base\Component:private] => Array
+        (
+        )
+
+    [_eventWildcards:yii\base\Component:private] => Array
+        (
+        )
+
+    [_behaviors:yii\base\Component:private] => 
+    [id] => 
+    [_sort:yii\data\BaseDataProvider:private] => 
+    [_pagination:yii\data\BaseDataProvider:private] => yii\data\Pagination Object
+        (
+            [pageParam] => page
+            [pageSizeParam] => per-page
+            [forcePageParam] => 1
+            [route] => 
+            [params] => 
+            [urlManager] => 
+            [validatePage] => 1
+            [totalCount] => 0
+            [defaultPageSize] => 20
+            [pageSizeLimit] => Array
+                (
+                    [0] => 1
+                    [1] => 50
+                )
+
+            [_pageSize:yii\data\Pagination:private] => 20
+            [_page:yii\data\Pagination:private] => 
+        )
+
+    [_keys:yii\data\BaseDataProvider:private] => 
+    [_models:yii\data\BaseDataProvider:private] => 
+    [_totalCount:yii\data\BaseDataProvider:private] => 
+    [key] => 
+    [allModels] => Array
+        (
+            [0] => Array
+                (
+                    [object] => yii\rbac\Permission Object
+                        (
+                            [type] => 2
+                            [name] => add-lot
+                            [description] => add a vacancy lot
+                            [ruleName] => 
+                            [data] => 
+                            [createdAt] => 1776846456
+                            [updatedAt] => 1776846456
+                        )
+
+                    [parents] => Array
+                        (
+                        )
+
+                )
+
+            [1] => Array
+                (
+                    [object] => yii\rbac\Permission Object
+                        (
+                            [type] => 2
+                            [name] => apply-lot
+                            [description] => Apply for an attachment from a lot
+                            [ruleName] => 
+                            [data] => 
+                            [createdAt] => 1776852465
+                            [updatedAt] => 1776852465
+                        )
+
+                    [parents] => Array
+                        (
+                            [0] => Array
+                                (
+                                )
+
+                        )
+
+                )
+
+            [2] => Array
+                (
+                    [object] => yii\rbac\Permission Object
+                        (
+                            [type] => 2
+                            [name] => lot
+                            [description] => overall permission on lots (create.update.delete, view)
+                            [ruleName] => 
+                            [data] => 
+                            [createdAt] => 1776847170
+                            [updatedAt] => 1776847170
+                        )
+
+                    [parents] => Array
+                        (
+                        )
+
+                )
+
+            [3] => Array
+                (
+                    [object] => yii\rbac\Permission Object
+                        (
+                            [type] => 2
+                            [name] => update-lot
+                            [description] => update a vacancy lot
+                            [ruleName] => 
+                            [data] => 
+                            [createdAt] => 1776847104
+                            [updatedAt] => 1776847104
+                        )
+
+                    [parents] => Array
+                        (
+                        )
+
+                )
+
+        )
+
+    [modelClass] => 
+)
+yii\data\ArrayDataProvider Object
+(
+    [_events:yii\base\Component:private] => Array
+        (
+        )
+
+    [_eventWildcards:yii\base\Component:private] => Array
+        (
+        )
+
+    [_behaviors:yii\base\Component:private] => 
+    [id] => 
+    [_sort:yii\data\BaseDataProvider:private] => 
+    [_pagination:yii\data\BaseDataProvider:private] => yii\data\Pagination Object
+        (
+            [pageParam] => page
+            [pageSizeParam] => per-page
+            [forcePageParam] => 1
+            [route] => 
+            [params] => 
+            [urlManager] => 
+            [validatePage] => 1
+            [totalCount] => 0
+            [defaultPageSize] => 20
+            [pageSizeLimit] => Array
+                (
+                    [0] => 1
+                    [1] => 50
+                )
+
+            [_pageSize:yii\data\Pagination:private] => 20
+            [_page:yii\data\Pagination:private] => 
+        )
+
+    [_keys:yii\data\BaseDataProvider:private] => 
+    [_models:yii\data\BaseDataProvider:private] => 
+    [_totalCount:yii\data\BaseDataProvider:private] => 
+    [key] => 
+    [allModels] => Array
+        (
+            [0] => Array
+                (
+                    [object] => yii\rbac\Permission Object
+                        (
+                            [type] => 2
+                            [name] => add-lot
+                            [description] => add a vacancy lot
+                            [ruleName] => 
+                            [data] => 
+                            [createdAt] => 1776846456
+                            [updatedAt] => 1776846456
+                        )
+
+                    [parents] => Array
+                        (
+                        )
+
+                )
+
+            [1] => Array
+                (
+                    [object] => yii\rbac\Permission Object
+                        (
+                            [type] => 2
+                            [name] => apply-lot
+                            [description] => Apply for an attachment from a lot
+                            [ruleName] => 
+                            [data] => 
+                            [createdAt] => 1776852465
+                            [updatedAt] => 1776852465
+                        )
+
+                    [parents] => Array
+                        (
+                            [0] => Array
+                                (
+                                )
+
+                        )
+
+                )
+
+            [2] => Array
+                (
+                    [object] => yii\rbac\Permission Object
+                        (
+                            [type] => 2
+                            [name] => lot
+                            [description] => overall permission on lots (create.update.delete, view)
+                            [ruleName] => 
+                            [data] => 
+                            [createdAt] => 1776847170
+                            [updatedAt] => 1776847170
+                        )
+
+                    [parents] => Array
+                        (
+                        )
+
+                )
+
+            [3] => Array
+                (
+                    [object] => yii\rbac\Permission Object
+                        (
+                            [type] => 2
+                            [name] => update-lot
+                            [description] => update a vacancy lot
+                            [ruleName] => 
+                            [data] => 
+                            [createdAt] => 1776847104
+                            [updatedAt] => 1776847104
+                        )
+
+                    [parents] => Array
+                        (
+                        )
+
+                )
+
+        )
+
+    [modelClass] => 
+)
+Array
+(
+    [0] => Array
+        (
+            [object] => yii\rbac\Permission Object
+                (
+                    [type] => 2
+                    [name] => add-lot
+                    [description] => add a vacancy lot
+                    [ruleName] => 
+                    [data] => 
+                    [createdAt] => 1776846456
+                    [updatedAt] => 1776846456
+                )
+
+            [parents] => Array
+                (
+                )
+
+        )
+
+    [1] => Array
+        (
+            [object] => yii\rbac\Permission Object
+                (
+                    [type] => 2
+                    [name] => apply-lot
+                    [description] => Apply for an attachment from a lot
+                    [ruleName] => 
+                    [data] => 
+                    [createdAt] => 1776852465
+                    [updatedAt] => 1776852465
+                )
+
+            [parents] => Array
+                (
+                    [0] => Array
+                        (
+                        )
+
+                )
+
+        )
+
+    [2] => Array
+        (
+            [object] => yii\rbac\Permission Object
+                (
+                    [type] => 2
+                    [name] => lot
+                    [description] => overall permission on lots (create.update.delete, view)
+                    [ruleName] => 
+                    [data] => 
+                    [createdAt] => 1776847170
+                    [updatedAt] => 1776847170
+                )
+
+            [parents] => Array
+                (
+                )
+
+        )
+
+    [3] => Array
+        (
+            [object] => yii\rbac\Permission Object
+                (
+                    [type] => 2
+                    [name] => update-lot
+                    [description] => update a vacancy lot
+                    [ruleName] => 
+                    [data] => 
+                    [createdAt] => 1776847104
+                    [updatedAt] => 1776847104
+                )
+
+            [parents] => Array
+                (
+                )
+
+        )
+
+)

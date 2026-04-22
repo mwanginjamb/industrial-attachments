@@ -7,6 +7,9 @@ return [
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
+        'authManager' => [
+            'class' => \yii\rbac\DbManager::class,
+        ],
         'cache' => [
             'class' => \yii\caching\FileCache::class,
         ],
@@ -15,7 +18,7 @@ return [
         ],
         'db' => [
             'class' => \yii\db\Connection::class,
-            'dsn' => 'mysql:host=127.0.0.1;dbname=industrial_attachments;port=3309',
+            'dsn' => 'mysql:host=' . env('DB_HOST') . ';dbname=' . env('DB_NAME') . ';port=' . env('DB_PORT'),
             'username' => env('DB_USER'),
             'password' => env('DB_PASSWORD'),
             'charset' => 'utf8',
@@ -40,12 +43,15 @@ return [
             ],
 
         ],
-         'utility' => [
+        'utility' => [
             'class' => \common\Library\Utility::class,
         ],
         'sharepoint' => [
             'class' => \common\Library\Sharepoint::class
         ],
+        'dashboard' => [
+            'class' => \common\Library\Dashboard::class
+        ]
 
     ],
 ];
