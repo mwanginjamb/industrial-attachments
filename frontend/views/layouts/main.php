@@ -50,11 +50,11 @@ AppAsset::register($this);
     <nav class="flex-1 space-y-1">
     <?php
     $sideNavItems = [
-        ['label' => 'Overview',         'url' => ['/site/index'],       'icon' => 'dashboard'],
-        ['label' => 'Student List',     'url' => ['/student/index'],    'icon' => 'group'],
-        ['label' => 'Company Partners', 'url' => ['/company/index'],    'icon' => 'business_center'],
-        ['label' => 'Document Review',  'url' => ['/document/index'],   'icon' => 'description'],
-        ['label' => 'System Logs',      'url' => ['/log/index'],        'icon' => 'analytics'],
+        //['label' => 'Overview',         'url' => ['/site/index'],       'icon' => 'dashboard'],
+        ['label' => 'Student List',     'url' => ['/lot/index'],    'icon' => 'group'],
+        //['label' => 'Company Partners', 'url' => ['/company/index'],    'icon' => 'business_center'],
+       // ['label' => 'Document Review',  'url' => ['/document/index'],   'icon' => 'description'],
+       // ['label' => 'System Logs',      'url' => ['/log/index'],        'icon' => 'analytics'],
 
         // ── Nested group: add a 'children' key, no 'url' ──
         [
@@ -195,7 +195,7 @@ AppAsset::register($this);
                     <?php
                     $topNavItems = [
                         ['label' => 'Dashboard',     'url' => ['/site/index']],
-                        ['label' => 'My Applications',  'url' => ['/site/my-applications']],
+                        //['label' => 'My Applications',  'url' => ['/site/my-applications']],
 
                        
                     ];

@@ -49,10 +49,9 @@ $this->beginPage();
                 <div class="hidden md:flex items-center gap-6">
                     <?php
                     $navItems = [
-                        ['label' => 'Dashboard', 'url' => ['/student/dashboard']],
-                        ['label' => 'Applications', 'url' => ['/application/index']],
-                        ['label' => 'Placements', 'url' => ['/placement/index']],
-                        ['label' => 'Resources', 'url' => ['/resource/index']],
+                        ['label' => 'Dashboard', 'url' => ['/site/index']],
+                        ['label' => 'Vacancies', 'url' => ['/site/listing']],
+                       
                     ];
                     foreach ($navItems as $item):
                         $isActive = Yii::$app->controller->action->uniqueId === ltrim($item['url'][0], '/');

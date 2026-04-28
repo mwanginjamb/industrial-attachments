@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use Yii;
 
 /**
  * LotController implements the CRUD actions for lot model.
@@ -79,8 +80,21 @@ class LotController extends Controller
      */
     public function actionView($id)
     {
+        // Lot applications
+         $applications = \frontend\models\Application::find()
+            ->joinWith('lot')
+            ->joinWith('status0')
+            ->joinWith('attachee')
+            ->where(['lot_id' => $id])
+            ->orderBy(['id' => SORT_DESC])
+            ->asArray()
+            ->all();
+
+            //Yii::$app->utility->printrr($applications);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'applications' => $applications,
         ]);
     }
 

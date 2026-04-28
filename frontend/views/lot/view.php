@@ -98,149 +98,47 @@ $this->params['breadcrumbs'][] = $this->title;
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-surface-container">
+                    <?php foreach ($applications as $application): ?>
                     <!-- Row 1 -->
                     <tr class="hover:bg-surface-container-low/50 transition-colors group">
                         <td class="px-8 py-5">
                             <div class="flex items-center gap-3">
                                 <div
                                     class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
-                                    EM</div>
+                                    <?= strtoupper(substr($application['attachee']['name'], 0, 1)) ?></div>
                                 <div>
-                                    <p class="font-bold text-on-surface">Elena Mitsuko</p>
-                                    <p class="text-xs text-on-surface-variant">ID: AC-98332</p>
+                                    <p class="font-bold text-on-surface"><?= $application['attachee']['name'] ?></p>
+                                    <p class="text-xs text-on-surface-variant">ID: <?= $application['attachee']['attachee_reference'] ?></p>
                                 </div>
                             </div>
                         </td>
                         <td class="px-6 py-5">
-                            <p class="text-sm font-medium">Year 3</p>
-                            <p class="text-xs text-on-surface-variant">Undergraduate (BSc)</p>
+                            <p class="text-sm font-medium"><?= $application['attachee']['year_of_study'] ?></p>
+                            <p class="text-xs text-on-surface-variant"><?= $application['attachee']['course_name'] ?></p>
                         </td>
                         <td class="px-6 py-5 text-sm">
-                            <span class="text-on-surface-variant font-medium">Polytechnic Institute of Zurich</span>
+                            <span class="text-on-surface-variant font-medium">Zetech University</span>
                         </td>
                         <td class="px-6 py-5">
                             <span
-                                class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[11px] font-bold uppercase tracking-tight">Pending
-                                Review</span>
+                                class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[11px] font-bold uppercase tracking-tight"><?= !is_null($application['status0']) ? $application['status0']['description'] : 'N/A' ?></span>
                         </td>
                         <td class="px-8 py-5 text-right">
                             <div class="flex justify-end gap-2">
-                                <button
+                                <!-- <button
                                     class="px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary/10 rounded-lg transition-colors">Review
                                     Documents</button>
                                 <button
                                     class="p-1.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg"><span
-                                        class="material-symbols-outlined text-lg">more_vert</span></button>
+                                        class="material-symbols-outlined text-lg">more_vert</span></button> -->
+                                        <?= Html::a('Review Documents', ['attachee/view', 'id' => $application['attachee_id']], ['class' => 'px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary/10 rounded-lg transition-colors']) ?>
                             </div>
                         </td>
                     </tr>
-                    <!-- Row 2 -->
-                    <tr class="bg-surface-container-low/30 hover:bg-surface-container-low/50 transition-colors group">
-                        <td class="px-8 py-5">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
-                                    JK</div>
-                                <div>
-                                    <p class="font-bold text-on-surface">Julian Kasparian</p>
-                                    <p class="text-xs text-on-surface-variant">ID: AC-98451</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-5">
-                            <p class="text-sm font-medium">Year 4</p>
-                            <p class="text-xs text-on-surface-variant">Master of Engineering</p>
-                        </td>
-                        <td class="px-6 py-5 text-sm">
-                            <span class="text-on-surface-variant font-medium">Imperial College London</span>
-                        </td>
-                        <td class="px-6 py-5">
-                            <span
-                                class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-[11px] font-bold uppercase tracking-tight">Validated</span>
-                        </td>
-                        <td class="px-8 py-5 text-right">
-                            <div class="flex justify-end gap-2">
-                                <button
-                                    class="px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary/10 rounded-lg transition-colors">Review
-                                    Documents</button>
-                                <button
-                                    class="p-1.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg"><span
-                                        class="material-symbols-outlined text-lg">more_vert</span></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <!-- Row 3 -->
-                    <tr class="hover:bg-surface-container-low/50 transition-colors group">
-                        <td class="px-8 py-5">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
-                                    SA</div>
-                                <div>
-                                    <p class="font-bold text-on-surface">Sarah Al-Fayed</p>
-                                    <p class="text-xs text-on-surface-variant">ID: AC-98110</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-5">
-                            <p class="text-sm font-medium">Year 2</p>
-                            <p class="text-xs text-on-surface-variant">Undergraduate (BA)</p>
-                        </td>
-                        <td class="px-6 py-5 text-sm">
-                            <span class="text-on-surface-variant font-medium">National University of Singapore</span>
-                        </td>
-                        <td class="px-6 py-5">
-                            <span
-                                class="px-3 py-1 rounded-full bg-error-container text-on-error-container text-[11px] font-bold uppercase tracking-tight">Action
-                                Required</span>
-                        </td>
-                        <td class="px-8 py-5 text-right">
-                            <div class="flex justify-end gap-2">
-                                <button
-                                    class="px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary/10 rounded-lg transition-colors">Review
-                                    Documents</button>
-                                <button
-                                    class="p-1.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg"><span
-                                        class="material-symbols-outlined text-lg">more_vert</span></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <!-- Row 4 -->
-                    <tr class="bg-surface-container-low/30 hover:bg-surface-container-low/50 transition-colors group">
-                        <td class="px-8 py-5">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
-                                    MB</div>
-                                <div>
-                                    <p class="font-bold text-on-surface">Marcus Bennett</p>
-                                    <p class="text-xs text-on-surface-variant">ID: AC-98772</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-5">
-                            <p class="text-sm font-medium">Year 3</p>
-                            <p class="text-xs text-on-surface-variant">Undergraduate (BSc)</p>
-                        </td>
-                        <td class="px-6 py-5 text-sm">
-                            <span class="text-on-surface-variant font-medium">University of Toronto</span>
-                        </td>
-                        <td class="px-6 py-5">
-                            <span
-                                class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[11px] font-bold uppercase tracking-tight">Pending
-                                Review</span>
-                        </td>
-                        <td class="px-8 py-5 text-right">
-                            <div class="flex justify-end gap-2">
-                                <button
-                                    class="px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary/10 rounded-lg transition-colors">Review
-                                    Documents</button>
-                                <button
-                                    class="p-1.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg"><span
-                                        class="material-symbols-outlined text-lg">more_vert</span></button>
-                            </div>
-                        </td>
-                    </tr>
+                    <?php endforeach; ?>
+                    
+                   
+                   
                 </tbody>
             </table>
         </div>

@@ -111,7 +111,7 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
      ═══════════════════════════════════════════════════════ -->
         <div class="flex items-center justify-end gap-6 pt-6 border-t border-outline-variant/20">
 
-            <?= Html::a(
+            <?php Html::a(
                 'Cancel',
                 ['attachee/create'],   // adjust route as needed
                 ['class' => 'px-8 py-3 font-semibold text-on-surface-variant hover:text-primary transition-colors']

@@ -8,7 +8,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\models\Application $model */
 
-$this->title = $model->id;
+$this->title = $model->lot->description . ' - Application';
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Applications'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         class="bg-secondary-fixed text-on-secondary-fixed px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2">
                         <span class="material-symbols-outlined text-lg"
                             data-icon="hourglass_empty"><?= $StatusIcons[$model->status] ?? 'hourglass_empty' ?></span>
-                        <?= $model->status0->description ?>
+                        <?= $model?->status0?->description ?>
                     </div>
                 </div>
                 <!-- Progress Tracker Component -->
@@ -236,7 +236,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div>
                                     <p class="font-bold text-sm"><?= Html::encode($application['lot']['description']) ?></p>
                                     <p class="text-xs text-on-surface-variant">
-                                        <?= Html::encode($application['status0']['description']) ?>
+                                        <?= $application['status0'] ? Html::encode($application['status0']['description']) : 'N/A' ?>
                                     </p>
                                 </div>
                             </a>

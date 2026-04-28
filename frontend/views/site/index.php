@@ -77,7 +77,7 @@ use frontend\models\File;
                                     </div>
 
                                     <!-- View -->
-                                    <a href="<?= Url::to(['/document/view', 'path' => $doc?->attacheeDocument?->path]) ?>"
+                                    <a href="<?= Url::to(['/attachee/read', 'link' => $doc?->attacheeDocument?->path, 'profileId' => Yii::$app->user->identity->attachee->id]) ?>"
                                         class="text-outline hover:text-primary transition-colors">
                                         <span class="material-symbols-outlined">visibility</span>
                                     </a>
@@ -162,7 +162,7 @@ use frontend\models\File;
                                 <div>
                                     <p class="font-bold text-sm"><?= Html::encode($application['lot']['description']) ?></p>
                                     <p class="text-xs text-on-surface-variant">
-                                        <?= Html::encode($application['status0']['description']) ?>
+                                        <?= $application['status0'] ? Html::encode($application['status0']['description']) : 'Unknown' ?>
                                     </p>
                                 </div>
                             </a>

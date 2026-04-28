@@ -17,14 +17,14 @@ use yii\helpers\Html;
                 Bridging the gap between academic theory and professional practice. Access curated opportunities with
                 global industry leaders and leading research institutions.
             </p>
-            <div class="flex flex-wrap gap-4 justify-center md:justify-start">
+            <!-- <div class="flex flex-wrap gap-4 justify-center md:justify-start">
                 <button
                     class="px-8 py-4 hero-gradient text-on-primary rounded-xl font-headline font-bold text-lg shadow-lg hover:shadow-xl transition-all active:scale-95">Explore
                     Opportunities</button>
                 <button
                     class="px-8 py-4 bg-surface-container-highest text-on-surface font-headline font-bold text-lg rounded-xl hover:bg-surface-container-low transition-all">View
                     Institutions</button>
-            </div>
+            </div> -->
         </div>
         <div class="flex-1 w-full max-w-xl">
             <div class="relative group">
@@ -40,7 +40,7 @@ use yii\helpers\Html;
     </div>
 </section>
 <!-- Active Lots Section -->
-<section class="px-8 py-20 bg-surface-container-low">
+<section class="px-8 py-10 bg-surface-container-low">
     <div class="max-w-screen-2xl mx-auto">
         <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
             <div>
@@ -138,7 +138,7 @@ use yii\helpers\Html;
                 <!-- Card 4 Featured -->
 
                 <!-- Stat Card -->
-                <div
+                <!-- <div
                     class="bg-primary text-on-primary rounded-3xl p-8 flex flex-col justify-center items-center text-center">
                     <div class="text-5xl font-headline font-extrabold mb-2">450+</div>
                     <div class="font-headline font-bold text-lg opacity-90 uppercase tracking-widest mb-6">Placements
@@ -148,7 +148,7 @@ use yii\helpers\Html;
                     <button
                         class="w-full py-3 bg-white/20 backdrop-blur-md text-white font-headline font-bold rounded-xl border border-white/30 hover:bg-white/30 transition-all">View
                         All Labs</button>
-                </div>
+                </div> -->
             </div>
             <!-- List View (Hidden by default) -->
             <div class="hidden overflow-hidden" id="list-view-container">
