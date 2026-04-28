@@ -107,19 +107,32 @@ class SiteController extends Controller
             }
         ])->all();
 
-        // Yii::$app->utility->printrr($attachedDocuments);
+        $applications = \frontend\models\Application::find()
+            ->joinWith('lot')
+            ->joinWith('status0')
+            ->joinWith('attachee')
+            ->where(['attachee_id' => $attachee->id])
+            ->asArray()
+            ->limit(4)
+            ->all();
+
+        $icons = [
+            1 => 'description',
+            2 => 'school',
+            3 => 'badge',
+            4 => 'health_and_safety'
+        ];
+
+        //  Yii::$app->utility->printrr($applications);
+
         return $this->render('index', [
             'model' => $attachee,
             'docTemplates' => $attachedDocuments,
             'lots' => \frontend\models\Lot::find()->active()->all(),
             'total_templates' => $total_templates,
             'total_attachee_documents' => $total_attachee_documents,
-            'icons' => [
-                1 => 'description',
-                2 => 'school',
-                3 => 'badge',
-                4 => 'health_and_safety'
-            ]
+            'icons' => $icons,
+            'applications' => $applications
         ]);
     }
 

@@ -188,16 +188,16 @@ AppAsset::register($this);
 
             <!-- Left: Brand + Top Nav -->
             <div class="flex items-center gap-8">
-                <span class="text-2xl font-black text-blue-900 dark:text-blue-100 tracking-tighter font-['Manrope']">
+                <!-- <span class="text-2xl font-black text-blue-900 dark:text-blue-100 tracking-tighter font-['Manrope']">
                     <?= Html::encode(Yii::$app->name) ?>
-                </span>
+                </span> -->
                 <nav class="hidden md:flex items-center gap-6">
                     <?php
                     $topNavItems = [
                         ['label' => 'Dashboard',     'url' => ['/site/index']],
-                        ['label' => 'Applications',  'url' => ['/lot/index']],
-                        ['label' => 'Placements',    'url' => ['/placement/index']],
-                        ['label' => 'Resources',     'url' => ['/resource/index']],
+                        ['label' => 'My Applications',  'url' => ['/site/my-applications']],
+
+                       
                     ];
                     foreach ($topNavItems as $nav):
                         $isTopActive = str_starts_with($currentRoute, '/' . explode('/', $nav['url'][0])[1]);

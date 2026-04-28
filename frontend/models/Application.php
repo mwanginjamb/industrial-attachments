@@ -25,6 +25,13 @@ use yii\behaviors\BlameableBehavior;
 class Application extends \yii\db\ActiveRecord
 {
 
+    // status constants : submitted, under review, accepted, rejected, placed
+    const STATUS_SUBMITTED = 1;
+    const STATUS_UNDER_REVIEW = 2;
+    const STATUS_ACCEPTED = 3;
+    const STATUS_REJECTED = 4;
+    const STATUS_PLACED = 5;
+
 
     /**
      * {@inheritdoc}
@@ -52,7 +59,7 @@ class Application extends \yii\db\ActiveRecord
             [['lot_id', 'attachee_id', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['attachee_id'], 'exist', 'skipOnError' => true, 'targetClass' => Attachee::class, 'targetAttribute' => ['attachee_id' => 'id']],
             [['lot_id'], 'exist', 'skipOnError' => true, 'targetClass' => Lot::class, 'targetAttribute' => ['lot_id' => 'id']],
-            [['status'], 'exist', 'skipOnError' => true, 'targetClass' => ApplicationStatus::class, 'targetAttribute' => ['status' => 'id']],
+            //[['status'], 'exist', 'skipOnError' => true, 'targetClass' => ApplicationStatus::class, 'targetAttribute' => ['status' => 'id']],
         ];
     }
 
@@ -94,11 +101,11 @@ class Application extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Status]].
+     * Gets query for [[Status0]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getStatus()
+    public function getStatus0()
     {
         return $this->hasOne(ApplicationStatus::class, ['id' => 'status']);
     }

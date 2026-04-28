@@ -20,72 +20,7 @@ use frontend\models\File;
         <!-- Left Column: Application Status & Progress (Col 7) -->
         <div class="lg:col-span-7 space-y-8">
             <!-- Status Card -->
-            <section class="bg-surface-container-lowest rounded-xl p-8 shadow-sm ring-1 ring-outline-variant/10">
-                <div class="flex justify-between items-start mb-10">
-                    <div>
-                        <span class="text-label-sm font-bold uppercase tracking-widest text-primary mb-2 block">Current
-                            Status</span>
-                        <h2 class="font-headline text-3xl font-bold text-on-surface">Application Under Review</h2>
-                    </div>
-                    <div
-                        class="bg-secondary-fixed text-on-secondary-fixed px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2">
-                        <span class="material-symbols-outlined text-lg"
-                            data-icon="hourglass_empty">hourglass_empty</span>
-                        Pending Review
-                    </div>
-                </div>
-                <!-- Progress Tracker Component -->
-                <div class="relative py-4">
-                    <div
-                        class="absolute top-1/2 left-0 w-full h-1 bg-surface-container-high -translate-y-1/2 rounded-full overflow-hidden">
-                        <div class="w-2/3 h-full primary-gradient rounded-full"></div>
-                    </div>
-                    <div class="relative flex justify-between">
-                        <div class="flex flex-col items-center gap-3">
-                            <div
-                                class="w-10 h-10 rounded-full primary-gradient text-on-primary flex items-center justify-center z-10 shadow-lg">
-                                <span class="material-symbols-outlined" data-icon="check"
-                                    style="font-variation-settings: 'FILL' 0; font-weight: 700;">check</span>
-                            </div>
-                            <span class="text-xs font-bold font-headline text-on-surface">Submitted</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-3">
-                            <div
-                                class="w-10 h-10 rounded-full primary-gradient text-on-primary flex items-center justify-center z-10 shadow-lg">
-                                <span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
-                            </div>
-                            <span class="text-xs font-bold font-headline text-on-surface">Reviewing</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-3">
-                            <div
-                                class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center z-10">
-                                <span class="material-symbols-outlined" data-icon="verified">verified</span>
-                            </div>
-                            <span class="text-xs font-bold font-headline text-outline">Accepted</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-3">
-                            <div
-                                class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center z-10">
-                                <span class="material-symbols-outlined" data-icon="apartment">apartment</span>
-                            </div>
-                            <span class="text-xs font-bold font-headline text-outline">Placed</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-12 p-6 bg-surface-container-low rounded-xl flex items-center gap-6">
-                    <div
-                        class="w-16 h-16 rounded-lg bg-white flex items-center justify-center shadow-sm overflow-hidden">
-                        <img alt="Company logo" class="w-full h-full object-cover"
-                            data-alt="minimalist modern corporate logo of a tech company on white background"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkq9VwcIMJmxOUyx3_VcITAaDQD5X2daeUcvSQ-qI6qTfiNJg7u9fYYnFXqt_KU6W4QQZYC3n86SScnemr6Fl29eztx9MDsowMQrFzjJhApQfQezR1NiWiJVB57d3PxYLRRvxZRCcoFTkYV5dHrUEiEjFD6miXhcvpr9IsDFa1PEu08BQQQ-eMoLMjFe73NosyadjH_U1rX0-kKYkzFLMZSECJXoqL9reDROm8udchpTL_3_SEcRuGO79SiRGDqDQeKeSayy9fNM0" />
-                    </div>
-                    <div>
-                        <h3 class="font-headline font-bold text-on-surface">Nexus Systems Architecture</h3>
-                        <p class="text-sm text-on-surface-variant">Cloud Infrastructure Intern • Nairobi, KE</p>
-                    </div>
-                    <button class="ml-auto text-primary font-bold text-sm hover:underline">View Details</button>
-                </div>
-            </section>
+
             <!-- Compliance Documents Section -->
             <section class="bg-surface-container-lowest rounded-xl p-8 shadow-sm ring-1 ring-outline-variant/10">
                 <div class="flex items-center justify-between mb-8">
@@ -216,25 +151,33 @@ use frontend\models\File;
             </aside>
             <!-- Help & Guidance Card -->
             <section class="bg-surface-container-low rounded-xl p-8 border border-outline-variant/20">
-                <h3 class="font-headline text-xl font-bold text-on-surface mb-6">Active Attachment Opportunities</h3>
+                <h3 class="font-headline text-xl font-bold text-on-surface mb-6">Recent Applications</h3>
                 <div class="grid grid-cols-1 gap-4">
-                    <a class="flex items-center gap-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
-                        href="#">
-                        <span class="material-symbols-outlined text-primary" data-icon="menu_book">menu_book</span>
-                        <div>
-                            <p class="font-bold text-sm">Internship Guide</p>
-                            <p class="text-xs text-on-surface-variant">Policies &amp; Expectations</p>
+
+                    <?php if (is_array($applications) && count($applications)): ?>
+                        <?php foreach ($applications as $application): ?>
+                            <a class="flex items-center gap-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                                href="<?= Url::to(['/application/view', 'id' => $application['id']]) ?>">
+                                <span class="material-symbols-outlined text-primary" data-icon="menu_book">menu_book</span>
+                                <div>
+                                    <p class="font-bold text-sm"><?= Html::encode($application['lot']['description']) ?></p>
+                                    <p class="text-xs text-on-surface-variant">
+                                        <?= Html::encode($application['status0']['description']) ?>
+                                    </p>
+                                </div>
+                            </a>
+
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <!-- No applications available -->
+                        <div class="text-center py-10">
+                            <span class="material-symbols-outlined text-4xl text-on-surface-variant mb-4">menu_book</span>
+                            <p class="text-sm text-on-surface-variant">No recent applications found.</p>
                         </div>
-                    </a>
-                    <a class="flex items-center gap-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
-                        href="#">
-                        <span class="material-symbols-outlined text-primary"
-                            data-icon="support_agent">support_agent</span>
-                        <div>
-                            <p class="font-bold text-sm">Talk to Advisor</p>
-                            <p class="text-xs text-on-surface-variant">Academic Support Office</p>
-                        </div>
-                    </a>
+
+                    <?php endif; ?>
+
+
                 </div>
                 <div class="mt-8 rounded-xl overflow-hidden relative group">
                     <img alt="Students studying"

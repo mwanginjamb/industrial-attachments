@@ -105,4 +105,17 @@ class AttacheeDocumentsTemplates extends \yii\db\ActiveRecord
         return self::find()->count();
     }
 
+    // Given a template id and an attachee reference, determine if that attachee has uploaded a document of that template type
+    public static function getAttacheeUploadedDocument($template_id, $attachee_reference)
+    {
+        return AttacheeDocuments::find()->where(['document_type' => $template_id, 'attachee_id' => $attachee_reference])->andWhere(['not', ['path' => null]])->andWhere(['not', ['path' => '']])->exists();
+    }
+
+    // Return path of uploaded document given a template id and an attachee reference
+    public static function getAttacheeUploadedDocumentPath($template_id, $attachee_reference)
+    {
+        $document = AttacheeDocuments::find()->where(['document_type' => $template_id, 'attachee_id' => $attachee_reference])->andWhere(['not', ['path' => null]])->andWhere(['not', ['path' => '']])->one();
+        return $document ? $document->path : null;
+    }
+
 }

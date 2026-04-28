@@ -127,14 +127,7 @@ class AttacheeController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        $templates = \frontend\models\AttacheeDocumentsTemplates::find()->With([
-            'attacheeDocument' => function ($query) use ($model) {
-                $query->andWhere(['not', ['path' => null]])
-                    ->andWhere(['not', ['path' => '']])
-                    ->andWhere(['attachee_id' => $model->attachee_reference])
-                    ->andWhere(['not', ['attachee_id' => '']]);
-            }
-        ])->all();
+        $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
 
         return $this->render('update', [
             'model' => $model,
@@ -182,12 +175,12 @@ class AttacheeController extends Controller
             $document_type = Yii::$app->request->post('document_type');
             // implement updateOrCreate pattern
             $model = \frontend\models\AttacheeDocuments::findOne([
-            'attachee_id' => $attachee_id,
-            'document_type' => $document_type,
-            ]) ?? new \frontend\models\AttacheeDocuments([
                 'attachee_id' => $attachee_id,
                 'document_type' => $document_type,
-            ]);
+            ]) ?? new \frontend\models\AttacheeDocuments([
+                    'attachee_id' => $attachee_id,
+                    'document_type' => $document_type,
+                ]);
 
             $model->save();
 
@@ -234,18 +227,18 @@ class AttacheeController extends Controller
         if (Yii::$app->request->isGet) {
             $fileName = basename(Yii::$app->request->get('filePath'));
 
-            
- $model = \frontend\models\AttacheeDocuments::findOne([
-            'attachee_id' => Yii::$app->request->get('No'),
-            'document_type' => Yii::$app->request->get('documentType'),
-            ]) ?? new \frontend\models\AttacheeDocuments([
+
+            $model = \frontend\models\AttacheeDocuments::findOne([
                 'attachee_id' => Yii::$app->request->get('No'),
                 'document_type' => Yii::$app->request->get('documentType'),
-            ]);
+            ]) ?? new \frontend\models\AttacheeDocuments([
+                    'attachee_id' => Yii::$app->request->get('No'),
+                    'document_type' => Yii::$app->request->get('documentType'),
+                ]);
             $model->attributes = [
                 'path' => Yii::$app->request->get('filePath')
             ];
-           $result =  $model->save();
+            $result = $model->save();
 
 
 

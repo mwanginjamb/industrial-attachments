@@ -93,11 +93,11 @@ class Lot extends \yii\db\ActiveRecord
 
     public function getApplicationDeadline()
     {
-        if (!$this->closing_date) {
+        if (!$this->opening_date) {
             return null;
         }
 
-        return date('Y-m-d', strtotime($this->closing_date . ' -2 weeks'));
+        return date('Y-m-d', strtotime($this->opening_date . ' -2 weeks'));
     }
 
     // Milestone 2: get Placement deadline (2 weeks after closing date)
@@ -108,7 +108,7 @@ class Lot extends \yii\db\ActiveRecord
             return null;
         }
 
-        return date('Y-m-d', strtotime($this->closing_date . ' +2 weeks'));
+        return date('Y-m-d', strtotime($this->opening_date . ' +2 weeks'));
     }
 
     // retrun structured lot milestone data for frontend display
@@ -130,24 +130,24 @@ class Lot extends \yii\db\ActiveRecord
     }
 
 
-// Check if lot is active
-public function getIsActive()
-{
-      if (empty($this->opening_date)) {
-        return false;
+    // Check if lot is active
+    public function getIsActive()
+    {
+        if (empty($this->opening_date)) {
+            return false;
+        }
+        // Application window (days)
+        $days = Yii::$app->params['lotApplicationWindowDays'];
+        $today = new \DateTime();
+        $opening = new \DateTime($this->opening_date);
+        $start = (clone $opening)->modify("-{$days} days");
+        return ($today >= $start && $today < $opening);
     }
-    // Application window (days)
-    $days = Yii::$app->params['lotApplicationWindowDays'];
-    $today = new \DateTime();
-    $opening = new \DateTime($this->opening_date);
-    $start = (clone $opening)->modify("-{$days} days");
-    return ($today >= $start && $today < $opening);
-}
 
-public static function find()
-{
-    return new LotQuery(get_called_class());
-}
+    public static function find()
+    {
+        return new LotQuery(get_called_class());
+    }
 
 
 

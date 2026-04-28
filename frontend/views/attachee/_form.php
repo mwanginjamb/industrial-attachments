@@ -163,11 +163,12 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
 
                     <?php if (is_array($templates) && count($templates) > 0): ?>
                         <?php foreach ($templates as $key => $t): ?>
-                            <?php 
-                            $uploaded = $t->attacheeDocument?->path !== null; 
+                            <?php
+                            $uploaded = \frontend\models\AttacheeDocumentsTemplates::getAttacheeUploadedDocument($t['id'], $model->attachee_reference);
                             $status = $uploaded ? '<span class="material-symbols-outlined text-[14px] mr-1">check</span> Uploaded' : ' <span class="material-symbols-outlined text-[14px] mr-1">warning</span> Missing';
-                           $statusClass = $uploaded ? 'text-green-600 bg-green-50' : 'bg-error-container text-on-error-container';
-                           ?>
+                            $statusClass = $uploaded ? 'text-green-600 bg-green-50' : 'bg-error-container text-on-error-container';
+                            $documentPath = \frontend\models\AttacheeDocumentsTemplates::getAttacheeUploadedDocumentPath($t['id'], $model->attachee_reference);
+                            ?>
 
                             <!-- Row 3: Copy of National ID — Missing (prominent Upload Now CTA) -->
                             <tr class="hover:bg-surface-container-low/50 transition-colors">
@@ -182,21 +183,21 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
                                     <div class="flex items-center gap-4 justify-end">
                                         <?= Html::a(
                                             '<span class="material-symbols-outlined text-[18px]">visibility</span> View',
-                                            ['attachee/read', 'link' => $t->attacheeDocument?->path, 'profileId' => $model->id],   // adjust route as needed
+                                            ['attachee/read', 'link' => $documentPath, 'profileId' => $model->id],   // adjust route as needed
                                             [
                                                 'class' => 'text-primary-container outline outline-1 outline-primary-container/30 rounded-lg px-3 py-1 font-semibold text-sm hover:underline flex items-center gap-1 justify-end ml-auto',
                                                 'encode' => false,
                                             ]
                                         ) ?>
                                         <!-- inline upload form -->
-                                        <?php $form = ActiveForm::begin(['id' => 'national-id-form-'.$t['id'], 'options' => ['name' => $file->formName()]]); ?>
+                                        <?php $form = ActiveForm::begin(['id' => 'national-id-form-' . $t['id'], 'options' => ['name' => $file->formName()]]); ?>
                                         <?= $form->field($file, 'attachee_id')->hiddenInput(['value' => $model->attachee_reference])->label(false) ?>
                                         <?= $form->field($file, 'document_type')->hiddenInput(['value' => $t['id']])->label(false) ?>
                                         <?= $form->field($file, 'attachment', [
                                             'template' => '{input}{error}',
                                             'errorOptions' => ['class' => 'text-xs text-error mt-1 text-right'],
                                         ])->fileInput([
-                                                    'id' => 'national-id-input-'.$t['id'],
+                                                    'id' => 'national-id-input-' . $t['id'],
                                                     'class' => 'hidden',
                                                 ])->label(false) ?>
                                         <label for="national-id-input-<?= $t['id'] ?>"

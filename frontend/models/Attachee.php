@@ -123,7 +123,7 @@ class Attachee extends \yii\db\ActiveRecord
      */
     public function getAttacheeDocuments()
     {
-        return $this->hasMany(AttacheeDocuments::class, ['attachee_id' => 'id']);
+        return $this->hasMany(AttacheeDocuments::class, ['attachee_id' => 'attachee_reference']);
     }
 
     /**
