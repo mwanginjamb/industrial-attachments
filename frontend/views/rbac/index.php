@@ -29,7 +29,7 @@ $this->title = 'RBAC Roles';
                     'buttons' => [
                         'update' => function ($url, $model) {
                                     return Html::a(
-                                        '<i class="fas fa-edit"></i>',
+                                        '<i class="fas fa-edit"></i> Update Role Permissions',
                                         ['update-role', 'name' => $model->name],
                                         [
                                             'class' => 'btn btn-primary btn-sm',
@@ -39,7 +39,7 @@ $this->title = 'RBAC Roles';
                                 },
                         'delete' => function ($url, $model) {
                                     return Html::a(
-                                        '<i class="fas fa-trash"></i>',
+                                        '<i class="fas fa-trash"></i> Delete Role',
                                         ['delete-role', 'name' => $model->name],
                                         [
                                             'class' => 'btn btn-danger btn-sm',

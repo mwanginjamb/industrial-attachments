@@ -74,19 +74,13 @@ class AttacheeController extends Controller
     public function actionView($id)
     {
         $model = \frontend\models\Attachee::find()->where(['id' => $id])->one();
+        $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
         //Yii::$app->utility->printrr($model, 10, true);
-        $templates = \frontend\models\AttacheeDocumentsTemplates::find()->With([
-            'attacheeDocument' => function ($query) use ($model) {
-                $query->andWhere(['not', ['path' => null]])
-                    ->andWhere(['not', ['path' => '']])
-                    ->andWhere(['attachee_id' => $model->attachee_reference])
-                    ->andWhere(['not', ['attachee_id' => '']]);
-            }
-        ])->all();
 
         return $this->render('view', [
             'model' => $model,
-            'docTemplates' => $templates,
+            'templates' => $templates,
+            'file' => new \frontend\models\File()
         ]);
     }
 

@@ -29,23 +29,23 @@ class LotController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
-                 'access' => [
-                'class' => AccessControl::class,
-                'only' => ['logout', 'signup', 'index'],
-                'rules' => [
-                    [
-                        'actions' => ['signup'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                    [
-                        'actions' => ['logout','index'],
-                        'allow' => true,
-                        'roles' => ['@'],
+                'access' => [
+                    'class' => AccessControl::class,
+                    'only' => ['logout', 'signup', 'index'],
+                    'rules' => [
+                        [
+                            'actions' => ['signup'],
+                            'allow' => true,
+                            'roles' => ['?'],
+                        ],
+                        [
+                            'actions' => ['logout', 'index'],
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
                     ],
                 ],
-            ],
-           
+
             ]
         );
     }
@@ -59,6 +59,8 @@ class LotController extends Controller
     {
         $searchModel = new LotSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+
+        // Yii::$app->utility->printrr($dataProvider->getModels());
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -81,7 +83,7 @@ class LotController extends Controller
     public function actionView($id)
     {
         // Lot applications
-         $applications = \frontend\models\Application::find()
+        $applications = \frontend\models\Application::find()
             ->joinWith('lot')
             ->joinWith('status0')
             ->joinWith('attachee')
@@ -90,7 +92,7 @@ class LotController extends Controller
             ->asArray()
             ->all();
 
-            //Yii::$app->utility->printrr($applications);
+        //Yii::$app->utility->printrr($applications);
 
         return $this->render('view', [
             'model' => $this->findModel($id),

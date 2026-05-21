@@ -66,6 +66,7 @@ AppAsset::register($this);
                 ['label' => 'Roles',  'url' => ['/rbac/index'],        'icon' => 'security_update_good'],
                 ['label' => 'Permissions',         'url' => ['/rbac/permissions'],        'icon' => 'security'],
                 ['label' => 'System Users',           'url' => ['/site/users'],        'icon' => 'group'],
+                ['label' => 'Intake Lots',           'url' => ['/lot/index'],        'icon' => 'view_list'],
             ],
         ],
     ];

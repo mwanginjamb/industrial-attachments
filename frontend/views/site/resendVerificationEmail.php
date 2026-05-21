@@ -37,6 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                 ]); ?>
 
+                <?= $form->errorSummary($model) ?>
+
                 <?= $form->field($model, 'email')->textInput([
                     'autofocus' => true,
                     'type' => 'email',
@@ -49,6 +51,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]) ?>
 
                 <?php ActiveForm::end(); ?>
+
+                <div class="mt-2 flex flex-col gap-1">
+                    <div class="text-xs text-gray-500">
+                        Remembered your password?
+                        <?= Html::a('Sign in', ['site/login'], [
+                            'class' => 'font-semibold text-primary hover:underline'
+                        ]) ?>
+                    </div>
+                </div>
             </div>
         </section>
     </div>

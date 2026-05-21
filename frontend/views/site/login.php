@@ -7,7 +7,7 @@
 use yii\bootstrap5\ActiveForm;
 use yii\helpers\Html;
 
-$this->title = 'Login | Academic Curator';
+$this->title = 'Login | ' . Yii::$app->name;
 ?>
 
 <div class="min-h-screen flex flex-col md:flex-row">

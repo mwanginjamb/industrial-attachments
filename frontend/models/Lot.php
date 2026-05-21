@@ -44,9 +44,10 @@ class Lot extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['description', 'opening_date', 'closing_date', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'default', 'value' => null],
+            [['description', 'opening_date', 'closing_date'], 'default', 'value' => null],
             [['description'], 'string'],
-            [['opening_date', 'closing_date'], 'safe'],
+            [['description', 'opening_date', 'closing_date'], 'required'],
+            [['opening_date', 'closing_date'], 'date', 'format' => 'php:Y-m-d\TH:i'],
             [['created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             // make description unique
             [['description'], 'unique'],
@@ -147,6 +148,51 @@ class Lot extends \yii\db\ActiveRecord
     public static function find()
     {
         return new LotQuery(get_called_class());
+    }
+
+    // convert opening and closing date to mysql format before saving to database
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+
+            if (!empty($this->opening_date)) {
+                $this->opening_date = date(
+                    'Y-m-d H:i:s',
+                    strtotime($this->opening_date)
+                );
+            }
+
+            if (!empty($this->closing_date)) {
+                $this->closing_date = date(
+                    'Y-m-d H:i:s',
+                    strtotime($this->closing_date)
+                );
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    // During update preload DB values to form fields in the correct format
+    public function afterFind()
+    {
+        parent::afterFind();
+
+        if (!empty($this->opening_date)) {
+            $this->opening_date = date(
+                'Y-m-d\TH:i',
+                strtotime($this->opening_date)
+            );
+        }
+
+        if (!empty($this->closing_date)) {
+            $this->closing_date = date(
+                'Y-m-d\TH:i',
+                strtotime($this->closing_date)
+            );
+        }
     }
 
 
