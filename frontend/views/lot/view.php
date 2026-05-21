@@ -17,11 +17,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
         <div>
             <h1 class="text-4xl font-extrabold tracking-tight text-on-surface"><?= Html::encode($this->title) ?></h1>
-            <p class="text-on-surface-variant mt-2 max-w-2xl font-['Inter']">Application window:
-                <strong>Opening</strong> <?= Yii::$app->formatter->asDate($model->opening_date) ?> <strong>Closing
-                    Date:</strong> <?= Yii::$app->formatter->asDate($model->closing_date) ?>
-            </p>
-
+           
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-1 mb-10">
+                <span class="text-green-600 text-sm font-medium">Application Start Date: <?= Yii::$app->formatter->asDate($model->applicationStartDate) ?></span>
+                <span class="text-error text-sm font-medium">Application End Date: <?= Yii::$app->formatter->asDate($model->applicationDeadline) ?></span>
+                <span class="text-on-surface-variant text-sm font-medium">Processing Deadline: <?= Yii::$app->formatter->asDate($model->placementDeadline) ?></span>
+            </div>
         </div>
         <div class="flex gap-3">
             <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -41,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="md:col-span-1 bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
             <span class="text-on-surface-variant text-sm font-medium">Total Applicants</span>
             <div class="mt-4">
-                <span class="text-3xl font-black text-on-surface">142</span>
+                <span class="text-3xl font-black text-on-surface"><?= $model->applicationsCount ?></span>
                 <span class="text-green-600 text-xs font-bold ml-2">↑ 12%</span>
             </div>
         </div>

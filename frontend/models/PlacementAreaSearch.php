@@ -4,12 +4,12 @@ namespace frontend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use frontend\models\Lot;
+use frontend\models\PlacementArea;
 
 /**
- * LotSearch represents the model behind the search form of `app\models\lot`.
+ * PlacementAreaSearch represents the model behind the search form of `frontend\models\PlacementArea`.
  */
-class LotSearch extends Lot
+class PlacementAreaSearch extends PlacementArea
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class LotSearch extends Lot
     public function rules()
     {
         return [
-            [['id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['description', 'opening_date', 'closing_date'], 'safe'],
+            [['id', 'created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
+            [['name', 'description'], 'safe'],
         ];
     }
 
@@ -39,14 +39,11 @@ class LotSearch extends Lot
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $formName = null, $showActiveOnly = false)
+    public function search($params, $formName = null)
     {
-        $query = lot::find()->orderByActive();
+        $query = PlacementArea::find();
 
         // add conditions that should always apply here
-        if ($showActiveOnly) {
-            $query->active();
-        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -63,16 +60,14 @@ class LotSearch extends Lot
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'opening_date' => $this->opening_date,
-            'closing_date' => $this->closing_date,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'description', $this->description]);
-        
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }

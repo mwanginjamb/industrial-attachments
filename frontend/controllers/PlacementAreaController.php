@@ -2,18 +2,16 @@
 
 namespace frontend\controllers;
 
-use frontend\models\lot;
-use frontend\models\LotSearch;
+use frontend\models\PlacementArea;
+use frontend\models\PlacementAreaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use Yii;
 
 /**
- * LotController implements the CRUD actions for lot model.
+ * PlacementAreaController implements the CRUD actions for PlacementArea model.
  */
-class LotController extends Controller
+class PlacementAreaController extends Controller
 {
     /**
      * @inheritDoc
@@ -29,45 +27,19 @@ class LotController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
-                'access' => [
-                    'class' => AccessControl::class,
-                    'only' => ['logout', 'signup', 'index'],
-                    'rules' => [
-                        [
-                            'actions' => ['signup'],
-                            'allow' => true,
-                            'roles' => ['?'],
-                        ],
-                        [
-                            'actions' => ['logout', 'index'],
-                            'allow' => true,
-                            'roles' => ['@'],
-                        ],
-                    ],
-                ],
-
             ]
         );
     }
 
     /**
-     * Lists all lot models.
+     * Lists all PlacementArea models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new LotSearch();
-
-        // use parameters from existing filter
-        $params = $this->request->queryParams;
-        $showActiveOnly = false;
-
-        if (isset($params['LotSearch']['status']) && $params['LotSearch']['status'] === 'active') {
-            $showActiveOnly = true;
-        }
-
-        $dataProvider = $searchModel->search($this->request->queryParams, null, $showActiveOnly);
+        $searchModel = new PlacementAreaSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -75,46 +47,27 @@ class LotController extends Controller
         ]);
     }
 
-    public function actionDashboard()
-    {
-        $this->layout = 'dashboard';
-        return $this->render('dashboard');
-    }
-
     /**
-     * Displays a single lot model.
+     * Displays a single PlacementArea model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        // Lot applications
-        $applications = \frontend\models\Application::find()
-            ->joinWith('lot')
-            ->joinWith('status0')
-            ->joinWith('attachee')
-            ->where(['lot_id' => $id])
-            ->orderBy(['id' => SORT_DESC])
-            ->asArray()
-            ->all();
-
-        //Yii::$app->utility->printrr($applications);
-
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'applications' => $applications,
         ]);
     }
 
     /**
-     * Creates a new lot model.
+     * Creates a new PlacementArea model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new lot();
+        $model = new PlacementArea();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -130,7 +83,7 @@ class LotController extends Controller
     }
 
     /**
-     * Updates an existing lot model.
+     * Updates an existing PlacementArea model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -150,7 +103,7 @@ class LotController extends Controller
     }
 
     /**
-     * Deletes an existing lot model.
+     * Deletes an existing PlacementArea model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -164,18 +117,18 @@ class LotController extends Controller
     }
 
     /**
-     * Finds the lot model based on its primary key value.
+     * Finds the PlacementArea model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return lot the loaded model
+     * @return PlacementArea the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = lot::findOne(['id' => $id])) !== null) {
+        if (($model = PlacementArea::findOne(['id' => $id])) !== null) {
             return $model;
         }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 }

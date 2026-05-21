@@ -85,6 +85,7 @@ class Lot extends \yii\db\ActiveRecord
      * generate milestone for lots
      */
 
+    // Applicant Count per Lot
     public function getApplicationsCount()
     {
         return $this->hasMany(Application::class, ['lot_id' => 'id'])->count();
@@ -92,13 +93,22 @@ class Lot extends \yii\db\ActiveRecord
 
     //  Milestone 1: get lot application deadline (2 weeks before closing date)
 
+    public function getApplicationStartDate()
+    {
+        if (!$this->opening_date) {
+            return null;
+        }
+
+        return date('Y-m-d', strtotime($this->opening_date . ' -14 days'));
+    }
+
     public function getApplicationDeadline()
     {
         if (!$this->opening_date) {
             return null;
         }
 
-        return date('Y-m-d', strtotime($this->opening_date . ' -2 weeks'));
+        return date('Y-m-d', strtotime($this->opening_date . ' -1 day'));
     }
 
     // Milestone 2: get Placement deadline (2 weeks after closing date)
@@ -117,6 +127,11 @@ class Lot extends \yii\db\ActiveRecord
     public function getMilestones()
     {
         return [
+            [
+                'title' => 'Application Start Date',
+                'date' => $this->getApplicationStartDate(),
+                'description' => $this->description
+            ],
             [
                 'title' => 'Application Deadline',
                 'date' => $this->getApplicationDeadline(),
