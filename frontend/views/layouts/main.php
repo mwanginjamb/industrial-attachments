@@ -69,6 +69,7 @@ AppAsset::register($this);
                 ['label' => 'Review Status', 'url' => ['/application-status/index'], 'icon' => 'checklist'],
                 ['label' => 'Placement Areas',           'url' => ['/placement-area/index'],        'icon' => 'map'],
                 ['label' => 'Intake Lots',           'url' => ['/lot/index'],        'icon' => 'view_list'],
+                ['label' => 'Institutions',           'url' => ['/institution/index'],        'icon' => 'apartment'],
             ],
         ],
     ];

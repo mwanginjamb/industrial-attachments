@@ -103,6 +103,13 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
                     'placeholder' => 'e.g. Data Science, UI/UX',
                 ]) ?>
 
+            <!-- Institution -->
+            <?= $form->field($model, 'institution_id', $fieldConfig)
+                ->dropDownList(
+                    \yii\helpers\ArrayHelper::map(\frontend\models\Institution::find()->all(), 'id', 'name'),
+                    ['class' => $inputClass]
+                ) ?>
+
         </div>
 
 

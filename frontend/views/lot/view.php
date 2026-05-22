@@ -17,12 +17,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
         <div>
             <h1 class="text-4xl font-extrabold tracking-tight text-on-surface"><?= Html::encode($this->title) ?></h1>
-           
-            
+
+
             <div class="grid grid-cols-1 md:grid-cols-4 gap-1 mb-10">
-                <span class="text-green-600 text-sm font-medium">Application Start Date: <?= Yii::$app->formatter->asDate($model->applicationStartDate) ?></span>
-                <span class="text-error text-sm font-medium">Application End Date: <?= Yii::$app->formatter->asDate($model->applicationDeadline) ?></span>
-                <span class="text-on-surface-variant text-sm font-medium">Processing Deadline: <?= Yii::$app->formatter->asDate($model->placementDeadline) ?></span>
+                <span class="text-green-600 text-sm font-medium">Application Start Date:
+                    <?= Yii::$app->formatter->asDate($model->applicationStartDate) ?></span>
+                <span class="text-error text-sm font-medium">Application End Date:
+                    <?= Yii::$app->formatter->asDate($model->applicationDeadline) ?></span>
+                <span class="text-on-surface-variant text-sm font-medium">Processing Deadline:
+                    <?= Yii::$app->formatter->asDate($model->placementDeadline) ?></span>
             </div>
         </div>
         <div class="flex gap-3">
@@ -95,52 +98,68 @@ $this->params['breadcrumbs'][] = $this->title;
                         <th class="px-8 py-4">Name &amp; ID</th>
                         <th class="px-6 py-4">Year / Level</th>
                         <th class="px-6 py-4">Institution</th>
+                        <th class="px-6 py-4">Preferred Placement</th>
                         <th class="px-6 py-4">Status</th>
                         <th class="px-8 py-4 text-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-surface-container">
-                    <?php foreach ($applications as $application): ?>
-                    <!-- Row 1 -->
-                    <tr class="hover:bg-surface-container-low/50 transition-colors group">
-                        <td class="px-8 py-5">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
-                                    <?= strtoupper(substr($application['attachee']['name'], 0, 1)) ?></div>
-                                <div>
-                                    <p class="font-bold text-on-surface"><?= $application['attachee']['name'] ?></p>
-                                    <p class="text-xs text-on-surface-variant">ID: <?= $application['attachee']['attachee_reference'] ?></p>
+                    <?php foreach ($applications as $application):
+
+                        $endpoint = \yii\helpers\Url::home(true) . 'apiv1/applications/' . $application->id;
+                        ?>
+                        <!-- Row 1 -->
+                        <tr class="hover:bg-surface-container-low/50 transition-colors group">
+                            <td class="px-8 py-5">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+                                        <?= strtoupper(substr($application['attachee']['name'], 0, 1)) ?>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-on-surface"><?= $application['attachee']['name'] ?></p>
+                                        <p class="text-xs text-on-surface-variant">ID:
+                                            <?= $application['attachee']['attachee_reference'] ?>
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-5">
-                            <p class="text-sm font-medium"><?= $application['attachee']['year_of_study'] ?></p>
-                            <p class="text-xs text-on-surface-variant"><?= $application['attachee']['course_name'] ?></p>
-                        </td>
-                        <td class="px-6 py-5 text-sm">
-                            <span class="text-on-surface-variant font-medium">Zetech University</span>
-                        </td>
-                        <td class="px-6 py-5">
-                            <span
-                                class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[11px] font-bold uppercase tracking-tight"><?= !is_null($application['status0']) ? $application['status0']['description'] : 'N/A' ?></span>
-                        </td>
-                        <td class="px-8 py-5 text-right">
-                            <div class="flex justify-end gap-2">
-                                <!-- <button
+                            </td>
+                            <td class="px-6 py-5">
+                                <p class="text-sm font-medium"><?= $application['attachee']['year_of_study'] ?></p>
+                                <p class="text-xs text-on-surface-variant"><?= $application['attachee']['course_name'] ?>
+                                </p>
+                            </td>
+                            <td class="px-6 py-5 text-sm">
+                                <span class="text-on-surface-variant font-medium">
+                                    <?= $application?->attachee?->institution?->name ?>
+                                </span>
+                            </td>
+                            <td class="px-6 py-5 text-sm" data-key="<?= $application->id ?>" data-name="placement"
+                                data-service="<?= $endpoint ?>" ondblclick="addDropDown(this,'placements')">
+                                <span class="text-on-surface-variant font-medium">
+                                    <?= !is_null($application['placement']) ? $application['placement'] : 'N/A' ?>
+                                </span>
+                            </td>
+                            <td class="px-6 py-5">
+                                <span
+                                    class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[11px] font-bold uppercase tracking-tight"><?= !is_null($application['status0']) ? $application['status0']['description'] : 'N/A' ?></span>
+                            </td>
+                            <td class="px-8 py-5 text-right">
+                                <div class="flex justify-end gap-2">
+                                    <!-- <button
                                     class="px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary/10 rounded-lg transition-colors">Review
                                     Documents</button>
                                 <button
                                     class="p-1.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container rounded-lg"><span
                                         class="material-symbols-outlined text-lg">more_vert</span></button> -->
-                                        <?= Html::a('Review Documents', ['attachee/view', 'id' => $application['attachee_id']], ['class' => 'px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary/10 rounded-lg transition-colors']) ?>
-                            </div>
-                        </td>
-                    </tr>
+                                    <?= Html::a('Review Documents', ['attachee/view', 'id' => $application['attachee_id']], ['class' => 'px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary/10 rounded-lg transition-colors']) ?>
+                                </div>
+                            </td>
+                        </tr>
                     <?php endforeach; ?>
-                    
-                   
-                   
+
+
+
                 </tbody>
             </table>
         </div>
