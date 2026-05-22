@@ -48,6 +48,10 @@ class LotSearch extends Lot
             $query->active();
         }
 
+        // skip all records with no opening date and closing date
+        $query->andWhere(['not', ['opening_date' => null]])
+            ->andWhere(['not', ['closing_date' => null]]);
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -72,7 +76,7 @@ class LotSearch extends Lot
         ]);
 
         $query->andFilterWhere(['like', 'description', $this->description]);
-        
+
 
         return $dataProvider;
     }
