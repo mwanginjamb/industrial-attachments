@@ -107,6 +107,18 @@ class SiteController extends Controller
             }
         ])->all();
 
+        $applications = [];
+        if ($attachee) {
+            $applications = \frontend\models\Application::find()
+                ->joinWith('lot')
+                ->joinWith('status0')
+                ->joinWith('attachee')
+                ->where(['attachee_id' => $attachee->id])
+                ->asArray()
+                ->limit(4)
+                ->all();
+        }
+
         $applications = \frontend\models\Application::find()
             ->joinWith('lot')
             ->joinWith('status0')
