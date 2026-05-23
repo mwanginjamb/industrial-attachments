@@ -119,15 +119,6 @@ class SiteController extends Controller
                 ->all();
         }
 
-        $applications = \frontend\models\Application::find()
-            ->joinWith('lot')
-            ->joinWith('status0')
-            ->joinWith('attachee')
-            ->where(['attachee_id' => $attachee->id])
-            ->asArray()
-            ->limit(4)
-            ->all();
-
         $icons = [
             1 => 'description',
             2 => 'school',
