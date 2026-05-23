@@ -140,7 +140,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td class="px-6 py-5 text-sm" data-key="<?= $application->id ?>" data-name="placement"
                                 data-service="<?= $endpoint ?>" ondblclick="addDropDown(this,'placements')">
                                 <span class="text-on-surface-variant font-medium">
-                                    <?= !is_null($application['placement']) ? $application['placement'] : 'N/A' ?>
+                                    <?= !is_null($application['placement']) ? $application->placementArea->name : 'N/A' ?>
                                 </span>
                             </td>
                             <td class="px-6 py-5">

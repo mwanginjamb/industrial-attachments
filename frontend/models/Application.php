@@ -102,6 +102,12 @@ class Application extends \yii\db\ActiveRecord
         return $this->hasOne(Institution::class, ['id' => 'institution_id'])->via('attachee');
     }
 
+    // Get Applications Placement Area
+    public function getPlacementArea()
+    {
+        return $this->hasOne(PlacementArea::class,['id' => 'placement']);
+    }
+
     /**
      * Gets query for [[Lot]].
      *
