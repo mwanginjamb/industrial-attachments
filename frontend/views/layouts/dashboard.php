@@ -100,12 +100,14 @@ $this->beginPage();
                         <div class="hidden absolute right-0 top-full mt-2 w-56 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-outline-variant/20 overflow-hidden z-[60] py-2"
                             id="profile-dropdown">
 
-
+                        <!-- if identify has a profile -->
+                            <?php if (Yii::$app->user->identity->attachee): ?>
                             <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
                                 href="<?= Url::to(['/attachee/update', 'id' => Yii::$app->user->identity->attachee->id]) ?>">
                                 <span class="material-symbols-outlined text-primary">person_outline</span>
                                 View Profile
                             </a>
+                            <?php endif; ?>
                             <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
                                 href="<?= Url::to(['/user/settings']) ?>">
                                 <span class="material-symbols-outlined text-primary">manage_accounts</span>
