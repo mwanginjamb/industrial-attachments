@@ -92,6 +92,7 @@ class AttacheeController extends Controller
     public function actionCreate()
     {
         $model = new Attachee();
+        $model->user_id = Yii::$app->user->id;
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -103,6 +104,8 @@ class AttacheeController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'fileModel' => new \frontend\models\File(),
+            'docTemplates' => $templates,
         ]);
     }
 

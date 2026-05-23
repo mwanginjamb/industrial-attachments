@@ -100,12 +100,18 @@ $this->beginPage();
                         <div class="hidden absolute right-0 top-full mt-2 w-56 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-outline-variant/20 overflow-hidden z-[60] py-2"
                             id="profile-dropdown">
 
-<!-- check if identity has attachee -->
+                            <!-- check if identity has attachee -->
                             <?php if (Yii::$app->user->identity->attachee): ?>
                             <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
                                 href="<?= Url::to(['/attachee/update', 'id' => Yii::$app->user->identity->attachee->id]) ?>">
                                 <span class="material-symbols-outlined text-primary">person_outline</span>
-                                View Profile
+                                <?= (Yii::$app->user->identity->attachee) ? 'View Profile' : 'Create Profile' ?>
+                            </a>
+                            <?php else: ?>
+                            <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                                href="<?= Url::to(['/attachee/create']) ?>">
+                                <span class="material-symbols-outlined text-primary">add</span>
+                                Create Profile
                             </a>
                             <?php endif; ?>
                             <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
@@ -189,16 +195,19 @@ $this->beginPage();
                     <span class="px-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">Profile &amp;
                         Account</span>
                     <nav class="mt-4 space-y-1">
+                        <?php if(!Yii::$app->user->identity->attachee): ?>
                         <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 hover:bg-slate-50 font-semibold"
-                            href="<?= Url::to(['/student/profile']) ?>">
+                            href="<?= Url::to(['/attachee/create']) ?>">
                             <span class="material-symbols-outlined">person_outline</span>
-                            View Profile
+                            Create Profile
                         </a>
+                        <?php else: ?>
                         <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 hover:bg-slate-50 font-semibold"
-                            href="<?= Url::to(['/user/settings']) ?>">
+                            href="<?= Url::to(['/attachee/update', 'id' => Yii::$app->user->identity->attachee->id]) ?>">
                             <span class="material-symbols-outlined">manage_accounts</span>
-                            Account Settings
+                            Update Profile
                         </a>
+                        <?php endif ?>
                         <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 hover:bg-slate-50 font-semibold"
                             href="<?= Url::to(['/site/help']) ?>">
                             <span class="material-symbols-outlined">help_outline</span>

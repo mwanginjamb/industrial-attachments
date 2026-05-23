@@ -110,6 +110,9 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
                     ['class' => $inputClass]
                 ) ?>
 
+            <!-- hidden field for user_id -->
+            <?= $form->field($model, 'user_id')->hiddenInput()->label(false) ?>
+
         </div>
 
 
