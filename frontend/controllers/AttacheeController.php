@@ -93,7 +93,7 @@ class AttacheeController extends Controller
     {
         $model = new Attachee();
         $model->user_id = Yii::$app->user->id;
-
+        $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
