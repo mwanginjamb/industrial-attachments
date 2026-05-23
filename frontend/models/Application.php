@@ -18,6 +18,7 @@ use yii\behaviors\BlameableBehavior;
  * @property int|null $created_by
  * @property int|null $updated_by
  * @property int|null $placement
+ * @property bool|null $closed
  *
  * @property Attachee $attachee
  * @property Lot $lot
@@ -62,6 +63,7 @@ class Application extends \yii\db\ActiveRecord
             //[['status'], 'exist', 'skipOnError' => true, 'targetClass' => ApplicationStatus::class, 'targetAttribute' => ['status' => 'id']],
        
             [['placement'], 'integer'],
+            [['closed'], 'boolean'],
             ];
     }
 
@@ -80,6 +82,7 @@ class Application extends \yii\db\ActiveRecord
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
             'placement' => 'Placement',
+            'closed' => 'Closed',
         ];
     }
 
