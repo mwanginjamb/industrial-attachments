@@ -72,11 +72,7 @@ $this->beginPage();
                     class="p-2 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-full transition-colors duration-200">
                     <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
                 </button>
-                <button
-                    class="hidden md:block p-2 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-full transition-colors duration-200">
-                    <span class="material-symbols-outlined text-on-surface-variant">settings</span>
-                </button>
-
+                
                 <!-- Profile Dropdown -->
                 <div class="flex items-center gap-3 md:pl-4 md:ml-4 md:border-l border-outline-variant/30 cursor-pointer relative group"
                     onclick="document.getElementById('profile-dropdown').classList.toggle('hidden')">

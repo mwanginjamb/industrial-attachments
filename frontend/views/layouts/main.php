@@ -52,9 +52,10 @@ AppAsset::register($this);
     $sideNavItems = [
         //['label' => 'Overview',         'url' => ['/site/index'],       'icon' => 'dashboard'],
         ['label' => 'Student List',     'url' => ['/lot/index'],    'icon' => 'group'],
-        //['label' => 'Company Partners', 'url' => ['/company/index'],    'icon' => 'business_center'],
-       // ['label' => 'Document Review',  'url' => ['/document/index'],   'icon' => 'description'],
-       // ['label' => 'System Logs',      'url' => ['/log/index'],        'icon' => 'analytics'],
+        ['label' => 'Attachment Templates', 'url' => ['/attachee-documents-templates/index'],'icon' => 'business_center','title' => 'Required File Attachment Templates'], 
+        ['label' => 'Review Status', 'url' => ['/application-status/index'], 'icon' => 'checklist'],
+        ['label' => 'Placement Sections',           'url' => ['/placement-area/index'],        'icon' => 'work'], 
+        ['label' => 'Institutions',           'url' => ['/institution/index'],        'icon' => 'apartment'],
 
         // ── Nested group: add a 'children' key, no 'url' ──
         [
@@ -66,10 +67,7 @@ AppAsset::register($this);
                 ['label' => 'Roles',  'url' => ['/rbac/index'],        'icon' => 'security_update_good'],
                 ['label' => 'Permissions',         'url' => ['/rbac/permissions'],        'icon' => 'security'],
                 ['label' => 'System Users',           'url' => ['/site/users'],        'icon' => 'group'],
-                ['label' => 'Review Status', 'url' => ['/application-status/index'], 'icon' => 'checklist'],
-                ['label' => 'Placement Areas',           'url' => ['/placement-area/index'],        'icon' => 'map'],
-                ['label' => 'Intake Lots',           'url' => ['/lot/index'],        'icon' => 'view_list'],
-                ['label' => 'Institutions',           'url' => ['/institution/index'],        'icon' => 'apartment'],
+               
             ],
         ],
     ];
