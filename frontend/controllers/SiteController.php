@@ -15,6 +15,10 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use frontend\models\User;
+
+use frontend\models\Attachee;
+use frontend\models\AttacheeDocumentsTemplates;
 
 /**
  * Site controller
@@ -66,6 +70,18 @@ class SiteController extends Controller
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
+    }
+
+    public function beforeAction($action)
+    {
+        $ExceptedActions = [
+            'upload',
+        ];
+
+        if (in_array($action->id, $ExceptedActions)) {
+            $this->enableCsrfValidation = false;
+        }
+        return parent::beforeAction($action);
     }
 
     /**
@@ -298,6 +314,112 @@ class SiteController extends Controller
 
         return $this->render('resendVerificationEmail', [
             'model' => $model
+        ]);
+    }
+
+    public function actionUpload()
+    {
+        // Upload
+        if (Yii::$app->request->isPost) {
+            $attachee_id = Yii::$app->request->post('attachee_reference');
+            $document_type = Yii::$app->request->post('document_type');
+            // implement updateOrCreate pattern
+            $model = \frontend\models\AttacheeDocuments::findOne([
+                'attachee_id' => $attachee_id,
+                'document_type' => $document_type,
+            ]) ?? new \frontend\models\AttacheeDocuments([
+                    'attachee_id' => $attachee_id,
+                    'document_type' => $document_type,
+                ]);
+
+            $model->save();
+
+            $parentDocument = Attachee::findOne(['attachee_reference' => Yii::$app->request->post('attachee_reference')]);
+            // Yii::$app->utility->printrr($parentDocument);
+            $metadata = [];
+            if (is_object($parentDocument) && isset($parentDocument->attachee_reference)) {
+                $metadata = [
+                    'Attachee' => $parentDocument->attachee_reference,
+                    'AttacheeName' => $parentDocument->user_id,
+                    'DocumentType' => AttacheeDocumentsTemplates::findOne(['id' => Yii::$app->request->post('document_type')])->document_description,
+                ];
+            }
+            Yii::$app->session->set('metadata', $metadata);
+
+            // Create a directory to store attachee docs - attachee_Reference
+            $folder = Yii::$app->sharepoint->createFolder($parentDocument->attachee_reference);
+            //Yii::$app->utility->printrr($folder);
+
+            $attachmentName = $_FILES['attachment']['name'];
+            $file = $_FILES['attachment']['tmp_name'];
+            $binary = file_get_contents($file);
+            //Return JSON
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            if ($binary) {
+                // Upload to sharepoint
+                $spResult = Yii::$app->sharepoint->attach_toLibrary(env('SP_LIBRARY') . '\\' . $parentDocument->attachee_reference, $binary, $attachmentName, $metadata = [], TRUE);
+                Yii::$app->session->set('SP_PATH', $spResult);
+                return [
+                    'status' => 'success',
+                    'message' => 'File Uploaded Successfully. :- ' . $spResult,
+                    'filePath' => $spResult
+                ];
+            } else {
+                return [
+                    'status' => 'error',
+                    'message' => 'Could not upload file at the moment.'
+                ];
+            }
+        }
+
+
+        // Update  - attacheDocument Table Get Request
+        if (Yii::$app->request->isGet) {
+            $fileName = basename(Yii::$app->request->get('filePath'));
+
+
+            $model = \frontend\models\AttacheeDocuments::findOne([
+                'attachee_id' => Yii::$app->request->get('No'),
+                'document_type' => Yii::$app->request->get('documentType'),
+            ]) ?? new \frontend\models\AttacheeDocuments([
+                    'attachee_id' => Yii::$app->request->get('No'),
+                    'document_type' => Yii::$app->request->get('documentType'),
+                ]);
+            $model->attributes = [
+                'path' => Yii::$app->request->get('filePath')
+            ];
+            $result = $model->save();
+
+
+
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            if ($result) {
+                return ['status' => 'success', 'message' => 'Document saved successfully'];
+            } else {
+                return ['status' => 'error', 'message' => json_encode($model->getErrors())];
+            }
+        }
+    }
+
+
+    // Read - attacheDocument Table Get Request and return base64 encoded content to view
+    public function actionRead($link, $profileId)
+    {
+        $link = Yii::$app->request->get('link');
+        $file = Yii::$app->sharepoint->getBinary($link);
+        $model = Attachee::findOne(['id' => $profileId]);
+        return $this->render('read', [
+            'content' => $file,
+            'profileId' => $profileId,
+            'model' => $model
+        ]);
+    }
+
+    public function actionUsers()
+    {
+        $users = User::find()->select(['id', 'username', 'email', 'created_at', 'status'])->orderBy(['created_at' => SORT_DESC])->all();
+        return $this->render('users', [
+            'users' => $users
         ]);
     }
 }

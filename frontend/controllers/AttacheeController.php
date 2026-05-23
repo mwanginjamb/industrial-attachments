@@ -110,7 +110,6 @@ class AttacheeController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -198,7 +197,6 @@ class AttacheeController extends Controller
             // Create a directory to store attachee docs - attachee_Reference
             $folder = Yii::$app->sharepoint->createFolder($parentDocument->attachee_reference);
             //Yii::$app->utility->printrr($folder);
-
 
             $file = $_FILES['attachment']['tmp_name'];
             $binary = file_get_contents($file);

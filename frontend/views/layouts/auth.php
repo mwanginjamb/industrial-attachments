@@ -75,8 +75,8 @@ AppAsset::register($this);
                 <span class="material-symbols-outlined text-primary text-3xl">school</span>
             </div>
             <div>
-                <h1 class="font-headline font-black text-2xl text-white tracking-tighter">Academic Curator</h1>
-                <p class="font-label text-xs uppercase tracking-[0.2em] text-white/70">Institutional Portal</p>
+                <h1 class="font-headline font-black text-2xl text-white tracking-tighter"><?= Html::encode(Yii::$app->name) ?></h1>
+                <p class="font-label text-xs uppercase tracking-[0.2em] text-white/70"><?= env('CUSTOMER') ?> Portal</p>
             </div>
         </div>
 
