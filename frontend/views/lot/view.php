@@ -133,9 +133,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <span class="text-on-surface-variant font-medium">
                                     <?= $application?->attachee?->institution?->name ?>
                                 </span>
-                                <span class="text-xs text-on-surface-variant text-wrap max-w-xs">
-                                  <strong>Interests: </strong>  <?= $application?->attachee?->area_of_interest ?>
-                                </span>
+                                <p class="text-xs text-on-surface-variant text-wrap max-w-xs">
+                                    <strong>Interests: </strong> <?= $application?->attachee?->area_of_interest ?>
+                                </p>
                             </td>
                             <td class="px-6 py-5 text-sm" data-key="<?= $application->id ?>" data-name="placement"
                                 data-service="<?= $endpoint ?>" ondblclick="addDropDown(this,'placements')">
