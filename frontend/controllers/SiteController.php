@@ -53,6 +53,16 @@ class SiteController extends Controller
                     'logout' => ['post'],
                 ],
             ],
+            // content negotiator behavior
+            'contentNegotiator' => [
+                'class' => \yii\filters\ContentNegotiator::class,
+                'formats' => [
+                    'application/json' => \yii\web\Response::FORMAT_JSON,
+                ],
+                'actions' => [
+                    'upload',
+                ],
+            ],
         ];
     }
 
