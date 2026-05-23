@@ -225,16 +225,22 @@ $this->beginPage();
             <!-- Sidebar Footer: User Info -->
             <div class="p-6 bg-slate-50 dark:bg-slate-800/50 flex items-center gap-4">
                 <img alt="User profile avatar" class="w-12 h-12 rounded-full border-2 border-primary/20"
-                    src="<?= Html::encode(Yii::$app->user->identity->avatarUrl ?? '/images/default-avatar.png') ?>" />
+                    src="<?= Html::encode(Yii::$app->user->identity->profile_photo ?? '/images/default-avatar.png') ?>" />
                 <div>
                     <p class="font-bold text-on-surface">
                         <?= Html::encode(Yii::$app->user->identity->name ?? '') ?>
                     </p>
+                    <?php if (Yii::$app->user->identity->attachee): ?>
                     <p class="text-xs text-on-surface-variant">
-                        <?= Html::encode(Yii::$app->user->identity->programme ?? '') ?>,
+                        <?= Html::encode(Yii::$app->user->identity->attachee->course_name ?? '') ?>,
                         Year
-                        <?= Html::encode(Yii::$app->user->identity->yearOfStudy ?? '') ?>
+                        <?= Html::encode(Yii::$app->user->identity->attachee->year_of_study ?? '') ?>
                     </p>
+                    <p class="text-xs text-on-surface-variant">
+                        Institution
+                        <?= Html::encode(Yii::$app->user->identity->attachee->institution->name ?? '') ?>
+                    </p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
