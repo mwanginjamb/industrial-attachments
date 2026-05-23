@@ -33,7 +33,7 @@ AppAsset::register($this);
             // Map Yii flash types → Tailwind color tokens
             $alertConfig = match($type) { 
                 'success' => ['bg' => 'bg-secondary-fixed',      'text' => 'text-on-secondary-fixed', 'icon' => 'check_circle',      'dot' => 'bg-primary'],
-                'error',
+                'error' => ['bg' => 'bg-error-container',        'text' => 'text-on-error-container', 'icon' => 'error',             'dot' => 'bg-error'],
                 'danger'  => ['bg' => 'bg-error-container',      'text' => 'text-on-error-container', 'icon' => 'error',             'dot' => 'bg-error'],
                 'warning' => ['bg' => 'bg-tertiary-fixed',        'text' => 'text-on-tertiary-fixed',  'icon' => 'warning',           'dot' => 'bg-tertiary'],
                 'info'    => ['bg' => 'bg-primary-fixed',         'text' => 'text-on-primary-fixed',   'icon' => 'info',              'dot' => 'bg-primary'],
