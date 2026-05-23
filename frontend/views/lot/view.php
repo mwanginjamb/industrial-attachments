@@ -93,6 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <th class="px-8 py-4">Name &amp; ID</th>
                         <th class="px-6 py-4">Year / Level</th>
                         <th class="px-6 py-4">Institution</th>
+                        <th class="px-6 py-4">Preferred Placement</th>
                         <th class="px-6 py-4">Status</th>
                         <th class="px-8 py-4 text-right">Actions</th>
                     </tr>

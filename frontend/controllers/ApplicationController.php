@@ -4,12 +4,13 @@ namespace frontend\controllers;
 
 use frontend\models\Application;
 use frontend\models\ApplicationSearch;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 use frontend\models\Attachee;
 use Yii;
+use yii\filters\AccessControl;
+use yii\filters\ContentNegotiator;
+use yii\filters\VerbFilter;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 
 /**
  * ApplicationController implements the CRUD actions for Application model.
@@ -46,8 +47,31 @@ class ApplicationController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
+                'contentNegotiator' => [
+                    'class' => ContentNegotiator::class,
+                    'only' => ['commit', 'placements'],
+                    'formatParam' => '_format',
+                    'formats' => [
+                        'application/json' => \yii\web\Response::FORMAT_JSON
+                    ]
+                ],
             ]
         );
+    }
+
+    public function beforeAction($action)
+    {
+
+        $ExceptedActions = [
+            'commit',
+            'placements'
+        ];
+
+        if (in_array($action->id, $ExceptedActions)) {
+            $this->enableCsrfValidation = false;
+        }
+
+        return parent::beforeAction($action);
     }
 
     /**
@@ -191,4 +215,7 @@ class ApplicationController extends Controller
         }
         return null;
     }
+
+
+
 }

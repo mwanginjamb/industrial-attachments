@@ -59,7 +59,23 @@ AppAsset::register($this);
             ['label' => 'System Logs',      'url' => ['/log/index'],        'icon' => 'analytics'],
         ];
 
-        $currentRoute = '/' . Yii::$app->controller->id . '/' . Yii::$app->controller->action->id;
+        // ── Nested group: add a 'children' key, no 'url' ──
+        [
+            'label'    => 'RBAC Mgt',
+            'icon'     => 'admin_panel_settings',  // icon for the group header (optional)
+            'group'    => true,                    // flag to render as accordion
+            'children' => [
+                ['label' => 'User Role Assignment', 'url' => ['/rbac/user-roles'],   'icon' => 'manage_accounts'],
+                ['label' => 'Roles',  'url' => ['/rbac/index'],        'icon' => 'security_update_good'],
+                ['label' => 'Permissions',         'url' => ['/rbac/permissions'],        'icon' => 'security'],
+                ['label' => 'System Users',           'url' => ['/site/users'],        'icon' => 'group'],
+                ['label' => 'Review Status', 'url' => ['/application-status/index'], 'icon' => 'checklist'],
+                ['label' => 'Placement Areas',           'url' => ['/placement-area/index'],        'icon' => 'map'],
+                ['label' => 'Intake Lots',           'url' => ['/lot/index'],        'icon' => 'view_list'],
+                ['label' => 'Institutions',           'url' => ['/institution/index'],        'icon' => 'apartment'],
+            ],
+        ],
+    ];
 
         foreach ($sideNavItems as $item):
             $isActive = (Yii::$app->urlManager->createUrl($item['url']) === Yii::$app->urlManager->createUrl([$currentRoute]));

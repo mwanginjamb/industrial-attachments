@@ -83,6 +83,12 @@ class Application extends \yii\db\ActiveRecord
         return $this->hasOne(Attachee::class, ['id' => 'attachee_id']);
     }
 
+    // Get Attache Institution
+    public function getAttacheInstitution()
+    {
+        return $this->hasOne(Institution::class, ['id' => 'institution_id'])->via('attachee');
+    }
+
     /**
      * Gets query for [[Lot]].
      *

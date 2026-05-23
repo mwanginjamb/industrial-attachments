@@ -20,7 +20,7 @@ use Yii;
  * @property int|null $updated_by
  * @property int|null $level_of_education
  * @property string|null $attachee_reference
- *
+ * @property int $institution_id
  * @property Application[] $applications
  * @property AttacheeDocuments[] $attacheeDocuments
  * @property User $user
@@ -66,6 +66,12 @@ class Attachee extends \yii\db\ActiveRecord
             ['user_id', 'required'],
             ['level_of_education', 'integer'],
             ['attachee_reference', 'string', 'max' => 50],
+
+            //set attachee reference to be unique
+            ['attachee_reference', 'unique'],
+            ['institution_id', 'integer'],
+            ['institution_id', 'exist', 'skipOnError' => true, 'targetClass' => Institution::class, 'targetAttribute' => ['institution_id' => 'id']],
+            ['institution_id', 'required'],
         ];
     }
 
@@ -109,6 +115,12 @@ class Attachee extends \yii\db\ActiveRecord
     public function getAttacheeDocuments()
     {
         return $this->hasMany(AttacheeDocuments::class, ['attachee_id' => 'id']);
+    }
+
+    // Get institution
+    public function getInstitution()
+    {
+        return $this->hasOne(Institution::class, ['id' => 'institution_id']);
     }
 
     /**
