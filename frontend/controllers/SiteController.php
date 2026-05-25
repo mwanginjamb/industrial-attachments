@@ -53,6 +53,16 @@ class SiteController extends Controller
                     'logout' => ['post'],
                 ],
             ],
+            // content negotiator behavior
+            'contentNegotiator' => [
+                'class' => \yii\filters\ContentNegotiator::class,
+                'formats' => [
+                    'application/json' => \yii\web\Response::FORMAT_JSON,
+                ],
+                'actions' => [
+                    'upload',
+                ],
+            ],
         ];
     }
 
@@ -96,6 +106,38 @@ class SiteController extends Controller
         if (Yii::$app->user->isGuest) {
             return $this->redirect(\yii\helpers\Url::to(['site/listing']));
         }
+        $attachee = \frontend\models\Attachee::findOne(['user_id' => Yii::$app->user->id]);
+        $total_templates = \frontend\models\AttacheeDocumentsTemplates::getTotalTemplates();
+        $total_attachee_documents = ($attachee) ? \frontend\models\AttacheeDocuments::getDocumentsCount($attachee->attachee_reference) : 0;
+        $attachedDocuments = \frontend\models\AttacheeDocumentsTemplates::find()->With([
+            'attacheeDocument' => function ($query) {
+                $query->andWhere(['not', ['path' => null]])
+                    ->andWhere(['not', ['path' => '']])
+                    ->andWhere(['attachee_id' => Yii::$app->user->identity->attachee->attachee_reference]);
+            }
+        ])->all();
+
+        $applications = [];
+        if ($attachee) {
+            $applications = \frontend\models\Application::find()
+                ->joinWith('lot')
+                ->joinWith('status0')
+                ->joinWith('attachee')
+                ->where(['attachee_id' => $attachee->id])
+                ->asArray()
+                ->limit(4)
+                ->all();
+        }
+
+        $icons = [
+            1 => 'description',
+            2 => 'school',
+            3 => 'badge',
+            4 => 'health_and_safety'
+        ];
+
+        //  Yii::$app->utility->printrr($applications);
+
         return $this->render('index', [
             'docTemplates' => \frontend\models\AttacheeDocumentsTemplates::find()->With([
                 'attacheeDocument' => function ($query) {

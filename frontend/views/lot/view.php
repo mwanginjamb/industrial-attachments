@@ -110,23 +110,33 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <p class="font-bold text-on-surface">Elena Mitsuko</p>
                                     <p class="text-xs text-on-surface-variant">ID: AC-98332</p>
                                 </div>
-                            </div>
                         </td>
                         <td class="px-6 py-5">
-                            <p class="text-sm font-medium">Year 3</p>
-                            <p class="text-xs text-on-surface-variant">Undergraduate (BSc)</p>
+                            <p class="text-sm font-medium"><?= $application['attachee']['year_of_study'] ?></p>
+                            <p class="text-xs text-on-surface-variant"><?= $application['attachee']['course_name'] ?>
+                            </p>
                         </td>
                         <td class="px-6 py-5 text-sm">
-                            <span class="text-on-surface-variant font-medium">Polytechnic Institute of Zurich</span>
+                            <span class="text-on-surface-variant font-medium">
+                                <?= $application?->attachee?->institution?->name ?>
+                            </span>
+                            <p class="text-xs text-on-surface-variant text-wrap max-w-xs">
+                                <strong>Interests: </strong> <?= $application?->attachee?->area_of_interest ?>
+                            </p>
+                        </td>
+                        <td class="px-6 py-5 text-sm" data-key="<?= $application->id ?>" data-name="placement"
+                            data-service="<?= $endpoint ?>" ondblclick="addDropDown(this,'placements')">
+                            <span class="text-on-surface-variant font-medium">
+                                <?= !is_null($application['placement']) ? $application->placementArea->name : 'N/A' ?>
+                            </span>
                         </td>
                         <td class="px-6 py-5">
                             <span
-                                class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[11px] font-bold uppercase tracking-tight">Pending
-                                Review</span>
+                                class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[11px] font-bold uppercase tracking-tight"><?= !is_null($application['status0']) ? $application['status0']['description'] : 'N/A' ?></span>
                         </td>
                         <td class="px-8 py-5 text-right">
                             <div class="flex justify-end gap-2">
-                                <button
+                                <!-- <button
                                     class="px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary/10 rounded-lg transition-colors">Review
                                     Documents</button>
                                 <button

@@ -45,19 +45,14 @@ AppAsset::register($this);
 
     <!-- Primary Nav -->
     <nav class="flex-1 space-y-1">
-        <?php
-        /*
-         * Build sidebar links dynamically.
-         * Each item: ['label' => '...', 'url' => [...], 'icon' => 'material_symbol_name']
-         * Add the `active` key (true/false) or rely on Yii's route matching below.
-         */
-        $sideNavItems = [
-            ['label' => 'Overview',         'url' => ['/site/index'],       'icon' => 'dashboard'],
-            ['label' => 'Student List',     'url' => ['/student/index'],    'icon' => 'group'],
-            ['label' => 'Company Partners', 'url' => ['/company/index'],    'icon' => 'business_center'],
-            ['label' => 'Document Review',  'url' => ['/document/index'],   'icon' => 'description'],
-            ['label' => 'System Logs',      'url' => ['/log/index'],        'icon' => 'analytics'],
-        ];
+    <?php
+    $sideNavItems = [
+        //['label' => 'Overview',         'url' => ['/site/index'],       'icon' => 'dashboard'],
+        ['label' => 'Student List',     'url' => ['/lot/index'],    'icon' => 'group'],
+        ['label' => 'Attachment Templates', 'url' => ['/attachee-documents-templates/index'],'icon' => 'business_center','title' => 'Required File Attachment Templates'], 
+        ['label' => 'Review Status', 'url' => ['/application-status/index'], 'icon' => 'checklist'],
+        ['label' => 'Placement Sections',           'url' => ['/placement-area/index'],        'icon' => 'work'], 
+        ['label' => 'Institutions',           'url' => ['/institution/index'],        'icon' => 'apartment'],
 
         // ── Nested group: add a 'children' key, no 'url' ──
         [
@@ -69,10 +64,7 @@ AppAsset::register($this);
                 ['label' => 'Roles',  'url' => ['/rbac/index'],        'icon' => 'security_update_good'],
                 ['label' => 'Permissions',         'url' => ['/rbac/permissions'],        'icon' => 'security'],
                 ['label' => 'System Users',           'url' => ['/site/users'],        'icon' => 'group'],
-                ['label' => 'Review Status', 'url' => ['/application-status/index'], 'icon' => 'checklist'],
-                ['label' => 'Placement Areas',           'url' => ['/placement-area/index'],        'icon' => 'map'],
-                ['label' => 'Intake Lots',           'url' => ['/lot/index'],        'icon' => 'view_list'],
-                ['label' => 'Institutions',           'url' => ['/institution/index'],        'icon' => 'apartment'],
+               
             ],
         ],
     ];
@@ -167,7 +159,10 @@ AppAsset::register($this);
                 </button>
                 <?= Html::a(
                     '<span class="material-symbols-outlined">settings</span>',
-                    ['/site/settings'],
+                    // if user identity has a attachee, go to attache/update else go to attachee create
+                    (Yii::$app->user->identity->attachee)?
+                    ['/attachee/update', 'id' => Yii::$app->user->identity->attachee->id]:
+                    ['/attachee/create'],
                     ['class' => 'p-2 text-slate-600 hover:bg-slate-200/50 rounded-full transition-colors', 'encode' => false]
                 ) ?>
                 <!-- User avatar -->
