@@ -38,12 +38,12 @@ return [
                 // 'dsn' => 'native://default',
             ],
             // DSN example:
-            'transport' => [
+            /*'transport' => [
                 'dsn' => 'smtp://' . env('SMTP_USERNAME') . ':' . env('SMTP_PASSWORD') . '@' . env('SMTP_HOST') . ':25',
-            ],
+            ],*/
 
         ],
-         'utility' => [
+        'utility' => [
             'class' => \common\Library\Utility::class,
         ],
         'sharepoint' => [

@@ -84,8 +84,27 @@ class SignupForm extends Model
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
+        $user->is_staff = $this->staffRegistration;
 
-        return $user->save() && $this->sendEmail($user);
+        if ($user->save() && $this->sendEmail($user)) {
+            // Assign a staff role if it's a staff registration
+            if ($this->staffRegistration) {
+                $auth = Yii::$app->authManager;
+                $staffRole = $auth->getRole('staff');
+                if ($staffRole) {
+                    $auth->assign($staffRole, $user->getId());
+                }
+            } else {
+                // For regular users, assign the default role (attachee)
+                $auth = Yii::$app->authManager;
+                $defaultRole = $auth->getRole('attachee');
+                if ($defaultRole) {
+                    $auth->assign($defaultRole, $user->getId());
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
