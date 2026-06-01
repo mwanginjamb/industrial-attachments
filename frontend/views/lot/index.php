@@ -157,7 +157,7 @@ $params = Yii::$app->request->get('LotSearch', []);
                         'headerOptions' => ['class' => 'px-6 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant'],
                         'contentOptions' => ['class' => 'px-6 py-6'],
                         'value' => fn($model) =>
-                            $model->isActive
+                            $model->isactive
                             ? '<span class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant text-[11px] font-bold uppercase tracking-wider">Active</span>'
                             : '<span class="px-3 py-1 rounded-full bg-surface-container-highest text-on-surface-variant text-[11px] font-bold uppercase tracking-wider">Inactive</span>'
                     ],

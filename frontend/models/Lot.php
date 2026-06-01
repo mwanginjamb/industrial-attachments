@@ -128,6 +128,18 @@ class Lot extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getIsActive()
+    {
+        $date = date('Y-m-d');
+        $days = Yii::$app->params['lotApplicationWindowDays'];
+
+        return (
+            strtotime($date) >= strtotime("-{$days} days", strtotime($this->opening_date))
+            &&
+            strtotime($date) < strtotime($this->opening_date)
+        );
+    }
+
 
 
 }
