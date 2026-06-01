@@ -108,13 +108,15 @@ class SiteController extends Controller
         $attachee = \frontend\models\Attachee::findOne(['user_id' => Yii::$app->user->id]);
         $total_templates = \frontend\models\AttacheeDocumentsTemplates::getTotalTemplates();
         $total_attachee_documents = ($attachee) ? \frontend\models\AttacheeDocuments::getDocumentsCount($attachee->attachee_reference) : 0;
-        $attachedDocuments = \frontend\models\AttacheeDocumentsTemplates::find()->With([
+
+
+        $attachedDocuments = (Yii::$app->user->identity->attachee) ? \frontend\models\AttacheeDocumentsTemplates::find()->With([
             'attacheeDocument' => function ($query) {
                 $query->andWhere(['not', ['path' => null]])
                     ->andWhere(['not', ['path' => '']])
                     ->andWhere(['attachee_id' => Yii::$app->user->identity->attachee->attachee_reference]);
             }
-        ])->all();
+        ])->all() : 0;
 
         $applications = [];
         if ($attachee) {

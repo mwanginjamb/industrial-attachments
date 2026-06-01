@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use frontend\models\Attachee;
 use Yii;
 
 /**
@@ -77,6 +78,13 @@ class User extends \yii\db\ActiveRecord
     public function getAttachees()
     {
         return $this->hasMany(Attachee::class, ['user_id' => 'id']);
+    }
+
+    // Has Attachee profile
+
+    public function attachee()
+    {
+        return $this->hasOne(Attachee::class, ['user_id' => 'id']);
     }
 
 }

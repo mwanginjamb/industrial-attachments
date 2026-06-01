@@ -99,4 +99,10 @@ class AttacheeDocumentsTemplates extends \yii\db\ActiveRecord
         return $this->hasOne(AttacheeDocuments::class, ['document_type' => 'id']);
     }
 
+    // Get Total Templates Count
+    public static function getTotalTemplates()
+    {
+        return AttacheeDocumentsTemplates::find()->count();
+    }
+
 }
