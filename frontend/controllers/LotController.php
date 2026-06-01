@@ -59,8 +59,6 @@ class LotController extends Controller
                     ],
                 ],
             ],
-           
-            ]
         );
     }
 

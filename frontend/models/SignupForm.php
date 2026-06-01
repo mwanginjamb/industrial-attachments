@@ -2,9 +2,11 @@
 
 namespace frontend\models;
 
+use common\models\User;
 use Yii;
 use yii\base\Model;
-use common\models\User;
+use yii\httpclient\Client;
+use yii\httpclient\CurlTransport;
 
 /**
  * Signup form
@@ -16,6 +18,9 @@ class SignupForm extends Model
     public $password;
     public $passwordConfirm;
 
+    public $employeeNumber;
+
+    public $staffRegistration;
 
     /**
      * {@inheritdoc}
@@ -39,7 +44,27 @@ class SignupForm extends Model
 
             ['passwordConfirm', 'required'],
             ['passwordConfirm', 'compare', 'compareAttribute' => 'password', 'message' => 'Passwords do not match'],
+
+            ['staffRegistration', 'boolean'],
+
+            [['employeeNumber'], 'required', 'on' => 'staff'], // employeeNumber is required only in staff scenario
+
+
         ];
+    }
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios['staff'] = [
+            'username',
+            'email',
+            'password',
+            'passwordConfirm',
+            'employeeNumber',
+            'staffRegistration',
+        ];
+        return $scenarios;
     }
 
     /**
@@ -80,5 +105,44 @@ class SignupForm extends Model
             ->setTo($this->email)
             ->setSubject('Account registration at ' . Yii::$app->name)
             ->send();
+    }
+
+
+    /* Make a Get request for assignes
+     * The JSON format is:
+     * {
+     *   "90254 - melvineobuya@gmail.com": "OBUYA",
+     *  "90252 - lauraombogo@gmail.com": "LORRAINE",
+     * }
+     */
+
+    public function fetchAssignees()
+    {
+        $endpoint = env('ASSIGNEE_ENDPOINT');
+        $client = new Client([
+            'transport' => CurlTransport::class,
+        ]);
+
+        $request = $client->createRequest()
+            ->setMethod('GET')
+            ->setUrl($endpoint)
+            ->addHeaders(['Content-Type' => 'application/json'])
+            ->setFormat(Client::FORMAT_JSON)  // Ensures JSON encoding for request
+            ->setOptions([
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_SSL_VERIFYHOST => false
+            ]);
+
+        $response = $request->send();
+        Yii::info('Raw response content: ' . $response->content, 'api_debug');
+        if ($response->isOk) { // Check if the response status is 200-299
+            return $response->data; // Return the relevant response data
+        } else {
+            // Log error details if needed and return a clear message
+            return [
+                'status' => $response->statusCode,
+                'error' => $response->data ?? 'Unexpected error occurred'
+            ];
+        }
     }
 }

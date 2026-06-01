@@ -56,12 +56,11 @@ class SiteController extends Controller
             // content negotiator behavior
             'contentNegotiator' => [
                 'class' => \yii\filters\ContentNegotiator::class,
+                'only' => ['commit', 'placements', 'upload'],
+                'formatParam' => '_format',
                 'formats' => [
-                    'application/json' => \yii\web\Response::FORMAT_JSON,
-                ],
-                'actions' => [
-                    'upload',
-                ],
+                    'application/json' => \yii\web\Response::FORMAT_JSON
+                ]
             ],
         ];
     }
@@ -254,10 +253,15 @@ class SiteController extends Controller
     {
         $this->layout = 'auth';
         $model = new SignupForm();
+        if (Yii::$app->request->get('sreg')) {
+            $model->scenario = 'staff';
+            $model->staffRegistration = true;
+        }
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
             return $this->goHome();
         }
+
 
         return $this->render('signup', [
             'model' => $model,
@@ -463,5 +467,43 @@ class SiteController extends Controller
         return $this->render('users', [
             'users' => $users
         ]);
+    }
+
+    public function actionLookupEmployee($employeeNumber)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $model = new SignupForm();
+
+        $assignees = $model->fetchAssignees();
+
+        foreach ($assignees as $key => $displayName) {
+
+            $parts = array_map('trim', explode('-', $key, 3));
+
+            if (count($parts) < 3) {
+                continue;
+            }
+
+            [$empno, $email, $fullnames] = $parts;
+
+            if ($empno === trim($employeeNumber)) {
+
+                $username = strstr($email, '@', true);
+
+                return [
+                    'success' => true,
+                    'username' => strtolower($username),
+                    'email' => strtolower($email),
+                    'displayName' => $displayName,
+                    'fullNames' => $fullnames
+                ];
+            }
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Employee not found'
+        ];
     }
 }

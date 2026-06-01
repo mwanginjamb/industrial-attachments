@@ -73,9 +73,16 @@ $this->title = 'Login | ' . Yii::$app->name;
 
             <div class="mt-12 pt-8 border-t border-surface-container-highest text-center">
                 <p class="text-on-surface-variant mb-6">New to the industrial attachment program?</p>
-                <?= Html::a('Register as a New Attachee', ['site/signup'], [
-                    'class' => 'inline-flex items-center justify-center gap-2 px-8 py-3.5 border-2 border-primary text-primary font-headline font-bold rounded-xl hover:bg-primary/5 transition-all'
-                ]) ?>
+
+                <div class="flex flex-row gap-1 flex-shrink">
+
+                    <?= Html::a('New Attachee Account', ['site/signup'], [
+                        'class' => 'inline-flex items-center justify-center gap-2 px-8 py-3.5 border-2 border-primary text-primary font-headline font-bold rounded-xl hover:bg-primary/5 transition-all'
+                    ]) ?>
+                    <?= Html::a('New Staff Account', ['site/signup?sreg=1'], [
+                        'class' => 'inline-flex items-center justify-center gap-2 px-8 py-3.5 border-2 border-primary text-primary font-headline font-bold rounded-xl hover:bg-primary/5 transition-all'
+                    ]) ?>
+                </div>
             </div>
         </div>
     </section>
