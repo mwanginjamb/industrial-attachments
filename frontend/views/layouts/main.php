@@ -17,6 +17,8 @@ $this->registerLinkTag(['rel' => 'preconnect', 'href' => 'https://fonts.googleap
 $this->registerLinkTag(['rel' => 'preconnect', 'href' => 'https://fonts.gstatic.com', 'crossorigin' => true]);
 
 AppAsset::register($this);
+
+$currentRoute = Yii::$app->controller->getRoute();
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -69,20 +71,68 @@ AppAsset::register($this);
         ],
     ];
 
-        foreach ($sideNavItems as $item):
-            $isActive = (Yii::$app->urlManager->createUrl($item['url']) === Yii::$app->urlManager->createUrl([$currentRoute]));
-            $activeClasses   = 'bg-white dark:bg-slate-900 text-blue-700 dark:text-blue-400 rounded-lg shadow-sm font-bold';
-            $inactiveClasses = 'text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 hover:pl-2 transition-all duration-300 font-medium';
+   foreach ($sideNavItems as $item): 
+
+    if (isset($item['group']) && $item['group'] === true): ?>
+
+        <!-- GROUP HEADER -->
+        <div class="px-3 py-2 font-bold text-slate-700 dark:text-slate-300 flex items-center gap-3">
+            <span class="material-symbols-outlined"><?= $item['icon'] ?></span>
+            <span><?= Html::encode($item['label']) ?></span>
+        </div>
+
+        <!-- CHILDREN -->
+        <div class="ml-6 space-y-1">
+            <?php foreach ($item['children'] as $child): ?>
+
+                <?php
+                $isActive = (
+                    Yii::$app->urlManager->createUrl($child['url']) ===
+                    Yii::$app->urlManager->createUrl([$currentRoute])
+                );
+
+                $activeClasses   = 'bg-white dark:bg-slate-900 text-blue-700 dark:text-blue-400 rounded-lg shadow-sm font-bold';
+                $inactiveClasses = 'text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 hover:pl-2 transition-all duration-300 font-medium';
+                ?>
+
+                <?= Html::a(
+                    '<span class="material-symbols-outlined">' . $child['icon'] . '</span><span>' . Html::encode($child['label']) . '</span>',
+                    $child['url'],
+                    [
+                        'class' => 'flex items-center gap-3 px-3 py-2 text-sm ' .
+                            ($isActive ? $activeClasses : $inactiveClasses),
+                        'encode' => false,
+                    ]
+                ) ?>
+
+            <?php endforeach; ?>
+        </div>
+
+    <?php else: ?>
+
+        <?php
+        $isActive = (
+            Yii::$app->urlManager->createUrl($item['url']) ===
+            Yii::$app->urlManager->createUrl([$currentRoute])
+        );
+
+        $activeClasses   = 'bg-white dark:bg-slate-900 text-blue-700 dark:text-blue-400 rounded-lg shadow-sm font-bold';
+        $inactiveClasses = 'text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 hover:pl-2 transition-all duration-300 font-medium';
         ?>
+
         <?= Html::a(
             '<span class="material-symbols-outlined">' . $item['icon'] . '</span><span>' . Html::encode($item['label']) . '</span>',
             $item['url'],
             [
-                'class' => 'flex items-center gap-3 px-3 py-2 font-[\'Inter\'] text-sm ' . ($isActive ? $activeClasses : $inactiveClasses),
+                'class' => 'flex items-center gap-3 px-3 py-2 text-sm ' .
+                    ($isActive ? $activeClasses : $inactiveClasses),
                 'encode' => false,
             ]
         ) ?>
-        <?php endforeach; ?>
+
+    <?php endif; ?>
+
+<?php endforeach; ?>
     </nav>
 
     <!-- Bottom Actions -->

@@ -20,7 +20,7 @@ class RbacController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['staff'], // Only admins can access
+                        'roles' => ['@'], // Only admins can access
                     ],
                 ],
             ],

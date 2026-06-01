@@ -465,7 +465,7 @@ class SiteController extends Controller
 
     public function actionUsers()
     {
-        $users = User::find()->select(['id', 'username', 'email', 'created_at', 'status'])->orderBy(['created_at' => SORT_DESC])->all();
+        $users = User::find()->select(['id', 'username', 'email', 'created_at', 'status', 'is_staff'])->orderBy(['created_at' => SORT_DESC])->all();
         return $this->render('users', [
             'users' => $users
         ]);

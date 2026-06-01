@@ -37,15 +37,17 @@ $this->title = 'App Users';
                                 <td class="fw-bold">Username</td>
                                 <td class="fw-bold">Email</td>
                                 <td class="fw-bold">Created At</td>
-                                <td class="fw-bold">Staff Number</td>
+                                <td class="fw-bold">Staff Status</td>
                                 <td class="fw-bold">Status</td>
                                 <td class="fw-bold">Action</td>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if ($users && is_array($users)): ?>
+                            <?php
+                            $serial = 0;
+                            if ($users && is_array($users)): ?>
                                 <?php foreach ($users as $c):
-
+                                    $serial++;
                                     $status = null;
                                     if ($c->status == 10) {
                                         $status = '<div class="badge bg-success">Active</div>';
@@ -57,7 +59,7 @@ $this->title = 'App Users';
                                     ?>
                                     <tr>
                                         <td>
-                                            <?= strtoupper($c->id) ?? '' ?>
+                                            <?= $serial ?? '' ?>
                                         </td>
                                         <td>
                                             <?= $c->username ?? '' ?>
@@ -69,7 +71,7 @@ $this->title = 'App Users';
                                             <?= Yii::$app->formatter->asDatetime($c->created_at) ?? '' ?>
                                         </td>
                                         <td>
-                                            <?= $c->staff_id_number ?? '' ?>
+                                            <?= $c->is_staff ? 'Yes' : 'No' ?>
                                         </td>
                                         <td>
                                             <?= $status ?>

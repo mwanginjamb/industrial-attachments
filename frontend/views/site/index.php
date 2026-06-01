@@ -168,9 +168,9 @@ use yii\helpers\Url;
                                     <div
                                         class="flex-shrink-0 w-10 h-10 md:w-12 md:h-12 bg-white/20 rounded-lg flex flex-col items-center justify-center p-6">
                                         <span
-                                            class="text-[8px] md:text-[10px] uppercase font-bold"><?= Html::encode(date('M', strtotime($milestone['date']))) ?></span>
+                                            class="text-[8px] md:text-[10px] uppercase font-bold"><?= ($milestone['date']) ? Html::encode(date('M', strtotime($milestone['date']))) : '' ?></span>
                                         <span
-                                            class="text-base md:text-lg font-bold"><?= Html::encode(date('d', strtotime($milestone['date']))) ?></span>
+                                            class="text-base md:text-lg font-bold"><?= ($milestone['date']) ? Html::encode(date('d', strtotime($milestone['date']))) : '' ?></span>
                                     </div>
                                     <div>
                                         <p class="font-bold text-base md:text-lg leading-tight">
