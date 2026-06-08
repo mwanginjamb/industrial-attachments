@@ -115,4 +115,18 @@ class AttacheeDocumentsTemplates extends \yii\db\ActiveRecord
         ])->andWhere(['id' => $templateId])->exists();
     }
 
+    // Get the path of the uploaded document for a given template and attachee
+    public static function getAttacheeUploadedDocumentPath($templateId, $attacheeId): string
+    {
+        $document = AttacheeDocumentsTemplates::find()->with([
+            'attacheeDocument' => function ($query) use ($attacheeId) {
+                $query->andWhere(['attachee_id' => $attacheeId]);
+            }
+        ])->andWhere(['id' => $templateId])->one();
+
+        return $document && $document->attacheeDocument ? $document->attacheeDocument->path : '';
+    }
+
+
+
 }
