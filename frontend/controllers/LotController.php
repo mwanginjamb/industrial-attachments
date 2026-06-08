@@ -144,7 +144,7 @@ class LotController extends Controller
      */
     public function actionCreate()
     {
-        $model = new lot();
+        $model = new Lot();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -202,7 +202,7 @@ class LotController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = lot::findOne(['id' => $id])) !== null) {
+        if (($model = Lot::findOne(['id' => $id])) !== null) {
             return $model;
         }
 
