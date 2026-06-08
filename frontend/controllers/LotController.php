@@ -122,7 +122,7 @@ class LotController extends Controller
 
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'application' => $applications
+            'applications' => $applications
         ]);
     }
 

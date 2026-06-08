@@ -146,4 +146,22 @@ class Attachee extends \yii\db\ActiveRecord
         return false;
     }
 
+    // Generate Abbreviations of the first 2 names given on $name attribute and use them as initials in the avatar
+    public function getInitials()
+    {
+        $names = preg_split('/\s+/', trim($this->name));
+
+        $initials = '';
+
+        foreach ($names as $index => $name) {
+            if ($index >= 2) {
+                break; // Only first 2 words
+            }
+
+            $initials .= mb_strtoupper(mb_substr($name, 0, 1));
+        }
+
+        return $initials;
+    }
+
 }
