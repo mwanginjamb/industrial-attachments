@@ -2,7 +2,7 @@
 
 namespace frontend\controllers;
 
-use frontend\models\lot;
+use frontend\models\Lot;
 use frontend\models\LotSearch;
 use frontend\models\PlacementArea;
 use yii\web\Controller;
