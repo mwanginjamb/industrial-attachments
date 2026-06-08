@@ -16,6 +16,9 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -33,6 +36,13 @@ return [
                     'class' => \yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
                 ],
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'levels' => ['info'],
+                    'logVars' => [],
+                    'categories' => ['api_debug'],
+                    'logFile' => '@runtime/logs/api.log',
+                ]
             ],
         ],
         'errorHandler' => [
@@ -42,12 +52,23 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                [
+                    'class' => yii\rest\UrlRule::class,
+                    'controller' => [
+                        'apiv1/application',
+                    ],
+                ]
             ],
         ],
         'assetManager' => [
             'appendTimestamp' => true
         ]
 
+    ],
+    'modules' => [
+        'apiv1' => [
+            'class' => 'frontend\modules\apiv1\Module',
+        ]
     ],
     'params' => $params,
 ];

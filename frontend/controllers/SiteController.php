@@ -53,6 +53,16 @@ class SiteController extends Controller
                     'logout' => ['post'],
                 ],
             ],
+            // content negotiator behavior
+            'contentNegotiator' => [
+                'class' => \yii\filters\ContentNegotiator::class,
+                'formats' => [
+                    'application/json' => \yii\web\Response::FORMAT_JSON,
+                ],
+                'actions' => [
+                    'upload',
+                ],
+            ],
         ];
     }
 
@@ -98,7 +108,7 @@ class SiteController extends Controller
         }
         $attachee = \frontend\models\Attachee::findOne(['user_id' => Yii::$app->user->id]);
         $total_templates = \frontend\models\AttacheeDocumentsTemplates::getTotalTemplates();
-        $total_attachee_documents = ($attachee->attachee_reference) ? \frontend\models\AttacheeDocuments::getDocumentsCount($attachee->attachee_reference) : 0;
+        $total_attachee_documents = ($attachee) ? \frontend\models\AttacheeDocuments::getDocumentsCount($attachee->attachee_reference) : 0;
         $attachedDocuments = \frontend\models\AttacheeDocumentsTemplates::find()->With([
             'attacheeDocument' => function ($query) {
                 $query->andWhere(['not', ['path' => null]])
@@ -107,14 +117,17 @@ class SiteController extends Controller
             }
         ])->all();
 
-        $applications = \frontend\models\Application::find()
-            ->joinWith('lot')
-            ->joinWith('status0')
-            ->joinWith('attachee')
-            ->where(['attachee_id' => $attachee->id])
-            ->asArray()
-            ->limit(4)
-            ->all();
+        $applications = [];
+        if ($attachee) {
+            $applications = \frontend\models\Application::find()
+                ->joinWith('lot')
+                ->joinWith('status0')
+                ->joinWith('attachee')
+                ->where(['attachee_id' => $attachee->id])
+                ->asArray()
+                ->limit(4)
+                ->all();
+        }
 
         $icons = [
             1 => 'description',

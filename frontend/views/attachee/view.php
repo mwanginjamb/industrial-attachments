@@ -110,6 +110,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     'readonly' => true,
                 ]) ?>
 
+
+<!-- Institution -->
+            <?= $form->field($model, 'institution_id', $fieldConfig)->textInput([
+                    'class' => $inputClass,
+                    'value' => $model->institution ? $model->institution->name : 'Not Set',
+                    'readonly' => true,
+                ]) ?>
+
         </div>
 
 

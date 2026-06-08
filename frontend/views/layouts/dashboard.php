@@ -72,11 +72,7 @@ $this->beginPage();
                     class="p-2 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-full transition-colors duration-200">
                     <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
                 </button>
-                <button
-                    class="hidden md:block p-2 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-full transition-colors duration-200">
-                    <span class="material-symbols-outlined text-on-surface-variant">settings</span>
-                </button>
-
+                
                 <!-- Profile Dropdown -->
                 <div class="flex items-center gap-3 md:pl-4 md:ml-4 md:border-l border-outline-variant/30 cursor-pointer relative group"
                     onclick="document.getElementById('profile-dropdown').classList.toggle('hidden')">
@@ -100,12 +96,20 @@ $this->beginPage();
                         <div class="hidden absolute right-0 top-full mt-2 w-56 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-outline-variant/20 overflow-hidden z-[60] py-2"
                             id="profile-dropdown">
 
-
+                            <!-- check if identity has attachee -->
+                            <?php if (Yii::$app->user->identity->attachee): ?>
                             <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
                                 href="<?= Url::to(['/attachee/update', 'id' => Yii::$app->user->identity->attachee->id]) ?>">
                                 <span class="material-symbols-outlined text-primary">person_outline</span>
-                                View Profile
+                                <?= (Yii::$app->user->identity->attachee) ? 'View Profile' : 'Create Profile' ?>
                             </a>
+                            <?php else: ?>
+                            <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                                href="<?= Url::to(['/attachee/create']) ?>">
+                                <span class="material-symbols-outlined text-primary">add</span>
+                                Create Profile
+                            </a>
+                            <?php endif; ?>
                             <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
                                 href="<?= Url::to(['/user/settings']) ?>">
                                 <span class="material-symbols-outlined text-primary">manage_accounts</span>
@@ -187,16 +191,19 @@ $this->beginPage();
                     <span class="px-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">Profile &amp;
                         Account</span>
                     <nav class="mt-4 space-y-1">
+                        <?php if(!Yii::$app->user->identity->attachee): ?>
                         <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 hover:bg-slate-50 font-semibold"
-                            href="<?= Url::to(['/student/profile']) ?>">
+                            href="<?= Url::to(['/attachee/create']) ?>">
                             <span class="material-symbols-outlined">person_outline</span>
-                            View Profile
+                            Create Profile
                         </a>
+                        <?php else: ?>
                         <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 hover:bg-slate-50 font-semibold"
-                            href="<?= Url::to(['/user/settings']) ?>">
+                            href="<?= Url::to(['/attachee/update', 'id' => Yii::$app->user->identity->attachee->id]) ?>">
                             <span class="material-symbols-outlined">manage_accounts</span>
-                            Account Settings
+                            Update Profile
                         </a>
+                        <?php endif ?>
                         <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 hover:bg-slate-50 font-semibold"
                             href="<?= Url::to(['/site/help']) ?>">
                             <span class="material-symbols-outlined">help_outline</span>
@@ -214,16 +221,22 @@ $this->beginPage();
             <!-- Sidebar Footer: User Info -->
             <div class="p-6 bg-slate-50 dark:bg-slate-800/50 flex items-center gap-4">
                 <img alt="User profile avatar" class="w-12 h-12 rounded-full border-2 border-primary/20"
-                    src="<?= Html::encode(Yii::$app->user->identity->avatarUrl ?? '/images/default-avatar.png') ?>" />
+                    src="<?= Html::encode(Yii::$app->user->identity->profile_photo ?? '/images/default-avatar.png') ?>" />
                 <div>
                     <p class="font-bold text-on-surface">
                         <?= Html::encode(Yii::$app->user->identity->name ?? '') ?>
                     </p>
+                    <?php if (Yii::$app->user->identity->attachee): ?>
                     <p class="text-xs text-on-surface-variant">
-                        <?= Html::encode(Yii::$app->user->identity->programme ?? '') ?>,
+                        <?= Html::encode(Yii::$app->user->identity->attachee->course_name ?? '') ?>,
                         Year
-                        <?= Html::encode(Yii::$app->user->identity->yearOfStudy ?? '') ?>
+                        <?= Html::encode(Yii::$app->user->identity->attachee->year_of_study ?? '') ?>
                     </p>
+                    <p class="text-xs text-on-surface-variant">
+                        Institution
+                        <?= Html::encode(Yii::$app->user->identity->attachee->institution->name ?? '') ?>
+                    </p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

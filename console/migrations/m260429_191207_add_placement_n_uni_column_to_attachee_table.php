@@ -12,7 +12,7 @@ class m260429_191207_add_placement_n_uni_column_to_attachee_table extends Migrat
      */
     public function safeUp()
     {
-        $this->addColumn('{{%attachee}}', 'institution', $this->integer());
+        $this->addColumn('{{%attachee}}', 'institution_id', $this->integer());
         $this->addColumn('{{%attachee}}', 'preferred_placement_designation', $this->integer());
     }
 
@@ -21,7 +21,7 @@ class m260429_191207_add_placement_n_uni_column_to_attachee_table extends Migrat
      */
     public function safeDown()
     {
-        $this->dropColumn('{{%attachee}}', 'institution');
+        $this->dropColumn('{{%attachee}}', 'institution_id');
         $this->dropColumn('{{%attachee}}', 'preferred_placement_designation');
     }
 }

@@ -93,6 +93,11 @@ $params = Yii::$app->request->get('LotSearch', []);
                 // 🔥 ACTIVE ROW HIGHLIGHT FIXED
                 'rowOptions' => function ($model, $key, $index) {
 
+                                // if model has no opening_date or closing_date, do not render the row
+                                if (!$model->opening_date || !$model->closing_date) {
+                                    return null;
+                                }
+
                                 $base = $index % 2 === 0
                                     ? 'group hover:bg-surface-container-low/30 transition-colors'
                                     : 'bg-surface-container-low group hover:bg-surface-container-high/50 transition-colors';

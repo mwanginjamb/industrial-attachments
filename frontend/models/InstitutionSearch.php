@@ -4,12 +4,12 @@ namespace frontend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use frontend\models\Lot;
+use frontend\models\Institution;
 
 /**
- * LotSearch represents the model behind the search form of `app\models\lot`.
+ * InstitutionSearch represents the model behind the search form of `frontend\models\Institution`.
  */
-class LotSearch extends Lot
+class InstitutionSearch extends Institution
 {
     /**
      * {@inheritdoc}
@@ -18,7 +18,7 @@ class LotSearch extends Lot
     {
         return [
             [['id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['description', 'opening_date', 'closing_date'], 'safe'],
+            [['name'], 'safe'],
         ];
     }
 
@@ -39,18 +39,11 @@ class LotSearch extends Lot
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $formName = null, $showActiveOnly = false)
+    public function search($params, $formName = null)
     {
-        $query = lot::find()->orderByActive();
+        $query = Institution::find();
 
         // add conditions that should always apply here
-        if ($showActiveOnly) {
-            $query->active();
-        }
-
-        // skip all records with no opening date and closing date
-        $query->andWhere(['not', ['opening_date' => null]])
-            ->andWhere(['not', ['closing_date' => null]]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -67,16 +60,13 @@ class LotSearch extends Lot
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'opening_date' => $this->opening_date,
-            'closing_date' => $this->closing_date,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
         ]);
 
-        $query->andFilterWhere(['like', 'description', $this->description]);
-
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

@@ -17,6 +17,8 @@ use yii\behaviors\BlameableBehavior;
  * @property int|null $updated_at
  * @property int|null $created_by
  * @property int|null $updated_by
+ * @property int|null $placement
+ * @property bool|null $closed
  *
  * @property Attachee $attachee
  * @property Lot $lot
@@ -25,12 +27,11 @@ use yii\behaviors\BlameableBehavior;
 class Application extends \yii\db\ActiveRecord
 {
 
-    // status constants : submitted, under review, accepted, rejected, placed
+    // status constants : submitted, under review, accepted, placed
     const STATUS_SUBMITTED = 1;
     const STATUS_UNDER_REVIEW = 2;
     const STATUS_ACCEPTED = 3;
-    const STATUS_REJECTED = 4;
-    const STATUS_PLACED = 5;
+    const STATUS_PLACED = 4;
 
 
     /**
@@ -60,7 +61,10 @@ class Application extends \yii\db\ActiveRecord
             [['attachee_id'], 'exist', 'skipOnError' => true, 'targetClass' => Attachee::class, 'targetAttribute' => ['attachee_id' => 'id']],
             [['lot_id'], 'exist', 'skipOnError' => true, 'targetClass' => Lot::class, 'targetAttribute' => ['lot_id' => 'id']],
             //[['status'], 'exist', 'skipOnError' => true, 'targetClass' => ApplicationStatus::class, 'targetAttribute' => ['status' => 'id']],
-        ];
+       
+            [['placement'], 'integer'],
+            [['closed'], 'boolean'],
+            ];
     }
 
     /**
@@ -77,6 +81,8 @@ class Application extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
+            'placement' => 'Placement',
+            'closed' => 'Closed',
         ];
     }
 
@@ -88,6 +94,18 @@ class Application extends \yii\db\ActiveRecord
     public function getAttachee()
     {
         return $this->hasOne(Attachee::class, ['id' => 'attachee_id']);
+    }
+
+    // Get Attache Institution
+    public function getAttacheInstitution()
+    {
+        return $this->hasOne(Institution::class, ['id' => 'institution_id'])->via('attachee');
+    }
+
+    // Get Applications Placement Area
+    public function getPlacementArea()
+    {
+        return $this->hasOne(PlacementArea::class,['id' => 'placement']);
     }
 
     /**
