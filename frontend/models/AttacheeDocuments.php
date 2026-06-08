@@ -37,7 +37,7 @@ class AttacheeDocuments extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['path','document_type', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'default', 'value' => null],
+            [['path', 'document_type', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'default', 'value' => null],
             [['document_type', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['path'], 'string', 'max' => 250],
             [['attachee_id'], 'string', 'max' => 250],
@@ -81,6 +81,12 @@ class AttacheeDocuments extends \yii\db\ActiveRecord
     public function getDocumentType()
     {
         return $this->hasOne(AttacheeDocumentsTemplates::class, ['id' => 'document_type']);
+    }
+
+    // Get Attached Dococuments Count for an Attachee
+    public static function getDocumentsCount($attacheeId)
+    {
+        return self::find()->where(['attachee_id' => $attacheeId])->count();
     }
 
 }

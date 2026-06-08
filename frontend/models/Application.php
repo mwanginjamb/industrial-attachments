@@ -123,7 +123,7 @@ class Application extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getStatus()
+    public function getStatus0()
     {
         return $this->hasOne(ApplicationStatus::class, ['id' => 'status']);
     }

@@ -115,13 +115,14 @@ class LotController extends Controller
             ->joinWith('attachee')
             ->where(['lot_id' => $id])
             ->orderBy(['id' => SORT_DESC])
-            //->asArray()
+            ->asArray()
             ->all();
 
-        //Yii::$app->utility->printrr($applications);
+        // Yii::$app->utility->printrr($applications);
 
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'application' => $applications
         ]);
     }
 
