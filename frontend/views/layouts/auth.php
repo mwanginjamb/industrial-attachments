@@ -90,7 +90,7 @@ AppAsset::register($this);
         </div>
 
         <div class="relative z-10 text-white/50 text-xs font-label">
-            © <?= date('Y') ?> Academic Curator Portal. System version 4.2.0-stable
+            &copy; <?= date('Y') ?> <?= env('APP_NAME','KEMRI Attachments Portal') ?> All rights reserved  ?>
         </div>
     </section>
 
@@ -98,7 +98,7 @@ AppAsset::register($this);
         <div class="w-full max-w-md">
             <div class="md:hidden flex items-center gap-3 mb-12">
                 <span class="material-symbols-outlined text-primary text-4xl">school</span>
-                <h1 class="font-headline font-black text-xl text-on-background tracking-tighter">Academic Curator</h1>
+                <h1 class="font-headline font-black text-xl text-on-background tracking-tighter"><?= env('APP_NAME') ?></h1>
             </div>
 
             <?= Alert::widget() ?>

@@ -18,7 +18,7 @@ $this->beginPage();
     <meta charset="<?= Yii::$app->charset ?>" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>
-        <?= Html::encode($this->title) ?> | Academic Curator
+        <?= Html::encode($this->title) ?> | <?= env('APP_NAME') ?>
     </title>
     <?php $this->head() ?>
 </head>
@@ -40,11 +40,8 @@ $this->beginPage();
                     <span class="material-symbols-outlined text-on-surface">menu</span>
                 </button>
 
-                <span
-                    class="text-xl md:text-2xl font-black text-blue-900 dark:text-blue-100 tracking-tighter font-headline">
-                    Academic Curator
-                </span>
-
+                <?= Html::a('<span class="material-symbols-outlined text-primary">school</span><span class="text-xl font-black text-blue-900 dark:text-blue-100 tracking-tighter font-headline">' . env('APP_NAME') . '</span>', ['/site/index'], ['class' => 'flex items-center gap-3']) ?>
+                
                 <div class="hidden md:flex items-center gap-6">
                     <?php
                     $navItems = [
