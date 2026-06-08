@@ -128,4 +128,16 @@ class Application extends \yii\db\ActiveRecord
         return $this->hasOne(ApplicationStatus::class, ['id' => 'status']);
     }
 
+    // If placement field is updated , update status to review
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if (!$insert && $this->isAttributeChanged('placement')) {
+                $this->status = self::STATUS_UNDER_REVIEW;
+            }
+            return true;
+        }
+        return false;
+    }
+
 }

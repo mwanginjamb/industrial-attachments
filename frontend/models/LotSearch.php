@@ -7,7 +7,7 @@ use yii\data\ActiveDataProvider;
 use frontend\models\Lot;
 
 /**
- * LotSearch represents the model behind the search form of `app\models\lot`.
+ * LotSearch represents the model behind the search form of `app\models\Lot`.
  */
 class LotSearch extends Lot
 {
@@ -41,7 +41,7 @@ class LotSearch extends Lot
      */
     public function search($params, $formName = null, $showActiveOnly = false)
     {
-        $query = lot::find()->orderByActive();
+        $query = Lot::find()->orderByActive();
 
         // add conditions that should always apply here
         if ($showActiveOnly) {

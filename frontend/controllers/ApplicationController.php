@@ -107,7 +107,7 @@ class ApplicationController extends Controller
             Application::STATUS_SUBMITTED => 'hourglass_top',
             Application::STATUS_UNDER_REVIEW => 'search',
             Application::STATUS_ACCEPTED => 'check_circle',
-            Application::STATUS_REJECTED => 'cancel',
+            Application::STATUS_PLACED => 'verified',
         ];
         return $this->render('view', [
             'model' => $this->findModel($id),
