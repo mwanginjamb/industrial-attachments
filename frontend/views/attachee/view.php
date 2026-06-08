@@ -11,6 +11,17 @@ $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Attachees'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+
+$fieldConfig = [
+    'template' => "<div class=\"space-y-2\">\n{label}\n{input}\n{error}\n</div>",
+    'labelOptions' => ['class' => 'block text-sm font-medium font-label text-on-surface-variant'],
+    'errorOptions' => ['class' => 'text-xs text-error mt-1'],
+];
+
+// Shared input classes
+$inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-transparent '
+    . 'focus:ring-0 focus:border-primary-container p-3 rounded-t-lg transition-all';
 ?>
 <div class="attachee-view">
 
