@@ -254,9 +254,9 @@ class AttacheeController extends Controller
         ]);
     }
 
-    // Close - redirect to referer
-    public function actionClose()
+    // Close - redirect to view page of the attachee profile
+    public function actionClose($id)
     {
-        return $this->redirect(Yii::$app->request->referrer);
+        return $this->redirect(['view', 'id' => $id]);
     }
 }
