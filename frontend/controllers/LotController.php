@@ -4,10 +4,16 @@ namespace frontend\controllers;
 
 use frontend\models\lot;
 use frontend\models\LotSearch;
+use frontend\models\PlacementArea;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\filters\ContentNegotiator;
+use yii\helpers\ArrayHelper;
+use yii\httpclient\Client;
+use yii\httpclient\CurlTransport;
+
 use Yii;
 
 /**
@@ -29,6 +35,14 @@ class LotController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
+                 'contentNegotiator' => [
+                    'class' => ContentNegotiator::class,
+                    'only' => ['commit', 'placements'],
+                    'formatParam' => '_format',
+                    'formats' => [
+                        'application/json' => \yii\web\Response::FORMAT_JSON
+                    ]
+                ],
                 'access' => [
                     'class' => AccessControl::class,
                     'only' => ['logout', 'signup', 'index'],
@@ -49,6 +63,22 @@ class LotController extends Controller
             ]
         );
     }
+
+     public function beforeAction($action)
+    {
+
+        $ExceptedActions = [
+            'commit',
+            'placements'
+        ];
+
+        if (in_array($action->id, $ExceptedActions)) {
+            $this->enableCsrfValidation = false;
+        }
+
+        return parent::beforeAction($action);
+    }
+
 
     /**
      * Lists all lot models.
@@ -96,7 +126,7 @@ class LotController extends Controller
             ->joinWith('attachee')
             ->where(['lot_id' => $id])
             ->orderBy(['id' => SORT_DESC])
-            ->asArray()
+           // ->asArray()
             ->all();
 
         //Yii::$app->utility->printrr($applications);
@@ -178,4 +208,58 @@ class LotController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function actionCommit()
+    {
+        try {
+            $endpoint = Yii::$app->request->post('service');
+            $field = Yii::$app->request->post('name');
+            $value = Yii::$app->request->post('value');
+            $id = Yii::$app->request->post('key');
+
+            $payload = [
+                $field => $value,
+                'id' => $id
+            ];
+
+            $client = new Client([
+                'transport' => CurlTransport::class,
+            ]);
+
+            $request = $client->createRequest()
+                ->setMethod('PUT')
+                ->setUrl($endpoint)
+                ->addHeaders(['Content-Type' => 'application/json'])
+                ->setFormat(Client::FORMAT_JSON)  // Ensures JSON encoding for request
+                ->setData($payload)
+                ->setOptions([
+                    CURLOPT_SSL_VERIFYPEER => false,
+                    CURLOPT_SSL_VERIFYHOST => false
+                ]);
+
+            $response = $request->send();
+            Yii::info('Raw response content: ' . $response->content, 'api_debug');
+            if ($response->isOk) { // Check if the response status is 200-299
+                return $response->data; // Return the relevant response data
+            } else {
+                // Log error details if needed and return a clear message
+                return [
+                    'status' => $response->statusCode,
+                    'error' => $response->data ?? 'Unexpected error occurred'
+                ];
+            }
+        } catch (\Exception $e) {
+            return "HTTP request failed with error: " . $e->getMessage();
+        }
+
+    }
+
+    // Possible placement options (centres) for an attachee
+    public function actionPlacements()
+    {
+        $placements = PlacementArea::find()->all();
+        $data = ArrayHelper::map($placements, 'id', 'name');
+        return $data;
+    }
+
 }
