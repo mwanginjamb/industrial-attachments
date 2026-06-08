@@ -73,8 +73,10 @@ class AttacheeController extends Controller
      */
     public function actionView($id)
     {
+        $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'templates' => $templates,
         ]);
     }
 
