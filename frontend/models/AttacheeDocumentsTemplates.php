@@ -106,7 +106,7 @@ class AttacheeDocumentsTemplates extends \yii\db\ActiveRecord
     }
 
     //Get status of whether a particular template has an attachment for a given attachee
-    public static function getTemplatesWithDocuments($templateId, $attacheeId): bool
+    public static function getAttacheeUploadedDocument($templateId, $attacheeId): bool
     {
         return (bool) AttacheeDocumentsTemplates::find()->with([
             'attacheeDocument' => function ($query) use ($attacheeId) {
