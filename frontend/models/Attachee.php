@@ -147,9 +147,9 @@ class Attachee extends \yii\db\ActiveRecord
     }
 
     // Generate Abbreviations of the first 2 names given on $name attribute and use them as initials in the avatar
-    public function getInitials()
+    public static function getInitials($name)
     {
-        $names = preg_split('/\s+/', trim($this->name));
+        $names = preg_split('/\s+/', trim($name));
 
         $initials = '';
 

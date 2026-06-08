@@ -102,7 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     <?php foreach ($applications as $application):
                         // check if the application has an attachee and institution before trying to access their properties
-                        if (!$application->attachee) {
+                        if (!array_key_exists('attachee', $application) || !array_key_exists('institution', $application['attachee']) || is_null($application['attachee']['institution'])) {
                             continue; // skip this application if attachee or institution is missing
                         }
 
@@ -114,14 +114,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="flex items-center gap-3">
                                     <div
                                         class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
-                                        <?= $application?->attachee?->initials ?>
+                                        <?= \frontend\models\Attachee::getInitials($application['attachee']['name']) ?>
                                     </div>
                                     <div>
                                         <p class="font-bold text-on-surface">
-                                            <?= $application?->attachee?->name ?>
+                                            <?= $application['attachee']['name'] ?>
                                         </p>
                                         <p class="text-xs text-on-surface-variant">ID:
-                                            <?= $application?->attachee?->attachee_reference ?>
+                                            <?= $application['attachee']['attachee_reference'] ?>
                                         </p>
                                     </div>
                             </td>
@@ -132,16 +132,16 @@ $this->params['breadcrumbs'][] = $this->title;
                             </td>
                             <td class="px-6 py-5 text-sm">
                                 <span class="text-on-surface-variant font-medium">
-                                    <?= $application?->attachee?->institution?->name ?>
+                                    <?= $application['attachee']['institution']['name'] ?>
                                 </span>
                                 <p class="text-xs text-on-surface-variant text-wrap max-w-xs">
-                                    <strong>Interests: </strong> <?= $application?->attachee?->area_of_interest ?>
+                                    <strong>Interests: </strong> <?= $application['attachee']['area_of_interest'] ?>
                                 </p>
                             </td>
-                            <td class="px-6 py-5 text-sm" data-key="<?= $application->id ?>" data-name="placement"
+                            <td class="px-6 py-5 text-sm" data-key="<?= $application['id'] ?>" data-name="placement"
                                 data-service="<?= $endpoint ?>" ondblclick="addDropDown(this,'placements')">
                                 <span class="text-on-surface-variant font-medium">
-                                    <?= !is_null($application['placement']) ? $application->placementArea->name : 'N/A' ?>
+                                    <?= !is_null($application['placement']) ? $application['placement']['name'] : 'N/A' ?>
                                 </span>
                             </td>
                             <td class="px-6 py-5">
@@ -150,7 +150,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             </td>
                             <td class="px-8 py-5 text-right">
                                 <div class="flex justify-end gap-2">
-                                    <?= Html::a('Review Application', ['application/view', 'id' => $application->id], ['class' => 'px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary/10 rounded-lg transition-colors']) ?>
+                                    <?= Html::a('Review Application', ['application/view', 'id' => $application['id']], ['class' => 'px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary/10 rounded-lg transition-colors']) ?>
                                 </div>
                             </td>
                         </tr>
@@ -160,21 +160,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </tbody>
             </table>
         </div>
-        <div class="px-8 py-6 flex justify-between items-center bg-surface-container-low/20">
-            <p class="text-xs text-on-surface-variant font-medium">Showing 4 of 142 applicants</p>
-            <div class="flex gap-1">
-                <button class="p-2 rounded-lg hover:bg-surface-container transition-colors"><span
-                        class="material-symbols-outlined text-lg">chevron_left</span></button>
-                <button
-                    class="w-8 h-8 flex items-center justify-center bg-primary text-white text-xs font-bold rounded-lg shadow-sm">1</button>
-                <button
-                    class="w-8 h-8 flex items-center justify-center hover:bg-surface-container text-xs font-bold rounded-lg transition-colors">2</button>
-                <button
-                    class="w-8 h-8 flex items-center justify-center hover:bg-surface-container text-xs font-bold rounded-lg transition-colors">3</button>
-                <button class="p-2 rounded-lg hover:bg-surface-container transition-colors"><span
-                        class="material-symbols-outlined text-lg">chevron_right</span></button>
-            </div>
-        </div>
+
     </div>
 
 
