@@ -116,7 +116,7 @@ class AttacheeDocumentsTemplates extends \yii\db\ActiveRecord
     }
 
     // Get the path of the uploaded document for a given template and attachee
-    public static function getAttacheeUploadedDocumentPath($templateId, $attacheeId): string
+    public static function getAttacheeUploadedDocumentPath($templateId, $attacheeId): string|null
     {
         $document = AttacheeDocumentsTemplates::find()->with([
             'attacheeDocument' => function ($query) use ($attacheeId) {
@@ -124,7 +124,7 @@ class AttacheeDocumentsTemplates extends \yii\db\ActiveRecord
             }
         ])->andWhere(['id' => $templateId])->one();
 
-        return $document && $document->attacheeDocument ? $document->attacheeDocument->path : '';
+        return $document && $document->attacheeDocument ? $document->attacheeDocument->path : null;
     }
 
 
