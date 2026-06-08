@@ -184,7 +184,7 @@ class ApplicationController extends Controller
             // redirect to site/index - dashboard
             Yii::$app->session->addFlash('success', 'Application submitted successfully');
         } else {
-            Yii::$app->session->addFlash('error', 'Application submission failed');
+            Yii::$app->session->addFlash('error', 'Application submission failed: ' . $application->getFirstError());
         }
         return $this->redirect(['site/index']);
     }

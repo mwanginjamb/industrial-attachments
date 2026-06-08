@@ -163,7 +163,11 @@ use yii\helpers\Url;
                     <h3 class="font-headline text-2xl font-bold mb-6">Upcoming Milestones</h3>
                     <div class="space-y-6 gap-0">
                         <?php foreach ($lots as $lot): ?>
-                            <?php foreach ($lot->milestones as $milestone): ?>
+                            <?php foreach ($lot->milestones as $key =>$milestone): 
+                                // display only the next 3 upcoming milestones
+                                if ($key >= 3) break;
+                                
+                                ?>
                                 <div class="flex gap-4 items-center py-2">
                                     <div
                                         class="flex-shrink-0 w-10 h-10 md:w-12 md:h-12 bg-white/20 rounded-lg flex flex-col items-center justify-center p-6">

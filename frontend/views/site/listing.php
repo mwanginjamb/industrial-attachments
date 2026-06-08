@@ -17,14 +17,14 @@ use yii\helpers\Html;
                 Bridging the gap between academic theory and professional practice. Access curated opportunities with
                 global industry leaders and leading research institutions.
             </p>
-            <div class="flex flex-wrap gap-4 justify-center md:justify-start">
+            <!-- <div class="flex flex-wrap gap-4 justify-center md:justify-start">
                 <button
                     class="px-8 py-4 hero-gradient text-on-primary rounded-xl font-headline font-bold text-lg shadow-lg hover:shadow-xl transition-all active:scale-95">Explore
                     Opportunities</button>
                 <button
                     class="px-8 py-4 bg-surface-container-highest text-on-surface font-headline font-bold text-lg rounded-xl hover:bg-surface-container-low transition-all">View
                     Institutions</button>
-            </div>
+            </div> -->
         </div>
         <div class="flex-1 w-full max-w-xl">
             <div class="relative group">
