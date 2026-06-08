@@ -253,4 +253,10 @@ class AttacheeController extends Controller
             'model' => $model
         ]);
     }
+
+    // Close - redirect to referer
+    public function actionClose()
+    {
+        return $this->redirect(Yii::$app->request->referrer);
+    }
 }

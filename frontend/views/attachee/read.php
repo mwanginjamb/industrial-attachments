@@ -31,10 +31,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Reader');
                     Print
                 </button>
 <div class="w-[1px] h-6 bg-outline-variant/30 mx-2"></div>
-<button class="flex items-center gap-2 px-4 py-2 bg-error-container hover:opacity-90 text-on-error-container rounded-xl transition-all duration-200 text-sm font-medium">
-<span class="material-symbols-outlined text-[18px]">close</span>
-                    Close
-                </button>
+<?= Html::a('<span class="material-symbols-outlined text-[18px]">close</span> Close', ['close'], ['class' => 'flex items-center gap-2 px-4 py-2 bg-error-container hover:opacity-90 text-on-error-container rounded-xl transition-all duration-200 text-sm font-medium','encode' => false]) ?>
 </div>
 </div>
 <!-- Hero Viewer Area -->
