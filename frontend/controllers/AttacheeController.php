@@ -173,11 +173,6 @@ class AttacheeController extends Controller
             list($pref, $ext) = explode('.', $uploadedFile);
             $targetPath = './plogs/' . Yii::$app->utility->processPath($pref) . '.' . $ext; // Create unique target upload path
             $attachmentName = Yii::$app->utility->processPath($pref) . '.' . $ext;
-            // Create upload directory if it dnt exist.
-            if (!is_dir(dirname($targetPath))) {
-                FileHelper::createDirectory(dirname($targetPath));
-                chmod(dirname($targetPath), 0755);
-            }
         }
 
         // Upload
