@@ -49,9 +49,9 @@ $this->beginPage();
                     <?php
                     $navItems = [
                         ['label' => 'Dashboard', 'url' => ['/student/dashboard']],
-                        ['label' => 'Applications', 'url' => ['/application/index']],
-                        ['label' => 'Placements', 'url' => ['/placement/index']],
-                        ['label' => 'Resources', 'url' => ['/resource/index']],
+                        ['label' => 'Attachment Vacancies', 'url' => ['/site/listing']],
+
+
                     ];
                     foreach ($navItems as $item):
                         $isActive = Yii::$app->controller->action->uniqueId === ltrim($item['url'][0], '/');
