@@ -48,7 +48,7 @@ $this->beginPage();
                 <div class="hidden md:flex items-center gap-6">
                     <?php
                     $navItems = [
-                        ['label' => 'Dashboard', 'url' => ['/student/dashboard']],
+                        ['label' => 'Dashboard', 'url' => ['/site/index']],
                         ['label' => 'Attachment Vacancies', 'url' => ['/site/listing']],
 
 
