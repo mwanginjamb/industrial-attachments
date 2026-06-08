@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\bootstrap5\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var app\models\Attachee $model */
@@ -13,218 +14,218 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="attachee-view">
 
-<div class="attachee-form">
+    <div class="attachee-form">
 
-    <?php $form = ActiveForm::begin([
-        'id' => 'profile-editor-form',
-        'options' => ['class' => 'space-y-12'],
-        // Suppress Yii's default Bootstrap field wrappers
-        'fieldConfig' => $fieldConfig,
-    ]); ?>
+        <?php $form = ActiveForm::begin([
+            'id' => 'profile-editor-form',
+            'options' => ['class' => 'space-y-12'],
+            // Suppress Yii's default Bootstrap field wrappers
+            'fieldConfig' => $fieldConfig,
+        ]); ?>
 
-    <!-- Error summary -->
-    <?= $form->errorSummary($model) ?>
+        <!-- Error summary -->
+        <?= $form->errorSummary($model) ?>
 
-    <!-- ═══════════════════════════════════════════════════════
+        <!-- ═══════════════════════════════════════════════════════
      Section 1: Personal & Academic Information
      ═══════════════════════════════════════════════════════ -->
 
-    <section class="bg-surface-container-low rounded-xl p-8 space-y-8">
+        <section class="bg-surface-container-low rounded-xl p-8 space-y-8">
 
-        <div class="flex items-center gap-4 mb-2">
-            <div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center">
-                <span class="material-symbols-outlined text-primary-container">school</span>
+            <div class="flex items-center gap-4 mb-2">
+                <div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary-container">school</span>
+                </div>
+                <h2 class="font-headline font-bold text-2xl text-on-surface">Personal &amp; Academic Information</h2>
             </div>
-            <h2 class="font-headline font-bold text-2xl text-on-surface">Personal &amp; Academic Information</h2>
-        </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
 
-            <!-- Name -->
-            <?= $form->field($model, 'name', $fieldConfig)
-                ->textInput([
-                    'class' => $inputClass,
-                    'placeholder' => 'Enter your full name',
-                    'readonly' => true,
-                ]) ?>
+                <!-- Name -->
+                <?= $form->field($model, 'name', $fieldConfig)
+                    ->textInput([
+                        'class' => $inputClass,
+                        'placeholder' => 'Enter your full name',
+                        'readonly' => true,
+                    ]) ?>
 
-            <!-- Course Name -->
-            <?= $form->field($model, 'course_name', $fieldConfig)
-                ->textInput([
-                    'class' => $inputClass,
-                    'placeholder' => 'e.g. Computer Science',
-                    'readonly' => true,
-                ]) ?>
+                <!-- Course Name -->
+                <?= $form->field($model, 'course_name', $fieldConfig)
+                    ->textInput([
+                        'class' => $inputClass,
+                        'placeholder' => 'e.g. Computer Science',
+                        'readonly' => true,
+                    ]) ?>
 
-            <!-- Year of Study -->
-            <?= $form->field($model, 'year_of_study', $fieldConfig)
-                ->textInput([
-                    'class' => $inputClass,
-                    'readonly' => true,
-                ]) ?>
+                <!-- Year of Study -->
+                <?= $form->field($model, 'year_of_study', $fieldConfig)
+                    ->textInput([
+                        'class' => $inputClass,
+                        'readonly' => true,
+                    ]) ?>
 
-            <!-- Level of Education -->
-            <?= $form->field($model, 'level_of_education', $fieldConfig)
-                ->textInput([
-                    'class' => $inputClass,
-                    'placeholder' => 'e.g. Undergraduate',
-                    'readonly' => true,
-                    'value' => $levels[$model->level_of_education] ?? null,
-                ]) ?>
+                <!-- Level of Education -->
+                <?= $form->field($model, 'level_of_education', $fieldConfig)
+                    ->textInput([
+                        'class' => $inputClass,
+                        'placeholder' => 'e.g. Undergraduate',
+                        'readonly' => true,
+                        'value' => $levels[$model->level_of_education] ?? null,
+                    ]) ?>
 
 
 
-            <!-- Expected Completion Date -->
-            <?= $form->field($model, 'expected_completion_date', $fieldConfig)
-                ->input('date', ['class' => $inputClass, 'readonly' => true]) ?>
+                <!-- Expected Completion Date -->
+                <?= $form->field($model, 'expected_completion_date', $fieldConfig)
+                    ->input('date', ['class' => $inputClass, 'readonly' => true]) ?>
 
-            <!-- Area of Interest -->
-            <?= $form->field($model, 'area_of_interest', $fieldConfig)
-                ->textInput([
-                    'class' => $inputClass,
-                    'placeholder' => 'e.g. Data Science, UI/UX',
-                    'readonly' => true,
-                ]) ?>
+                <!-- Area of Interest -->
+                <?= $form->field($model, 'area_of_interest', $fieldConfig)
+                    ->textInput([
+                        'class' => $inputClass,
+                        'placeholder' => 'e.g. Data Science, UI/UX',
+                        'readonly' => true,
+                    ]) ?>
 
 
-<!-- Institution -->
-            <?= $form->field($model, 'institution_id', $fieldConfig)->textInput([
+                <!-- Institution -->
+                <?= $form->field($model, 'institution_id', $fieldConfig)->textInput([
                     'class' => $inputClass,
                     'value' => $model->institution ? $model->institution->name : 'Not Set',
                     'readonly' => true,
                 ]) ?>
 
-        </div>
+            </div>
 
 
-        <!-- ═══════════════════════════════════════════════════════
+            <!-- ═══════════════════════════════════════════════════════
          Form Actions
      ═══════════════════════════════════════════════════════ -->
-        <div class="flex items-center justify-end gap-6 pt-6 border-t border-outline-variant/20">
+            <div class="flex items-center justify-end gap-6 pt-6 border-t border-outline-variant/20">
 
-            <?php Html::a(
-                'Cancel',
-                ['attachee/create'],   // adjust route as needed
-                ['class' => 'px-8 py-3 font-semibold text-on-surface-variant hover:text-primary transition-colors']
-            ) ?>
+                <?php Html::a(
+                    'Cancel',
+                    ['attachee/create'],   // adjust route as needed
+                    ['class' => 'px-8 py-3 font-semibold text-on-surface-variant hover:text-primary transition-colors']
+                ) ?>
 
-            <?php Html::submitButton(
-                'Save Changes',
-                [
-                    'class' => 'px-10 py-3 bg-gradient-to-br from-primary to-primary-container '
-                        . 'text-on-primary-container rounded-xl font-headline font-bold shadow-lg '
-                        . 'hover:-translate-y-0.5 transition-all active:translate-y-0',
-                ]
-            ) ?>
+                <?php Html::submitButton(
+                    'Save Changes',
+                    [
+                        'class' => 'px-10 py-3 bg-gradient-to-br from-primary to-primary-container '
+                            . 'text-on-primary-container rounded-xl font-headline font-bold shadow-lg '
+                            . 'hover:-translate-y-0.5 transition-all active:translate-y-0',
+                    ]
+                ) ?>
 
-        </div>
+            </div>
 
 
-        <?php ActiveForm::end(); ?>
+            <?php ActiveForm::end(); ?>
 
-    </section>
+        </section>
 
-    <!-- ═══════════════════════════════════════════════════════
+        <!-- ═══════════════════════════════════════════════════════
      Section 2: Document Uploads
      ═══════════════════════════════════════════════════════ -->
 
-    <section class="bg-surface-container-low rounded-xl p-8 space-y-6">
+        <section class="bg-surface-container-low rounded-xl p-8 space-y-6">
 
 
-        <div class="flex items-center gap-4 mb-4">
-            <div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center">
-                <span class="material-symbols-outlined text-primary-container">description</span>
+            <div class="flex items-center gap-4 mb-4">
+                <div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary-container">description</span>
+                </div>
+                <h2 class="font-headline font-bold text-2xl text-on-surface">Document Uploads</h2>
             </div>
-            <h2 class="font-headline font-bold text-2xl text-on-surface">Document Uploads</h2>
-        </div>
 
-        <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(25,28,33,0.03)]">
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr
-                        class="bg-surface-container-high text-on-surface-variant font-label text-xs uppercase tracking-widest">
-                        <th class="px-6 py-4 font-semibold">Document Name</th>
-                        <th class="px-6 py-4 font-semibold">Status</th>
-                        <th class="px-6 py-4 font-semibold text-right">Action</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-outline-variant/10">
+            <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(25,28,33,0.03)]">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr
+                            class="bg-surface-container-high text-on-surface-variant font-label text-xs uppercase tracking-widest">
+                            <th class="px-6 py-4 font-semibold">Document Name</th>
+                            <th class="px-6 py-4 font-semibold">Status</th>
+                            <th class="px-6 py-4 font-semibold text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-outline-variant/10">
 
 
 
-                    <?php if (is_array($templates) && count($templates) > 0): ?>
-                        <?php foreach ($templates as $key => $t): ?>
-                            <?php
-                            $uploaded = \frontend\models\AttacheeDocumentsTemplates::getAttacheeUploadedDocument($t['id'], $model->attachee_reference);
-                            $status = $uploaded ? '<span class="material-symbols-outlined text-[14px] mr-1">check</span> Uploaded' : ' <span class="material-symbols-outlined text-[14px] mr-1">warning</span> Missing';
-                            $statusClass = $uploaded ? 'text-green-600 bg-green-50' : 'bg-error-container text-on-error-container';
-                            $documentPath = \frontend\models\AttacheeDocumentsTemplates::getAttacheeUploadedDocumentPath($t['id'], $model->attachee_reference);
-                            ?>
+                        <?php if (is_array($templates) && count($templates) > 0): ?>
+                            <?php foreach ($templates as $key => $t): ?>
+                                <?php
+                                $uploaded = \frontend\models\AttacheeDocumentsTemplates::getAttacheeUploadedDocument($t['id'], $model->attachee_reference);
+                                $status = $uploaded ? '<span class="material-symbols-outlined text-[14px] mr-1">check</span> Uploaded' : ' <span class="material-symbols-outlined text-[14px] mr-1">warning</span> Missing';
+                                $statusClass = $uploaded ? 'text-green-600 bg-green-50' : 'bg-error-container text-on-error-container';
+                                $documentPath = \frontend\models\AttacheeDocumentsTemplates::getAttacheeUploadedDocumentPath($t['id'], $model->attachee_reference);
+                                ?>
 
-                            <!-- Row 3: Copy of National ID — Missing (prominent Upload Now CTA) -->
-                            <tr class="hover:bg-surface-container-low/50 transition-colors">
-                                <td class="px-6 py-5 font-medium text-on-surface">
-                                    <?= $t['document_description'] ?>
-                                </td>
-                                <td class="px-6 py-5">
-                                    <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold <?= $statusClass ?>">
-                                        <?= $status ?>
-                                    </span>
-                                </td>
-                                <td class="px-6 py-5 text-right">
-                                    <div class="flex items-center gap-4 justify-end">
+                                <!-- Row 3: Copy of National ID — Missing (prominent Upload Now CTA) -->
+                                <tr class="hover:bg-surface-container-low/50 transition-colors">
+                                    <td class="px-6 py-5 font-medium text-on-surface">
+                                        <?= $t['document_description'] ?>
+                                    </td>
+                                    <td class="px-6 py-5">
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold <?= $statusClass ?>">
+                                            <?= $status ?>
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-5 text-right">
+                                        <div class="flex items-center gap-4 justify-end">
                                             <?php if ($uploaded): ?>
-                                            <?= Html::a(
-                                                '<span class="material-symbols-outlined text-[18px]">visibility</span> View',
-                                                ['attachee/read', 'link' => $documentPath, 'profileId' => $model->id],   // adjust route as needed
-                                                [
-                                                    'class' => 'text-primary-container outline outline-1 outline-primary-container/30 rounded-lg px-3 py-1 font-semibold text-sm hover:underline flex items-center gap-1 justify-end ml-auto',
-                                                    'encode' => false,
-                                                ]
-                                            ) ?>
+                                                <?= Html::a(
+                                                    '<span class="material-symbols-outlined text-[18px]">visibility</span> View',
+                                                    ['attachee/read', 'link' => $documentPath, 'profileId' => $model->id],   // adjust route as needed
+                                                    [
+                                                        'class' => 'text-primary-container outline outline-1 outline-primary-container/30 rounded-lg px-3 py-1 font-semibold text-sm hover:underline flex items-center gap-1 justify-end ml-auto',
+                                                        'encode' => false,
+                                                    ]
+                                                ) ?>
 
-<?php endif; ?>
+                                            <?php endif; ?>
                                         </div>
                                     </td>
-                            </tr>
+                                </tr>
 
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
 
-                </tbody>
-            </table>
-        </div>
+                    </tbody>
+                </table>
+            </div>
 
-        <p class="text-xs text-on-surface-variant italic px-2">Allowed formats: PDF, PNG, JPG (Max 5MB each)</p>
-    </section>
+            <p class="text-xs text-on-surface-variant italic px-2">Allowed formats: PDF, PNG, JPG (Max 5MB each)</p>
+        </section>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
+        <p>
+            <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                    'method' => 'post',
+                ],
+            ]) ?>
+        </p>
+
+        <?= DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                'id',
+                'user_id',
+                'name',
+                'year_of_study',
+                'course_name',
+                'expected_completion_date',
+                'area_of_interest:ntext',
+                'created_at',
+                'updated_at',
+                'created_by',
+                'updated_by',
             ],
         ]) ?>
-    </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'user_id',
-            'name',
-            'year_of_study',
-            'course_name',
-            'expected_completion_date',
-            'area_of_interest:ntext',
-            'created_at',
-            'updated_at',
-            'created_by',
-            'updated_by',
-        ],
-    ]) ?>
-
-</div>
+    </div>
