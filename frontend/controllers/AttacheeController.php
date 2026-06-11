@@ -260,4 +260,10 @@ class AttacheeController extends Controller
             'model' => $model
         ]);
     }
+
+     // Close - redirect to view page of the attachee profile
+    public function actionClose($id)
+    {
+        return $this->redirect(['view', 'id' => $id]);
+    }
 }

@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Reader');
     <!-- Secondary Toolbar -->
 <div class="px-8 py-4 bg-surface flex flex-wrap items-center justify-between gap-4">
 <div class="flex items-center gap-4">
-<h1 class="text-xl font-headline font-bold text-on-surface tracking-tight">Application_Letter_Alex.pdf</h1>
+<h1 class="text-xl font-headline font-bold text-on-surface tracking-tight">Applicant Document</h1>
 <div class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed rounded-full text-xs font-semibold flex items-center gap-1">
 <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">verified</span>
                     Verified
@@ -32,14 +32,8 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Reader');
                     Print
                 </button>
 <div class="w-[1px] h-6 bg-outline-variant/30 mx-2"></div>
-<!-- <button class="flex items-center gap-2 px-4 py-2 bg-error-container hover:opacity-90 text-on-error-container rounded-xl transition-all duration-200 text-sm font-medium">
-<span class="material-symbols-outlined text-[18px]">close</span>
-                    Close
-                </button> -->
-                <a href="<?= Yii::$app->request->referrer?>" class="flex items-center gap-2 px-4 py-2 bg-error-container hover:opacity-90 text-on-error-container rounded-xl transition-all duration-200 text-sm font-medium">
-                    <span class="material-symbols-outlined text-[18px]">close</span>
-                    Close
-                </a>
+
+<?= Html::a('<span class="material-symbols-outlined text-[18px]">close</span> Close', ['close', 'id' => $profileId], ['class' => 'flex items-center gap-2 px-4 py-2 bg-error-container hover:opacity-90 text-on-error-container rounded-xl transition-all duration-200 text-sm font-medium','encode' => false]) ?>
 </div>
 </div>
 <!-- Hero Viewer Area -->
