@@ -33,15 +33,15 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup', 'index'],
+                'only' => ['logout', 'signup', 'index','listing'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['signup','listing'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index','listing'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -52,6 +52,15 @@ class SiteController extends Controller
                 'actions' => [
                     'logout' => ['post'],
                 ],
+            ],
+              // content negotiator behavior
+            'contentNegotiator' => [
+                'class' => \yii\filters\ContentNegotiator::class,
+                'only' => ['commit', 'placements', 'upload'],
+                'formatParam' => '_format',
+                'formats' => [
+                    'application/json' => \yii\web\Response::FORMAT_JSON
+                ]
             ],
         ];
     }

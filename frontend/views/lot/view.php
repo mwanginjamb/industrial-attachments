@@ -10,6 +10,10 @@ $this->title = $model->description;
 $this->params['breadcrumbs'][] = ['label' => 'Lots', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+$selected = <<<ICO
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+ICO;
 ?>
 <div class="lot-view">
 
@@ -95,7 +99,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         <th class="px-8 py-4">Name &amp; ID</th>
                         <th class="px-6 py-4">Year / Level</th>
                         <th class="px-6 py-4">Institution</th>
-                        <th class="px-6 py-4">Preferred Placement</th>
+                        <th class="px-6 py-4 text-success">Preferred Placement</th>
+                        <th class="px-6 py-4 text-success">Selected</th>
                         <th class="px-6 py-4">Status</th>
                         <th class="px-8 py-4 text-right">Actions</th>
                     </tr>
@@ -138,6 +143,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                 data-service="<?= $endpoint ?>" ondblclick="addDropDown(this,'placements')" data-reload=1>
                                 <span class="text-on-surface-variant font-medium">
                                     <?= !is_null($application['placement']) ? $application->placementArea->name : 'N/A' ?>
+                                </span>
+                            </td>
+                            <td class="px-6 py-5 text-sm" data-key="<?= $application->id ?>" data-name="closed"
+                                data-service="<?= $endpoint ?>" ondblclick="addInput(this,'checkbox')" data-reload=1>
+                                <span class="text-on-surface-variant font-medium">
+                                    <?= !is_null($application['closed']) ? $selected : '' ?>
                                 </span>
                             </td>
                             <td class="px-6 py-5">
