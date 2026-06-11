@@ -41,10 +41,7 @@ $this->beginPage();
                     <span class="material-symbols-outlined text-on-surface">menu</span>
                 </button>
 
-                <span
-                    class="text-xl md:text-2xl font-black text-blue-900 dark:text-blue-100 tracking-tighter font-headline">
-                    <?= Yii::$app->name ?>
-                </span>
+                <?= Html::a('<span class="text-xl md:text-2xl font-black text-blue-900 dark:text-blue-100 tracking-tighter font-headline">' . Yii::$app->name . '</span>', ['site/index'], ['class' => 'flex items-center gap-2']) ?>
 
                 <div class="hidden md:flex items-center gap-6">
                     <?php
@@ -72,10 +69,9 @@ $this->beginPage();
                     class="p-2 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-full transition-colors duration-200">
                     <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
                 </button>
-                <button
-                    class="hidden md:block p-2 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-full transition-colors duration-200">
-                    <span class="material-symbols-outlined text-on-surface-variant">settings</span>
-                </button>
+
+                <?= Html::a(' <span class="material-symbols-outlined text-on-surface-variant">settings</span> Settings', ['lot/index'], ['class' => 'hidden md:block p-2 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-full transition-colors duration-200','encode' => false,'title' => 'HR Settings']) ?>
+                
 
                 <!-- Profile Dropdown -->
                 <div class="flex items-center gap-3 md:pl-4 md:ml-4 md:border-l border-outline-variant/30 cursor-pointer relative group"
@@ -161,10 +157,9 @@ $this->beginPage();
                     <nav class="mt-4 space-y-1">
                         <?php
                         $mobileNavItems = [
-                            ['label' => 'Dashboard', 'url' => ['/student/dashboard'], 'icon' => 'dashboard'],
-                            ['label' => 'Applications', 'url' => ['/application/index'], 'icon' => 'description'],
-                            ['label' => 'Placements', 'url' => ['/placement/index'], 'icon' => 'apartment'],
-                            ['label' => 'Resources', 'url' => ['/resource/index'], 'icon' => 'folder_open'],
+                            ['label' => 'Dashboard', 'url' => ['/site/index'], 'icon' => 'dashboard'],
+                            ['label' => 'Placements', 'url' => ['/placement-area/index'], 'icon' => 'apartment'],
+                            
                         ];
                         foreach ($mobileNavItems as $item):
                             $isActive = Yii::$app->controller->action->uniqueId === ltrim($item['url'][0], '/');

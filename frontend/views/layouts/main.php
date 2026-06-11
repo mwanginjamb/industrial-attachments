@@ -231,8 +231,8 @@ AppAsset::register($this);
                 </button>
                 <?= Html::a(
                     '<span class="material-symbols-outlined">settings</span>',
-                    ['/site/settings'],
-                    ['class' => 'p-2 text-slate-600 hover:bg-slate-200/50 rounded-full transition-colors', 'encode' => false]
+                    ['/lot/index'],
+                    ['class' => 'p-2 text-slate-600 hover:bg-slate-200/50 rounded-full transition-colors', 'encode' => false, 'title' => 'HR Settings']
                 ) ?>
                 <!-- User avatar -->
                 <div class="h-8 w-8 rounded-full bg-primary-container overflow-hidden">

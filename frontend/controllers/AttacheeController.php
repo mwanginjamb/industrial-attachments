@@ -73,6 +73,7 @@ class AttacheeController extends Controller
      */
     public function actionView($id)
     {
+        $this->layout = 'dashboard';
         $model = \frontend\models\Attachee::find()->where(['id' => $id])->one();
         $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
         //Yii::$app->utility->printrr($model, 10, true);
@@ -91,6 +92,7 @@ class AttacheeController extends Controller
      */
     public function actionCreate()
     {
+        $this->layout = 'dashboard';
         $model = new Attachee();
 
         if ($this->request->isPost) {
@@ -115,6 +117,7 @@ class AttacheeController extends Controller
      */
     public function actionUpdate($id)
     {
+        $this->layout = 'dashboard';
         $model = $this->findModel($id);
         $model->scenario = 'update';
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {

@@ -95,6 +95,4 @@ class AttacheeDocuments extends \yii\db\ActiveRecord
         ->count();
     }
 
-    // 
-
 }
