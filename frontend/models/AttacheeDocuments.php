@@ -91,7 +91,7 @@ class AttacheeDocuments extends \yii\db\ActiveRecord
         return self::find()->where(['attachee_id' => $attachee_id])
         ->andWhere(['not', ['path' => null]])
         ->andWhere(['not', ['path' => '']])
-       // ->distinct(['document_type', 'attachee_id'])
+        ->distinct(['document_type', 'attachee_id'])
         ->count();
     }
 

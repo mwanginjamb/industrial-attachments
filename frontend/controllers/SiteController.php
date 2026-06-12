@@ -16,6 +16,7 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use frontend\models\User;
+use yii\helpers\Url;
 
 use frontend\models\Attachee;
 use frontend\models\AttacheeDocumentsTemplates;
@@ -102,19 +103,25 @@ class SiteController extends Controller
     {
 
         $this->layout = 'dashboard';
+
+        // check if role is staff , then redirect to settings
+        if(Yii::$app->user->can('staff')){
+           return $this->redirect(Url::toRoute('lot/index','true'));
+        }
+
         if (Yii::$app->user->isGuest) {
             return $this->redirect(\yii\helpers\Url::to(['site/listing']));
         }
         $attachee = \frontend\models\Attachee::findOne(['user_id' => Yii::$app->user->id]);
         $total_templates = \frontend\models\AttacheeDocumentsTemplates::getTotalTemplates();
-        $total_attachee_documents = ($attachee->attachee_reference) ? \frontend\models\AttacheeDocuments::getDocumentsCount($attachee->attachee_reference) : 0;
-        $attachedDocuments = \frontend\models\AttacheeDocumentsTemplates::find()->With([
+        $total_attachee_documents = property_exists($attachee,'attachee_reference') ? \frontend\models\AttacheeDocuments::getDocumentsCount($attachee->attachee_reference) : 0;
+        $attachedDocuments = property_exists($attachee,'attachee_reference')? \frontend\models\AttacheeDocumentsTemplates::find()->With([
             'attacheeDocument' => function ($query) {
                 $query->andWhere(['not', ['path' => null]])
                     ->andWhere(['not', ['path' => '']])
                     ->andWhere(['attachee_id' => Yii::$app->user->identity->attachee->attachee_reference]);
             }
-        ])->all();
+        ])->all(): 0;
 
         $applications = \frontend\models\Application::find()
             ->joinWith('lot')
