@@ -106,10 +106,10 @@ class SiteController extends Controller
 
         // check if role is staff , then redirect to settings
         if(Yii::$app->user->can('staff')){
-           return $this->redirect(Url::toRoute('lot/index','true'));
+           return $this->redirect(\yii\helpers\Url::to(['lot/index']));
         }
 
-        if (Yii::$app->user->isGuest) {
+        if (Yii::$app->user->can('attachee')) {
             return $this->redirect(\yii\helpers\Url::to(['site/listing']));
         }
         $attachee = \frontend\models\Attachee::findOne(['user_id' => Yii::$app->user->id]);
