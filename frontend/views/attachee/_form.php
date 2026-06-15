@@ -228,7 +228,6 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
 </div>
 
 <?php
-$this->registerJsFile('@web/js/custom.js', ['depends' => [\yii\web\YiiAsset::class]]);
 
 
 $script = <<<JS
