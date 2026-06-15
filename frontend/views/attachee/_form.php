@@ -220,7 +220,7 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
             </table>
         </div>
 
-        <p class="text-xs text-on-surface-variant italic px-2">Allowed formats: PDF, PNG, JPG (Max 5MB each)</p>
+        <p class="text-xs text-on-surface-variant italic px-2">Allowed formats: PDF (Max 5MB each)</p>
     </section>
 
 

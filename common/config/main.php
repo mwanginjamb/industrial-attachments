@@ -34,13 +34,13 @@ return [
                 'host' => env('SMTP_HOST'),
                 'username' => env('SMTP_USERNAME'),
                 'password' => env('SMTP_PASSWORD'),
-                'port' => 465,
+                'port' => env('SMTP_PORT'),
                 // 'dsn' => 'native://default',
             ],
             // DSN example:
-            'transport' => [
-                'dsn' => 'smtp://' . env('SMTP_USERNAME') . ':' . env('SMTP_PASSWORD') . '@' . env('SMTP_HOST') . ':25',
-            ],
+            //  'transport' => [
+            //      'dsn' => 'smtp://' . env('SMTP_USERNAME') . ':' . env('SMTP_PASSWORD') . '@' . env('SMTP_HOST') . ':25',
+            //   ],
 
         ],
         'utility' => [
