@@ -110,7 +110,7 @@ class SiteController extends Controller
         }
 
         if (Yii::$app->user->can('attachee')) {
-            return $this->redirect(\yii\helpers\Url::to(['site/listing']));
+            return $this->redirect(\yii\helpers\Url::to(['site/index']));
         }
         $attachee = \frontend\models\Attachee::findOne(['user_id' => Yii::$app->user->id]);
         $total_templates = \frontend\models\AttacheeDocumentsTemplates::getTotalTemplates();
