@@ -97,21 +97,23 @@ $this->beginPage();
                             id="profile-dropdown">
 
 
+                            <?php if (!Yii::$app->user->isGuest && !is_null(Yii::$app->user->identity->attachee)): ?>
                             <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
                                 href="<?= Url::to(['/attachee/update', 'id' => Yii::$app->user->identity->attachee->id]) ?>">
                                 <span class="material-symbols-outlined text-primary">person_outline</span>
                                 View Profile
                             </a>
+                            <?php endif; ?>
                             <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                                href="<?= Url::to(['/user/settings']) ?>">
+                                href="<?= Url::to(['/lot/index']) ?>">
                                 <span class="material-symbols-outlined text-primary">manage_accounts</span>
                                 Account Settings
                             </a>
-                            <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                            <!-- <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
                                 href="<?= Url::to(['/site/help']) ?>">
                                 <span class="material-symbols-outlined text-primary">help_outline</span>
                                 Help &amp; Support
-                            </a>
+                            </a> -->
                             <hr class="my-1 border-outline-variant/10" />
 
 
