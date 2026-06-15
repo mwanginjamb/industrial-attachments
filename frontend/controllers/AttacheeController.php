@@ -103,8 +103,11 @@ class AttacheeController extends Controller
             $model->loadDefaultValues();
         }
 
+        $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
         return $this->render('create', [
             'model' => $model,
+            'fileModel' => new \frontend\models\File(),
+            'docTemplates' => $templates,
         ]);
     }
 
@@ -261,7 +264,7 @@ class AttacheeController extends Controller
         ]);
     }
 
-     // Close - redirect to view page of the attachee profile
+    // Close - redirect to view page of the attachee profile
     public function actionClose($id)
     {
         return $this->redirect(['view', 'id' => $id]);
