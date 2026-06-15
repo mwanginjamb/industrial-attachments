@@ -103,6 +103,12 @@ $this->beginPage();
                                 <span class="material-symbols-outlined text-primary">person_outline</span>
                                 View Profile
                             </a>
+                            <?php else: ?>
+                            <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                                href="<?= Url::to(['/attachee/create']) ?>">
+                                <span class="material-symbols-outlined text-primary">person_outline</span>
+                                Create Profile
+                            </a>
                             <?php endif; ?>
                             <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
                                 href="<?= Url::to(['/lot/index']) ?>">
