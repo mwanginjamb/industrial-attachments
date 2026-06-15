@@ -34,15 +34,15 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup', 'index','listing'],
+                'only' => ['logout', 'signup', 'index', 'listing'],
                 'rules' => [
                     [
-                        'actions' => ['signup','listing'],
+                        'actions' => ['signup', 'listing'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout', 'index','listing'],
+                        'actions' => ['logout', 'index', 'listing'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -54,7 +54,7 @@ class SiteController extends Controller
                     'logout' => ['post'],
                 ],
             ],
-              // content negotiator behavior
+            // content negotiator behavior
             'contentNegotiator' => [
                 'class' => \yii\filters\ContentNegotiator::class,
                 'only' => ['commit', 'placements', 'upload'],
@@ -105,8 +105,8 @@ class SiteController extends Controller
         $this->layout = 'dashboard';
 
         // check if role is staff , then redirect to settings
-        if(Yii::$app->user->can('staff')){
-           return $this->redirect(\yii\helpers\Url::to(['lot/index']));
+        if (Yii::$app->user->can('staff')) {
+            return $this->redirect(\yii\helpers\Url::to(['lot/index']));
         }
 
         if (Yii::$app->user->can('attachee')) {
@@ -114,23 +114,23 @@ class SiteController extends Controller
         }
         $attachee = \frontend\models\Attachee::findOne(['user_id' => Yii::$app->user->id]);
         $total_templates = \frontend\models\AttacheeDocumentsTemplates::getTotalTemplates();
-        $total_attachee_documents = property_exists($attachee,'attachee_reference') ? \frontend\models\AttacheeDocuments::getDocumentsCount($attachee->attachee_reference) : 0;
-        $attachedDocuments = property_exists($attachee,'attachee_reference')? \frontend\models\AttacheeDocumentsTemplates::find()->With([
+        $total_attachee_documents = Yii::$app->user->identity->attachee ? \frontend\models\AttacheeDocuments::getDocumentsCount($attachee->attachee_reference) : 0;
+        $attachedDocuments = Yii::$app->user->identity->attachee ? \frontend\models\AttacheeDocumentsTemplates::find()->With([
             'attacheeDocument' => function ($query) {
                 $query->andWhere(['not', ['path' => null]])
                     ->andWhere(['not', ['path' => '']])
                     ->andWhere(['attachee_id' => Yii::$app->user->identity->attachee->attachee_reference]);
             }
-        ])->all(): 0;
+        ])->all() : [];
 
-        $applications = \frontend\models\Application::find()
+        $applications = (Yii::$app->user->identity->attachee) ? \frontend\models\Application::find()
             ->joinWith('lot')
             ->joinWith('status0')
             ->joinWith('attachee')
             ->where(['attachee_id' => $attachee->id])
             ->asArray()
             ->limit(4)
-            ->all();
+            ->all() : 0;
 
         $icons = [
             1 => 'description',
@@ -237,7 +237,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-     public function actionSignup()
+    public function actionSignup()
     {
         $this->layout = 'auth';
         $model = new SignupForm();

@@ -220,7 +220,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <?php
-$this->registerJsFile('@web/js/custom.js', ['depends' => [\yii\web\YiiAsset::class]]);
+
 
 
 $script = <<<JS

@@ -169,28 +169,36 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
 
 
                     <?php if (is_array($templates) && count($templates) > 0): ?>
-                        <?php foreach ($templates as $t): ?>
+                        <?php foreach ($templates as $t):
 
+                            $uploaded = \frontend\models\AttacheeDocumentsTemplates::getAttacheeUploadedDocument($t['id'], $model->attachee_reference);
+                            $status = $uploaded ? '<span class="material-symbols-outlined text-[14px] mr-1">check</span> Uploaded' : ' <span class="material-symbols-outlined text-[14px] mr-1">warning</span> Missing';
+                            $statusClass = $uploaded ? 'text-green-600 bg-green-50' : 'bg-error-container text-on-error-container';
+                            $documentPath = \frontend\models\AttacheeDocumentsTemplates::getAttacheeUploadedDocumentPath($t['id'], $model->attachee_reference);
+                            ?>
 
                             <!-- Row 3: Copy of National ID — Missing (prominent Upload Now CTA) -->
                             <tr class="hover:bg-surface-container-low/50 transition-colors">
                                 <td class="px-6 py-5 font-medium text-on-surface"><?= $t['document_description'] ?></td>
                                 <td class="px-6 py-5">
                                     <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-error-container text-on-error-container">
-                                        <span class="material-symbols-outlined text-[14px] mr-1">warning</span> Missing
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold <?= $statusClass ?>">
+                                        <?= $status ?>
                                     </span>
                                 </td>
                                 <td class="px-6 py-5 text-right">
                                     <div class="flex items-center gap-4 justify-end">
-                                        <?= Html::a(
-                                            '<span class="material-symbols-outlined text-[18px]">visibility</span> View',
-                                            ['attachee/read', 'link' => $t->attacheeDocument?->path, 'profileId' => $model->id],   // adjust route as needed
-                                            [
-                                                'class' => 'text-primary-container outline outline-1 outline-primary-container/30 rounded-lg px-3 py-1 font-semibold text-sm hover:underline flex items-center gap-1 justify-end ml-auto',
-                                                'encode' => false,
-                                            ]
-                                        ) ?>
+                                        <?php if ($uploaded): ?>
+                                            <?= Html::a(
+                                                '<span class="material-symbols-outlined text-[18px]">visibility</span> View',
+                                                ['attachee/read', 'link' => $documentPath, 'profileId' => $model->id],   // adjust route as needed
+                                                [
+                                                    'class' => 'text-primary-container outline outline-1 outline-primary-container/30 rounded-lg px-3 py-1 font-semibold text-sm hover:underline flex items-center gap-1 justify-end ml-auto',
+                                                    'encode' => false,
+                                                ]
+                                            ) ?>
+
+                                        <?php endif; ?>
                                         <!-- inline upload form -->
                                         <?php $form = ActiveForm::begin(['id' => 'national-id-form', 'options' => ['name' => $file->formName()]]); ?>
                                         <?= $form->field($file, 'attachee_id')->hiddenInput(['value' => $model->attachee_reference])->label(false) ?>
