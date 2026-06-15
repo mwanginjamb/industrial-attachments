@@ -106,12 +106,9 @@ class SiteController extends Controller
 
         // check if role is staff , then redirect to settings
         if (Yii::$app->user->can('staff')) {
-            return $this->redirect(\yii\helpers\Url::to(['lot/index']));
+            return $this->redirect(Url::to(['lot/index']));
         }
 
-        if (Yii::$app->user->can('attachee')) {
-            return $this->goHome();
-        }
         $attachee = \frontend\models\Attachee::findOne(['user_id' => Yii::$app->user->id]);
         $total_templates = \frontend\models\AttacheeDocumentsTemplates::getTotalTemplates();
         $total_attachee_documents = Yii::$app->user->identity->attachee ? \frontend\models\AttacheeDocuments::getDocumentsCount($attachee->attachee_reference) : 0;
