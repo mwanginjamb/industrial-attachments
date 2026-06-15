@@ -94,7 +94,7 @@ class AttacheeController extends Controller
     {
         $this->layout = 'dashboard';
         $model = new Attachee();
-        $model->scenario = 'create';
+        // $model->scenario = 'create';
         $model->user_id = Yii::$app->user->id;
 
         if ($this->request->isPost) {
