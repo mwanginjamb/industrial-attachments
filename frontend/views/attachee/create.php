@@ -15,8 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
-        'fileModel' => new \frontend\models\File(),
-        'docTemplates' => $templates,
+        'file' => $fileModel,
+        'templates' => $docTemplates,
     ]) ?>
 
 </div>
