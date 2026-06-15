@@ -196,7 +196,7 @@ use frontend\models\File;
 
 
 <?php
-$this->registerJsFile('@web/js/custom.js', ['depends' => [\yii\web\YiiAsset::class]]);
+
 
 
 $script = <<<JS
