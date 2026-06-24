@@ -98,8 +98,8 @@ class Lot extends \yii\db\ActiveRecord
         if (!$this->opening_date) {
             return null;
         }
-
-        return date('Y-m-d', strtotime($this->opening_date . ' -14 days'));
+        $applicationWIndow = Yii::$app->params['lotApplicationWindowDays'];
+        return date('Y-m-d', strtotime($this->opening_date . ' -' . $applicationWIndow . ' days'));
     }
 
     public function getApplicationDeadline()
