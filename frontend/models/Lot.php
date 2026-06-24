@@ -15,6 +15,7 @@ use Yii;
  * @property int|null $updated_at
  * @property int|null $created_by
  * @property int|null $updated_by
+ * @property int|null $updated_by
  *
  * @property Application[] $applications
  */

@@ -58,7 +58,7 @@ return [
         ]
 
     ],
-     'modules' => [
+    'modules' => [
         'apiv1' => [
             'class' => 'frontend\modules\apiv1\Module',
         ]

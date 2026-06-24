@@ -35,7 +35,7 @@ class LotController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
-                 'contentNegotiator' => [
+                'contentNegotiator' => [
                     'class' => ContentNegotiator::class,
                     'only' => ['commit', 'placements'],
                     'formatParam' => '_format',
@@ -64,7 +64,7 @@ class LotController extends Controller
         );
     }
 
-     public function beforeAction($action)
+    public function beforeAction($action)
     {
 
         $ExceptedActions = [
@@ -119,21 +119,38 @@ class LotController extends Controller
      */
     public function actionView($id)
     {
+        $params = $this->request->queryParams;
+
         // Lot applications
-        $applications = \frontend\models\Application::find()
-            ->joinWith('lot')
-            ->joinWith('status0')
-            ->joinWith('attachee')
-            ->where(['lot_id' => $id])
-            ->orderBy(['id' => SORT_DESC])
-           // ->asArray()
-            ->all();
+        if (isset($params['placement']) && $params['placement'] != '') {
+            $applications = \frontend\models\Application::find()
+                ->joinWith(['lot', 'status0', 'attachee'])
+                ->where(['lot_id' => $id])
+                ->andFilterWhere([
+                    'placement' => $params['placement']
+                ])
+                ->orderBy(['id' => SORT_DESC])
+                // ->asArray()
+                ->all();
+        } else {
+            $applications = \frontend\models\Application::find()
+                ->joinWith('lot')
+                ->joinWith('status0')
+                ->joinWith('attachee')
+                ->where(['lot_id' => $id])
+                ->orderBy(['id' => SORT_DESC])
+                // ->asArray()
+                ->all();
+        }
+
+        $placement_areas = \frontend\models\PlacementArea::find()->all();
 
         //Yii::$app->utility->printrr($applications);
 
         return $this->render('view', [
             'model' => $this->findModel($id),
             'applications' => $applications,
+            'pas' => $placement_areas
         ]);
     }
 
