@@ -19,15 +19,27 @@ return [
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',
             ],
+            'enableCsrfValidation' => YII_ENV === 'dev' ? false : true, // disable csrf validation on test only
+            'enableCookieValidation' => true,
         ],
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+            'authTimeout' => 60 * 60 * 1, // one hour
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
             'name' => 'advanced-frontend',
+             'class' => 'yii\web\Session',
+            'timeout' => 3600, // 60 min
+            'useCookies' => true,
+            'cookieParams' => [
+                'httponly' => true,
+                'lifetime' => 3600, // one hour
+                'samesite' => YII_ENV === 'dev' ? 'Lax' : 'None', // Allow cross-origin requests only in dev
+                'secure' => YII_ENV === 'dev' ? false : true,     // Ensure secure (HTTPS) transmission only on dev
+            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
