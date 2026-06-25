@@ -115,7 +115,7 @@ class Lot extends \yii\db\ActiveRecord
             return 0;
         }
 
-        return ($reviewed / $total) * 100;
+        return ($reviewed / $total);
     }
 
 
