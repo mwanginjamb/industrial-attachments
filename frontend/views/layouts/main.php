@@ -258,7 +258,7 @@ AppAsset::register($this);
     <!-- ─────────────────────────────────────
          CONTENT CANVAS
     ───────────────────────────────────── -->
-    <main class="p-8 max-w-screen-2xl mx-auto w-full flex-1 overflow-y-auto">
+    <main class="p-8 max-w-screen-2xl mx-auto w-full flex-1 overflow-y-scroll">
 
         <!-- Breadcrumbs Widget -->
         <?php if (!empty($this->params['breadcrumbs'])): ?>

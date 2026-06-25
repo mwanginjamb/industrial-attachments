@@ -16,6 +16,15 @@ ApplicantsAsset::register($this);
 $selected = <<<ICO
 <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
 ICO;
+
+// Get the current absolute URL dynamically
+$currentUrl = Yii::$app->request->absoluteUrl.'&selection='.$model->id;
+// Construct the structured email body using double quotes for \n to work
+$emailBody = "Dear Colleagues,\n\n"
+           . "please access this list and select suitable candidates.\n\n"
+           . "Link: " . Html::encode($currentUrl) . "\n\n"
+           . "Regards,\n"
+           . "HR Team";
 ?>
 <div class="lot-view">
 
@@ -35,8 +44,8 @@ ICO;
             </div>
         </div>
         <div class="flex gap-3">
-            <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-            <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+            <?php Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?php Html::a('Delete', ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
                     'confirm' => 'Are you sure you want to delete this item?',
@@ -53,20 +62,20 @@ ICO;
             <span class="text-on-surface-variant text-sm font-medium">Total Applicants</span>
             <div class="mt-4">
                 <span class="text-3xl font-black text-on-surface"><?= $model->applicationsCount ?></span>
-                <span class="text-green-600 text-xs font-bold ml-2">↑ 12%</span>
+                <span class="text-green-600 text-xs font-bold ml-2"></span>
             </div>
         </div>
         <div class="md:col-span-1 bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
             <span class="text-on-surface-variant text-sm font-medium">Pending Review</span>
             <div class="mt-4">
-                <span class="text-3xl font-black text-on-surface">28</span>
+                <span class="text-3xl font-black text-on-surface"><?= $model->reviewedCount ?></span>
             </div>
         </div>
         <div
             class="md:col-span-2 bg-primary-container p-6 rounded-xl flex items-center justify-between text-on-primary-container relative overflow-hidden">
             <div class="z-10">
                 <span class="text-sm font-medium opacity-80">Processing Status</span>
-                <h3 class="text-2xl font-bold mt-1">Batch 84% Complete</h3>
+                <h3 class="text-2xl font-bold mt-1">Batch <?= Yii::$app->formatter->asPercent($model->percentageReviewed,1) ?> Complete</h3>
                 <div class="w-48 h-2 bg-white/20 rounded-full mt-3 overflow-hidden">
                     <div class="bg-white h-full w-[84%]"></div>
                 </div>
@@ -86,10 +95,22 @@ ICO;
             class="px-8 py-6 flex flex-col md:flex-row justify-between items-center gap-4 border-b border-surface-container">
             <h2 class="font-['Manrope'] font-bold text-xl">Applicant Registry</h2>
             <div class="flex gap-2">
-                <button
+                <!-- <button
                     class="flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors">
                     <span class="material-symbols-outlined text-lg">filter_list</span> Filter
-                </button>
+                </button> -->
+                <?= 
+                (Yii::$app->request->get('placement') !== null)?
+                yii\helpers\Html::a(
+                        '<span class="material-symbols-outlined text-lg">mail</span> Email Candidates',
+                        'mailto:staff@kemri.go.ke?subject=Candidate%20Selection&body=' . rawurlencode($emailBody),
+                        [
+                            'id' => 'btnMailCandidates',
+                            'class' => 'btn-mail-candidates inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors no-underline'
+                        ]
+                    )
+                : '';
+                 ?>
                 <button id="btnExportExcel"
                     class="btn-export-excel flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors">
                     <span class="material-symbols-outlined text-lg">download</span> Export

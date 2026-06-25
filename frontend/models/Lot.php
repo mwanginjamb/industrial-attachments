@@ -92,6 +92,33 @@ class Lot extends \yii\db\ActiveRecord
         return $this->hasMany(Application::class, ['lot_id' => 'id'])->count();
     }
 
+    // Pending  Review
+
+    public function getReviewed()
+    {
+        return $this->hasMany(Application::class, ['lot_id' => 'id'])->andWhere(['is not', 'placement', null]);
+    }
+
+    public function getReviewedCount()
+    {
+        return $this->getReviewed()->count();
+    }
+
+    // Get Percentage for reviewed applications on this lot
+
+    public function getPercentageReviewed()
+    {
+         $total = $this->getApplicationsCount();
+        $reviewed = $this->getReviewedCount();
+
+        if ($total == 0) {
+            return 0;
+        }
+
+        return ($reviewed / $total) * 100;
+    }
+
+
     //  Milestone 1: get lot application deadline (2 weeks before closing date)
 
     public function getApplicationStartDate()
