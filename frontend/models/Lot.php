@@ -108,7 +108,7 @@ class Lot extends \yii\db\ActiveRecord
 
     public function getPercentageReviewed()
     {
-         $total = $this->getApplicationsCount();
+        $total = $this->getApplicationsCount();
         $reviewed = $this->getReviewedCount();
 
         if ($total == 0) {
@@ -147,7 +147,8 @@ class Lot extends \yii\db\ActiveRecord
             return null;
         }
 
-        return date('Y-m-d', strtotime($this->opening_date . ' +2 weeks'));
+        $applicationProcessingWindow = Yii::$app->params['lotProcessingWindowDays'];
+        return date('Y-m-d', strtotime($this->opening_date . ' -' . $applicationProcessingWindow . ' days'));
     }
 
     // retrun structured lot milestone data for frontend display
