@@ -104,7 +104,7 @@ $emailBody = "Dear Colleagues,\n\n"
                 <?=
                     (Yii::$app->request->get('placement') !== null) ?
                     yii\helpers\Html::a(
-                        '<span class="material-symbols-outlined text-lg">mail</span> Email Candidates',
+                        '<span class="material-symbols-outlined text-lg">mail</span> Email Department',
                         'mailto:staff@kemri.go.ke?subject=Candidate%20Selection&body=' . rawurlencode($emailBody),
                         [
                             'id' => 'btnMailCandidates',

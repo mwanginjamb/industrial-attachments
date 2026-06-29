@@ -18,7 +18,7 @@ class m260608_221639_create_institution_table extends Migration
             'created_at' => $this->integer(25),
             'updated_at' => $this->integer(25),
             'created_by' => $this->integer(),
-            'updated_by' => $this->integer (),
+            'updated_by' => $this->integer(),
         ]);
     }
 
