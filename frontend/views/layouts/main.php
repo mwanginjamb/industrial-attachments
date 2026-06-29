@@ -18,6 +18,10 @@ $this->registerLinkTag(['rel' => 'preconnect', 'href' => 'https://fonts.googleap
 $this->registerLinkTag(['rel' => 'preconnect', 'href' => 'https://fonts.gstatic.com', 'crossorigin' => true]);
 
 AppAsset::register($this);
+
+$auth = Yii::$app->authManager;
+$role = implode(',', array_keys($auth->getRolesByUser(Yii::$app->user->id)));
+$userTitle = Yii::$app->user->identity->username.' - '.$role;
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -232,7 +236,7 @@ AppAsset::register($this);
                 <?= Html::a(
                     '<span class="material-symbols-outlined">settings</span>',
                     ['/lot/index'],
-                    ['class' => 'p-2 text-slate-600 hover:bg-slate-200/50 rounded-full transition-colors', 'encode' => false, 'title' => 'HR Settings']
+                    ['class' => 'p-2 text-slate-600 hover:bg-slate-200/50 rounded-full transition-colors', 'encode' => false, 'title' => 'HR Settings '.$userTitle ]
                 ) ?>
                 <!-- User avatar -->
                 <div class="h-8 w-8 rounded-full bg-primary-container overflow-hidden">

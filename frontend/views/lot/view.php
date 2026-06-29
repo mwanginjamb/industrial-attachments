@@ -18,13 +18,13 @@ $selected = <<<ICO
 ICO;
 
 // Get the current absolute URL dynamically
-$currentUrl = Yii::$app->request->absoluteUrl.'&selection='.$model->id;
+$currentUrl = Yii::$app->request->absoluteUrl . '&selection=' . $model->id;
 // Construct the structured email body using double quotes for \n to work
 $emailBody = "Dear Colleagues,\n\n"
-           . "please access this list and select suitable candidates.\n\n"
-           . "Link: " . Html::encode($currentUrl) . "\n\n"
-           . "Regards,\n"
-           . "HR Team";
+    . "please access this list and select suitable candidates.\n\n"
+    . "Link: " . Html::encode($currentUrl) . "\n\n"
+    . "Regards,\n"
+    . "HR Team";
 ?>
 <div class="lot-view">
 
@@ -75,7 +75,9 @@ $emailBody = "Dear Colleagues,\n\n"
             class="md:col-span-2 bg-primary-container p-6 rounded-xl flex items-center justify-between text-on-primary-container relative overflow-hidden">
             <div class="z-10">
                 <span class="text-sm font-medium opacity-80">Processing Status</span>
-                <h3 class="text-2xl font-bold mt-1">Batch <?= Yii::$app->formatter->asPercent($model->percentageReviewed,1) ?> Complete</h3>
+                <h3 class="text-2xl font-bold mt-1">Batch
+                    <?= Yii::$app->formatter->asPercent($model->percentageReviewed, 1) ?> Complete
+                </h3>
                 <div class="w-48 h-2 bg-white/20 rounded-full mt-3 overflow-hidden">
                     <div class="bg-white h-full w-[84%]"></div>
                 </div>
@@ -99,9 +101,9 @@ $emailBody = "Dear Colleagues,\n\n"
                     class="flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors">
                     <span class="material-symbols-outlined text-lg">filter_list</span> Filter
                 </button> -->
-                <?= 
-                (Yii::$app->request->get('placement') !== null)?
-                yii\helpers\Html::a(
+                <?=
+                    (Yii::$app->request->get('placement') !== null) ?
+                    yii\helpers\Html::a(
                         '<span class="material-symbols-outlined text-lg">mail</span> Email Candidates',
                         'mailto:staff@kemri.go.ke?subject=Candidate%20Selection&body=' . rawurlencode($emailBody),
                         [
@@ -109,8 +111,8 @@ $emailBody = "Dear Colleagues,\n\n"
                             'class' => 'btn-mail-candidates inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors no-underline'
                         ]
                     )
-                : '';
-                 ?>
+                    : '';
+                ?>
                 <button id="btnExportExcel"
                     class="btn-export-excel flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors">
                     <span class="material-symbols-outlined text-lg">download</span> Export
@@ -153,12 +155,13 @@ $emailBody = "Dear Colleagues,\n\n"
                     <tr
                         class="bg-surface-container-low text-on-surface-variant uppercase text-[10px] font-black tracking-widest">
                         <th class="px-8 py-4" data-priority="1">Name &amp; ID</th>
-                        <th class="px-6 py-4" data-priority="2">Year / Level</th>
-                        <th class="px-6 py-4" data-priority="3">Institution</th>
-                        <th class="px-6 py-4 text-success" data-priority="4">Preferred Placement</th>
-                        <th class="px-6 py-4 text-success" data-priority="5">Selected</th>
-                        <th class="px-6 py-4" data-priority="6">Status</th>
-                        <th class="px-8 py-4 text-right" data-priority="7">Actions</th>
+                        <th class="px-6 py-4" data-priority="2">Year</th>
+                        <th class="px-6 py-4" data-priority="3">Level</th>
+                        <th class="px-6 py-4" data-priority="4">Institution</th>
+                        <th class="px-6 py-4 text-success" data-priority="5">Preferred Placement</th>
+                        <th class="px-6 py-4 text-success" data-priority="6">Selected</th>
+                        <th class="px-6 py-4" data-priority="7">Status</th>
+                        <th class="px-8 py-4 text-right" data-priority="8">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-surface-container">
@@ -185,6 +188,8 @@ $emailBody = "Dear Colleagues,\n\n"
                             </td>
                             <td class="px-6 py-5">
                                 <p class="text-sm font-medium"><?= $application['attachee']['year_of_study'] ?></p>
+                            </td>
+                            <td class="px-6 py-5 text-sm">
                                 <p class="text-xs text-on-surface-variant"><?= $application['attachee']['course_name'] ?>
                                 </p>
                             </td>

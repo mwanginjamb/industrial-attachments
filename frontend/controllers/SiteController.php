@@ -127,7 +127,7 @@ class SiteController extends Controller
             ->where(['attachee_id' => $attachee->id])
             ->asArray()
             ->limit(5)
-            ->orderBy(['id' => SORT_ASC])
+            ->orderBy(['id' => SORT_DESC])
             ->all() : 0;
 
         $icons = [

@@ -217,10 +217,29 @@ $params = Yii::$app->request->get('LotSearch', []);
                                             );
                                         }
 
+                                        // Delete Action
+                                        $delete = '';
+
+                                        if (Yii::$app->user->can('delete-lot')) {
+                                            $delete = Html::a(
+                                                '<span class="material-symbols-outlined text-sm">delete</span>',
+                                                ['lot/delete', 'id' => $model->id],
+                                                [
+                                                    'class' => 'p-2 rounded-lg hover:bg-surface-container-high transition inline-flex items-center text-on-surface-variant',
+                                                    'title' => 'Delete Lot',
+                                                    'data' => [
+                                                        'confirm' => 'Are you sure you want to delete this lot?',
+                                                        'method' => 'post'
+                                                    ]
+                                                ]
+                                            );
+                                        }
+
                                         return '
             <div class="flex justify-end gap-2">
                 ' . $view . '
                 ' . $update . '
+                ' . $delete . '
             </div>
         ';
                                     }

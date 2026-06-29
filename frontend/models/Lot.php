@@ -52,6 +52,7 @@ class Lot extends \yii\db\ActiveRecord
             [['created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             // make description unique
             [['description'], 'unique'],
+            [['description', 'opening_date', 'closing_date'], 'required']
         ];
     }
 
