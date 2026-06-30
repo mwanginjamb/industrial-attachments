@@ -20,6 +20,7 @@ use yii\helpers\Url;
 
 use frontend\models\Attachee;
 use frontend\models\AttacheeDocumentsTemplates;
+use yii\web\NotFoundHttpException;
 
 /**
  * Site controller
@@ -453,6 +454,23 @@ class SiteController extends Controller
         return $this->render('users', [
             'users' => $users
         ]);
+    }
+
+    /**
+     * Deletes an existing User model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param int $id ID
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionDelete($id)
+    {
+        //$this->findModel($id)->delete();
+        if (Yii::$app->user->id !== $id && User::findOne($id)->delete()) {
+            Yii::$app->session->setFlash('success', 'User deleted successfully.');
+        }
+
+        return $this->redirect(['users']);
     }
 
     public function actionLookupEmployee($employeeNumber)
