@@ -110,6 +110,61 @@ $this->params['breadcrumbs'][] = $this->title;
                     'readonly' => true,
                 ]) ?>
 
+
+             <!-- Institution_id -->
+            <?= $form->field($model, 'institution_id', $fieldConfig)
+                ->dropDownList(
+                    \yii\helpers\ArrayHelper::map(\frontend\models\Institution::find()->all(), 'id', 'name'),
+                    [
+                        'class' => $inputClass,
+                        'readonly' => true,
+                    ]
+                ) ?>
+
+
+            <!-- phone number -->
+            <?= $form->field($model, 'attachee_phone_number', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => '07xxxxxxxx',
+                    'type' => 'tel',
+                    'maxlength' => 10
+                ]) ?>
+
+
+             <!-- email_address -->
+            <?= $form->field($model, 'email_address', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => 'Enter your email address',
+                ]) ?>
+
+
+             <!-- id_number -->
+            <?= $form->field($model, 'id_number', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => 'Enter your ID number',
+                    'maxlength' => 8
+                ]); ?>
+
+             <!-- nok_phone_number -->
+            <?= $form->field($model, 'nok_phone_number', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => '07xxxxxxxx',
+                    'type' => 'tel',
+                    'maxlength' => 10
+                ]) ?>
+
+
+
+
+
+
+
+
+
         </div>
 
 

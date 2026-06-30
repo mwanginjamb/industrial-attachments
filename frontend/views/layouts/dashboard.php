@@ -70,7 +70,7 @@ $this->beginPage();
                     <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
                 </button>
 
-                <?= Html::a(' <span class="material-symbols-outlined text-on-surface-variant">settings</span> Settings', ['lot/index'], ['class' => 'hidden md:block p-2 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-full transition-colors duration-200','encode' => false,'title' => 'HR Settings']) ?>
+                <?= (Yii::$app->user->can('hr') || Yii::$app->user->can('admin')) ? Html::a(' <span class="material-symbols-outlined text-on-surface-variant">settings</span> Settings', ['lot/index'], ['class' => 'hidden md:block p-2 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-full transition-colors duration-200','encode' => false,'title' => 'HR Settings']): '' ?>
                 
 
                 <!-- Profile Dropdown -->

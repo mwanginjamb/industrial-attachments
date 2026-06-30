@@ -7,10 +7,11 @@ use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
 /** @var yii\web\View $this */
-/** @var frontend\models\InstitutionSearch $searchModel */a
+/** @var frontend\models\InstitutionSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Institutions';
+$this->params['breadcrumbs'][] = ['label' => 'Institutions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="institution-index">

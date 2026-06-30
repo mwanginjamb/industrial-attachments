@@ -56,8 +56,8 @@ $userTitle = Yii::$app->user->identity->username.' - '.$role;
     $sideNavItems = [
         //['label' => 'Overview',         'url' => ['/site/index'],       'icon' => 'dashboard'],
         ['label' => 'Student List',     'url' => ['/lot/index'],    'icon' => 'group'],
-        //['label' => 'Company Partners', 'url' => ['/company/index'],    'icon' => 'business_center'],
-       // ['label' => 'Document Review',  'url' => ['/document/index'],   'icon' => 'description'],
+        ['label' => 'Institutions List', 'url' => ['/institution/index'],    'icon' => 'business_center'],
+        ['label' => 'Placement Areas',  'url' => ['/placement-area/index'],   'icon' => 'map'],
        // ['label' => 'System Logs',      'url' => ['/log/index'],        'icon' => 'analytics'],
 
         // ── Nested group: add a 'children' key, no 'url' ──

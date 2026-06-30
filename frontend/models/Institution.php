@@ -43,6 +43,7 @@ class Institution extends \yii\db\ActiveRecord
             [['name', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'default', 'value' => null],
             [['created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['name'], 'string', 'max' => 350],
+            ['name', 'required', 'message' => 'Please enter an institution name.'],
         ];
     }
 

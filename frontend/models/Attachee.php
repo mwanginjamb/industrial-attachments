@@ -21,6 +21,13 @@ use Yii;
  * @property int|null $level_of_education
  * @property string|null $attachee_reference
  * @property int $institution_id
+ * 
+ * @property string $attachee_phone_number
+ * @property string $email_address
+ * @property string $id_number
+ * @property string $nok_phone_number
+ * 
+ * 
  * @property Application[] $applications
  * @property AttacheeDocuments[] $attacheeDocuments
  * @property User $user
@@ -78,6 +85,12 @@ class Attachee extends \yii\db\ActiveRecord
             ['institution_id', 'integer'],
             ['institution_id', 'exist', 'skipOnError' => true, 'targetClass' => Institution::class, 'targetAttribute' => ['institution_id' => 'id']],
             ['institution_id', 'required'],
+
+            [['attachee_phone_number', 'email_address', 'id_number', 'nok_phone_number'], 'required'],
+            ['attachee_phone_number', 'string', 'max' => 10],
+            ['email_address', 'email'],
+            ['id_number', 'string', 'max' => 8],
+            ['nok_phone_number', 'string', 'max' => 10],
         ];
     }
 
@@ -100,6 +113,7 @@ class Attachee extends \yii\db\ActiveRecord
             'updated_by' => 'Updated By',
             'level_of_education' => 'Level Of Education',
             'attachee_reference' => 'Attachee Reference',
+            'nok_phone_number' => 'Next of Kin Phone Number',
         ];
     }
 
