@@ -142,7 +142,19 @@ class Attachee extends \yii\db\ActiveRecord
     //validates if attachee profile is complete by checking if the required fields are filled
     public static function isComplete($attachee)
     {
-        return $attachee->name && $attachee->year_of_study && $attachee->course_name && $attachee->expected_completion_date && $attachee->area_of_interest && $attachee->level_of_education;
+        return (
+            $attachee->name &&
+            $attachee->year_of_study &&
+            $attachee->course_name &&
+            $attachee->expected_completion_date &&
+            $attachee->area_of_interest &&
+            $attachee->level_of_education &&
+            $attachee->institution_id &&
+            $attachee->attachee_phone_number &&
+            $attachee->email_address &&
+            $attachee->id_number &&
+            $attachee->nok_phone_number
+        );
     }
 
     /**
