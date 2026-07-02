@@ -127,7 +127,9 @@ class AttacheeController extends Controller
         $this->layout = 'dashboard';
         $model = $this->findModel($id);
         $model->scenario = 'update';
+
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Profile updated successfully.');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

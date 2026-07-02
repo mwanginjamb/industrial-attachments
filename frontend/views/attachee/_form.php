@@ -234,17 +234,17 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
 
                                         <?php endif; ?>
                                         <!-- inline upload form -->
-                                        <?php $form = ActiveForm::begin(['id' => 'national-id-form', 'options' => ['name' => $file->formName()]]); ?>
+                                        <?php $form = ActiveForm::begin(['id' => 'national-id-form-' . $t['id'], 'options' => ['name' => $file->formName()]]); ?>
                                         <?= $form->field($file, 'attachee_id')->hiddenInput(['value' => $model->attachee_reference])->label(false) ?>
                                         <?= $form->field($file, 'document_type')->hiddenInput(['value' => $t['id']])->label(false) ?>
                                         <?= $form->field($file, 'attachment', [
                                             'template' => '{input}{error}',
                                             'errorOptions' => ['class' => 'text-xs text-error mt-1 text-right'],
                                         ])->fileInput([
-                                                    'id' => 'national-id-input',
+                                                    'id' => 'national-id-input-' . $t['id'],
                                                     'class' => 'hidden',
                                                 ])->label(false) ?>
-                                        <label for="national-id-input"
+                                        <label for="national-id-input-<?= $t['id'] ?>"
                                             class="inline-block px-4 py-2 bg-primary-container text-on-primary-container rounded-lg font-bold text-xs shadow-sm hover:shadow-md transition-all cursor-pointer">
                                             Upload Now
                                         </label>
@@ -275,9 +275,10 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
 $script = <<<JS
 // Add any custom JavaScript here
  $('input[type=file]').change(function(e){
-        const form = e.target.closest('form');
-        let Service = $(form).find("input[id=file-service]").val();
-        InlineGlobalUpload(Service,'file','attachment','AttacheeDocuments', form);   
+      // const form = e.target.closest('form');
+       const form = e.target.closest('form');
+       let Service = $(form).find("input[id=file-service]").val();
+       InlineGlobalUpload(Service,'file','attachment','AttacheeDocuments', form);   
     });
 JS;
 
