@@ -7,6 +7,7 @@ use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
 use yii\bootstrap5\Alert;
 use yii\helpers\Url;
+use Yii;
 
 $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
@@ -19,9 +20,11 @@ $this->registerLinkTag(['rel' => 'preconnect', 'href' => 'https://fonts.gstatic.
 
 AppAsset::register($this);
 
-$auth = Yii::$app->authManager;
-$role = implode(',', array_keys($auth->getRolesByUser(Yii::$app->user->id)));
-$userTitle = Yii::$app->user->identity->username.' - '.$role;
+if(!Yii::$app->user->isGuest) {
+    $auth = Yii::$app->authManager;
+    $role = implode(',', array_keys($auth->getRolesByUser(Yii::$app->user->id)));
+    $userTitle = Yii::$app->user->identity->username.' - '.$role;
+}
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
