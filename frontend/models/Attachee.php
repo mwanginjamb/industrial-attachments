@@ -1,6 +1,7 @@
 <?php
 
 namespace frontend\models;
+use frontend\models\Institution;
 
 use Yii;
 
@@ -26,7 +27,7 @@ use Yii;
  * @property string $email_address
  * @property string $id_number
  * @property string $nok_phone_number
- * 
+ * @property string|null $other_institution_name
  * 
  * @property Application[] $applications
  * @property AttacheeDocuments[] $attacheeDocuments
@@ -82,8 +83,17 @@ class Attachee extends \yii\db\ActiveRecord
 
             //set attachee reference to be unique
             ['attachee_reference', 'unique'],
-            ['institution_id', 'integer'],
-            ['institution_id', 'exist', 'skipOnError' => true, 'targetClass' => Institution::class, 'targetAttribute' => ['institution_id' => 'id']],
+            ['institution_id', 'safe'],
+            [
+                'institution_id',
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Institution::class,
+                'targetAttribute' => ['institution_id' => 'id'],
+                'when' => function ($model) {
+                    return $model->institution_id !== 'other'; // Exclude "Other" from the validation
+                }
+            ],
             ['institution_id', 'required'],
 
             [['attachee_phone_number', 'email_address', 'id_number', 'nok_phone_number'], 'required'],
@@ -91,6 +101,18 @@ class Attachee extends \yii\db\ActiveRecord
             ['email_address', 'email'],
             ['id_number', 'string', 'max' => 8],
             ['nok_phone_number', 'string', 'max' => 10],
+
+            ['other_institution_name', 'string', 'max' => 250],
+            [
+                'other_institution_name',
+                'required',
+                'when' => function ($model) {
+                    return $model->institution_id == 'other'; // Assuming 'other' is the ID for "Other"
+                },
+                'whenClient' => "function (attribute, value) {
+                    return $('#attachee-institution_id').val() == 'other';
+                }",
+            ],
         ];
     }
 
@@ -163,6 +185,30 @@ class Attachee extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
+
+            // User selected "Other"
+            if ($this->institution_id === 'other' && !empty($this->other_institution_name)) {
+
+                // Check whether institution already exists
+                $institution = Institution::find()
+                    ->where(['name' => $this->other_institution_name])
+                    ->one();
+
+                // Create it if it doesn't exist
+                if ($institution === null) {
+                    $institution = new Institution();
+                    $institution->name = $this->other_institution_name;
+
+                    if (!$institution->save()) {
+                        return false;
+                    }
+                }
+
+                // Replace "other" with the actual institution id
+                $this->institution_id = $institution->id;
+            }
+
+
             if ($insert) {
                 // Generate attachee reference only for new records
                 $this->attachee_reference = 'ATTACHEE' . date('YmdHis');

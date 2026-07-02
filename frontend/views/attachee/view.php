@@ -113,13 +113,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
              <!-- Institution_id -->
             <?= $form->field($model, 'institution_id', $fieldConfig)
-                ->dropDownList(
-                    \yii\helpers\ArrayHelper::map(\frontend\models\Institution::find()->all(), 'id', 'name'),
-                    [
-                        'class' => $inputClass,
-                        'readonly' => true,
-                    ]
-                ) ?>
+                ->textInput([
+                    'class' => $inputClass,
+                    'readonly' => true,
+                    'value' => $model->institution->name ?? 'N/A',
+                ]) ?>
 
 
             <!-- phone number -->
@@ -128,7 +126,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'class' => $inputClass,
                     'placeholder' => '07xxxxxxxx',
                     'type' => 'tel',
-                    'maxlength' => 10
+                    'readonly' => true,
                 ]) ?>
 
 
@@ -137,6 +135,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ->textInput([
                     'class' => $inputClass,
                     'placeholder' => 'Enter your email address',
+                    'readonly' => true,
                 ]) ?>
 
 
@@ -145,6 +144,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ->textInput([
                     'class' => $inputClass,
                     'placeholder' => 'Enter your ID number',
+                    'readonly' => true,
                     'maxlength' => 8
                 ]); ?>
 
@@ -154,6 +154,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'class' => $inputClass,
                     'placeholder' => '07xxxxxxxx',
                     'type' => 'tel',
+                    'readonly' => true,
                     'maxlength' => 10
                 ]) ?>
 

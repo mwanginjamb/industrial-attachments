@@ -108,10 +108,16 @@ class AttacheeController extends Controller
         }
 
         $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
+        $institutions = \yii\helpers\ArrayHelper::merge(
+            ['other' => 'Other'],
+            \yii\helpers\ArrayHelper::map(\frontend\models\Institution::find()->all(), 'id', 'name')
+        );
+
         return $this->render('create', [
             'model' => $model,
             'fileModel' => new \frontend\models\File(),
             'docTemplates' => $templates,
+            'institutions' => $institutions,
         ]);
     }
 
@@ -134,11 +140,16 @@ class AttacheeController extends Controller
         }
 
         $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
+        $institutions = \yii\helpers\ArrayHelper::merge(
+            ['other' => 'Other'],
+            \yii\helpers\ArrayHelper::map(\frontend\models\Institution::find()->all(), 'id', 'name')
+        );
 
         return $this->render('update', [
             'model' => $model,
             'fileModel' => new \frontend\models\File(),
             'docTemplates' => $templates,
+            'institutions' => $institutions,
         ]);
     }
 

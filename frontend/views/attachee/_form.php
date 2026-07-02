@@ -103,7 +103,7 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
             <!-- Institution -->
             <?= $form->field($model, 'institution_id', $fieldConfig)
                 ->dropDownList(
-                    \yii\helpers\ArrayHelper::map(\frontend\models\Institution::find()->all(), 'id', 'name'),
+                    $institutions,
                     ['class' => $inputClass]
                 ) ?>
 
@@ -115,6 +115,16 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
                     'type' => 'tel',
                     'maxlength' => 10
                 ]) ?>
+
+            <!-- Other Institution Name (conditionally displayed) -->
+            <div id="other-institution-wrapper" style="<?= $model->institution_id === 'other' ? '' : 'display:none' ?>">
+                <?= $form->field($model, 'other_institution_name', $fieldConfig)
+                    ->textInput([
+                        'class' => $inputClass,
+                        'maxlength' => 250,
+                        'placeholder' => 'Enter institution name',
+                    ])->label('Other Institution') ?>
+            </div>
 
             <!-- email_address -->
             <?= $form->field($model, 'email_address', $fieldConfig)
@@ -279,6 +289,26 @@ $script = <<<JS
        const form = e.target.closest('form');
        let Service = $(form).find("input[id=file-service]").val();
        InlineGlobalUpload(Service,'file','attachment','AttacheeDocuments', form);   
+    });
+
+    // Toogle visibility of "Other Institution Name" field based on the selected institution
+
+
+    function toggleOtherInstitution() {
+        const institution = $('#attachee-institution_id').val();
+
+        if (institution === 'other') {
+            $('#other-institution-wrapper').slideDown();
+        } else {
+            $('#other-institution-wrapper').slideUp();
+            $('#attachee-other_institution_name').val('');
+        }
+    }
+
+    toggleOtherInstitution();
+
+    $('#attachee-institution_id').on('change', function () {
+        toggleOtherInstitution();
     });
 JS;
 
