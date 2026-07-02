@@ -51,9 +51,46 @@ class Lot extends \yii\db\ActiveRecord
             [['opening_date', 'closing_date'], 'date', 'format' => 'php:Y-m-d\TH:i'],
             [['created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             // make description unique
-            [['description'], 'unique'],
+            [['description'], 'unique', 'message' => 'This lot description already exists. Please choose a different description.'],
+            [['opening_date'], 'compare', 'compareAttribute' => 'closing_date', 'operator' => '<', 'type' => 'datetime', 'message' => 'Opening date must be before closing date.'],
+            [['closing_date'], 'compare', 'compareAttribute' => 'opening_date', 'operator' => '>', 'type' => 'datetime', 'message' => 'Closing date must be after opening date.'],
+            [['opening_date', 'closing_date'], 'validateDates'],
+            // Date Range Validation: Ensure that the opening_date and closing_date is =>90 days apart
+            [['opening_date', 'closing_date'], 'validateDateRange'],
             [['description', 'opening_date', 'closing_date'], 'required']
         ];
+    }
+
+
+    // Custom validation function to check if opening_date is before closing_date
+    public function validateDates($attribute, $params)
+    {
+        if ($this->opening_date && $this->closing_date) {
+            $openingDate = strtotime($this->opening_date);
+            $closingDate = strtotime($this->closing_date);
+
+            if ($openingDate >= $closingDate) {
+                $this->addError('opening_date', 'Opening date must be before closing date.');
+                $this->addError('closing_date', 'Closing date must be after opening date.');
+            }
+        }
+    }
+
+    // Validate that the opening_date and closing_date are at least 90 days apart
+    public function validateDateRange($attribute, $params)
+    {
+        if ($this->opening_date && $this->closing_date) {
+            $openingDate = strtotime($this->opening_date);
+            $closingDate = strtotime($this->closing_date);
+
+            $dateDifference = abs($closingDate - $openingDate);
+            $daysDifference = floor($dateDifference / (60 * 60 * 24));
+
+            if ($daysDifference < 90) {
+                $this->addError('opening_date', 'The opening date and closing date must be at least 90 days apart : Current Range - ' . $daysDifference . ' days.');
+                $this->addError('closing_date', 'The opening date and closing date must be at least 90 days apart: Current Range - ' . $daysDifference . ' days.');
+            }
+        }
     }
 
     /**

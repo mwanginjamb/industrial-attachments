@@ -8,6 +8,7 @@ use yii\bootstrap5\Html;
 use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 
+
 AppAsset::register($this);
 
 $this->beginPage();
@@ -110,11 +111,13 @@ $this->beginPage();
                                 Create Profile
                             </a>
                             <?php endif; ?>
-                            <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                                href="<?= Url::to(['/lot/index']) ?>">
-                                <span class="material-symbols-outlined text-primary">manage_accounts</span>
-                                Account Settings
-                            </a>
+                            <?php if(Yii::$app->user->can('admin')): ?>
+                                <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                                    href="<?= Url::to(['/lot/index']) ?>">
+                                    <span class="material-symbols-outlined text-primary">manage_accounts</span>
+                                    Account Settings
+                                </a>
+                            <?php endif; ?>
                             <!-- <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
                                 href="<?= Url::to(['/site/help']) ?>">
                                 <span class="material-symbols-outlined text-primary">help_outline</span>

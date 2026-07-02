@@ -99,6 +99,8 @@ class AttacheeController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                // Flash message for successful creation
+                Yii::$app->session->setFlash('success', 'Profile created successfully.');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {

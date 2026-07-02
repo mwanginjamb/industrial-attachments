@@ -165,6 +165,7 @@ class LotController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                Yii::$app->session->setFlash('success', 'Lot created successfully.');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -206,6 +207,8 @@ class LotController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+        // add a flash message to indicate successful deletion
+        Yii::$app->session->setFlash('success', 'Lot deleted successfully.');
 
         return $this->redirect(['index']);
     }

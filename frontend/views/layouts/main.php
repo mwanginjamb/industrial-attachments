@@ -7,7 +7,7 @@ use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
 use yii\bootstrap5\Alert;
 use yii\helpers\Url;
-use Yii;
+
 
 $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
