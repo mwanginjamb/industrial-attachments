@@ -116,6 +116,8 @@ class AttacheeController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                // Flash message for successful creation
+                Yii::$app->session->setFlash('success', 'Profile created successfully.');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -123,10 +125,16 @@ class AttacheeController extends Controller
         }
 
         $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
+        $institutions = \yii\helpers\ArrayHelper::merge(
+            ['other' => 'Other'],
+            \yii\helpers\ArrayHelper::map(\frontend\models\Institution::find()->all(), 'id', 'name')
+        );
+
         return $this->render('create', [
             'model' => $model,
             'fileModel' => new \frontend\models\File(),
             'docTemplates' => $templates,
+            'institutions' => $institutions,
         ]);
     }
 
@@ -142,16 +150,23 @@ class AttacheeController extends Controller
         $this->layout = 'dashboard';
         $model = $this->findModel($id);
         $model->scenario = 'update';
+
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Profile updated successfully.');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
+        $institutions = \yii\helpers\ArrayHelper::merge(
+            ['other' => 'Other'],
+            \yii\helpers\ArrayHelper::map(\frontend\models\Institution::find()->all(), 'id', 'name')
+        );
 
         return $this->render('update', [
             'model' => $model,
             'fileModel' => new \frontend\models\File(),
             'docTemplates' => $templates,
+            'institutions' => $institutions,
         ]);
     }
 

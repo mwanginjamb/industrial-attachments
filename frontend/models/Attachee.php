@@ -1,6 +1,7 @@
 <?php
 
 namespace frontend\models;
+use frontend\models\Institution;
 
 use Yii;
 
@@ -21,6 +22,13 @@ use Yii;
  * @property int|null $level_of_education
  * @property string|null $attachee_reference
  * @property int $institution_id
+ * 
+ * @property string $attachee_phone_number
+ * @property string $email_address
+ * @property string $id_number
+ * @property string $nok_phone_number
+ * @property string|null $other_institution_name
+ * 
  * @property Application[] $applications
  * @property AttacheeDocuments[] $attacheeDocuments
  * @property User $user
@@ -75,9 +83,36 @@ class Attachee extends \yii\db\ActiveRecord
 
             //set attachee reference to be unique
             ['attachee_reference', 'unique'],
-            ['institution_id', 'integer'],
-            ['institution_id', 'exist', 'skipOnError' => true, 'targetClass' => Institution::class, 'targetAttribute' => ['institution_id' => 'id']],
+            ['institution_id', 'safe'],
+            [
+                'institution_id',
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Institution::class,
+                'targetAttribute' => ['institution_id' => 'id'],
+                'when' => function ($model) {
+                    return $model->institution_id !== 'other'; // Exclude "Other" from the validation
+                }
+            ],
             ['institution_id', 'required'],
+
+            [['attachee_phone_number', 'email_address', 'id_number', 'nok_phone_number'], 'required'],
+            ['attachee_phone_number', 'string', 'max' => 10],
+            ['email_address', 'email'],
+            ['id_number', 'string', 'max' => 8],
+            ['nok_phone_number', 'string', 'max' => 10],
+
+            ['other_institution_name', 'string', 'max' => 250],
+            [
+                'other_institution_name',
+                'required',
+                'when' => function ($model) {
+                    return $model->institution_id == 'other'; // Assuming 'other' is the ID for "Other"
+                },
+                'whenClient' => "function (attribute, value) {
+                    return $('#attachee-institution_id').val() == 'other';
+                }",
+            ],
         ];
     }
 
@@ -100,13 +135,26 @@ class Attachee extends \yii\db\ActiveRecord
             'updated_by' => 'Updated By',
             'level_of_education' => 'Level Of Education',
             'attachee_reference' => 'Attachee Reference',
+            'nok_phone_number' => 'Next of Kin Phone Number',
         ];
     }
 
     //validates if attachee profile is complete by checking if the required fields are filled
     public static function isComplete($attachee)
     {
-        return $attachee->name && $attachee->year_of_study && $attachee->course_name && $attachee->expected_completion_date && $attachee->area_of_interest && $attachee->level_of_education;
+        return (
+            $attachee->name &&
+            $attachee->year_of_study &&
+            $attachee->course_name &&
+            $attachee->expected_completion_date &&
+            $attachee->area_of_interest &&
+            $attachee->level_of_education &&
+            $attachee->institution_id &&
+            $attachee->attachee_phone_number &&
+            $attachee->email_address &&
+            $attachee->id_number &&
+            $attachee->nok_phone_number
+        );
     }
 
     /**
@@ -149,6 +197,30 @@ class Attachee extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
+
+            // User selected "Other"
+            if ($this->institution_id === 'other' && !empty($this->other_institution_name)) {
+
+                // Check whether institution already exists
+                $institution = Institution::find()
+                    ->where(['name' => $this->other_institution_name])
+                    ->one();
+
+                // Create it if it doesn't exist
+                if ($institution === null) {
+                    $institution = new Institution();
+                    $institution->name = $this->other_institution_name;
+
+                    if (!$institution->save()) {
+                        return false;
+                    }
+                }
+
+                // Replace "other" with the actual institution id
+                $this->institution_id = $institution->id;
+            }
+
+
             if ($insert) {
                 // Generate attachee reference only for new records
                 $this->attachee_reference = 'ATTACHEE' . date('YmdHis');

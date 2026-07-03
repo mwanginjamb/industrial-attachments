@@ -75,7 +75,7 @@ $this->title = 'App Users';
                                             <?= $status ?>
                                         </td>
                                         <td>
-                                            <?= Html::a('<i class="fas fa-trash mx-1"></i>Delete', ['site/delete'], [
+                                            <?= Html::a('<i class="fas fa-trash mx-1"></i>Delete', ['site/delete', 'id' => $c->id], [
                                                 'class' => 'btn btn-xs btn-danger',
                                                 'data' => [
                                                     'confirm' => 'Are you sure you want to delete this user?  Note this is a destructive action.',

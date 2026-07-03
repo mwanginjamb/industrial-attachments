@@ -110,6 +110,62 @@ $this->params['breadcrumbs'][] = $this->title;
                     'readonly' => true,
                 ]) ?>
 
+
+             <!-- Institution_id -->
+            <?= $form->field($model, 'institution_id', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'readonly' => true,
+                    'value' => $model->institution->name ?? 'N/A',
+                ]) ?>
+
+
+            <!-- phone number -->
+            <?= $form->field($model, 'attachee_phone_number', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => '07xxxxxxxx',
+                    'type' => 'tel',
+                    'readonly' => true,
+                ]) ?>
+
+
+             <!-- email_address -->
+            <?= $form->field($model, 'email_address', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => 'Enter your email address',
+                    'readonly' => true,
+                ]) ?>
+
+
+             <!-- id_number -->
+            <?= $form->field($model, 'id_number', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => 'Enter your ID number',
+                    'readonly' => true,
+                    'maxlength' => 8
+                ]); ?>
+
+             <!-- nok_phone_number -->
+            <?= $form->field($model, 'nok_phone_number', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => '07xxxxxxxx',
+                    'type' => 'tel',
+                    'readonly' => true,
+                    'maxlength' => 10
+                ]) ?>
+
+
+
+
+
+
+
+
+
         </div>
 
 

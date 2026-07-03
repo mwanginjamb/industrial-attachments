@@ -103,9 +103,53 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
             <!-- Institution -->
             <?= $form->field($model, 'institution_id', $fieldConfig)
                 ->dropDownList(
-                    \yii\helpers\ArrayHelper::map(\frontend\models\Institution::find()->all(), 'id', 'name'),
+                    $institutions,
                     ['class' => $inputClass]
                 ) ?>
+
+            <!-- phone number -->
+            <?= $form->field($model, 'attachee_phone_number', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => '07xxxxxxxx',
+                    'type' => 'tel',
+                    'maxlength' => 10
+                ]) ?>
+
+            <!-- Other Institution Name (conditionally displayed) -->
+            <div id="other-institution-wrapper" style="<?= $model->institution_id === 'other' ? '' : 'display:none' ?>">
+                <?= $form->field($model, 'other_institution_name', $fieldConfig)
+                    ->textInput([
+                        'class' => $inputClass,
+                        'maxlength' => 250,
+                        'placeholder' => 'Enter institution name',
+                    ])->label('Other Institution') ?>
+            </div>
+
+            <!-- email_address -->
+            <?= $form->field($model, 'email_address', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => 'Enter your email address',
+                ]) ?>
+
+            <!-- id_number -->
+            <?= $form->field($model, 'id_number', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => 'Enter your ID number',
+                    'maxlength' => 8
+                ]); ?>
+
+
+            <!-- nok_phone_number -->
+            <?= $form->field($model, 'nok_phone_number', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => '07xxxxxxxx',
+                    'type' => 'tel',
+                    'maxlength' => 10
+                ]) ?>
 
             <!-- hidden field for user_id -->
             <?= $form->field($model, 'user_id')->hiddenInput()->label(false) ?>
@@ -200,17 +244,17 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
 
                                         <?php endif; ?>
                                         <!-- inline upload form -->
-                                        <?php $form = ActiveForm::begin(['id' => 'national-id-form', 'options' => ['name' => $file->formName()]]); ?>
+                                        <?php $form = ActiveForm::begin(['id' => 'national-id-form-' . $t['id'], 'options' => ['name' => $file->formName()]]); ?>
                                         <?= $form->field($file, 'attachee_id')->hiddenInput(['value' => $model->attachee_reference])->label(false) ?>
                                         <?= $form->field($file, 'document_type')->hiddenInput(['value' => $t['id']])->label(false) ?>
                                         <?= $form->field($file, 'attachment', [
                                             'template' => '{input}{error}',
                                             'errorOptions' => ['class' => 'text-xs text-error mt-1 text-right'],
                                         ])->fileInput([
-                                                    'id' => 'national-id-input',
+                                                    'id' => 'national-id-input-' . $t['id'],
                                                     'class' => 'hidden',
                                                 ])->label(false) ?>
-                                        <label for="national-id-input"
+                                        <label for="national-id-input-<?= $t['id'] ?>"
                                             class="inline-block px-4 py-2 bg-primary-container text-on-primary-container rounded-lg font-bold text-xs shadow-sm hover:shadow-md transition-all cursor-pointer">
                                             Upload Now
                                         </label>
@@ -241,9 +285,30 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
 $script = <<<JS
 // Add any custom JavaScript here
  $('input[type=file]').change(function(e){
-        const form = e.target.closest('form');
-        let Service = $(form).find("input[id=file-service]").val();
-        InlineGlobalUpload(Service,'file','attachment','AttacheeDocuments', form);   
+      // const form = e.target.closest('form');
+       const form = e.target.closest('form');
+       let Service = $(form).find("input[id=file-service]").val();
+       InlineGlobalUpload(Service,'file','attachment','AttacheeDocuments', form);   
+    });
+
+    // Toogle visibility of "Other Institution Name" field based on the selected institution
+
+
+    function toggleOtherInstitution() {
+        const institution = $('#attachee-institution_id').val();
+
+        if (institution === 'other') {
+            $('#other-institution-wrapper').slideDown();
+        } else {
+            $('#other-institution-wrapper').slideUp();
+            $('#attachee-other_institution_name').val('');
+        }
+    }
+
+    toggleOtherInstitution();
+
+    $('#attachee-institution_id').on('change', function () {
+        toggleOtherInstitution();
     });
 JS;
 

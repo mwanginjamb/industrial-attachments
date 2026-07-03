@@ -8,6 +8,7 @@ use yii\widgets\Breadcrumbs;
 use yii\bootstrap5\Alert;
 use yii\helpers\Url;
 
+
 $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
 $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1.0']);
@@ -18,6 +19,12 @@ $this->registerLinkTag(['rel' => 'preconnect', 'href' => 'https://fonts.googleap
 $this->registerLinkTag(['rel' => 'preconnect', 'href' => 'https://fonts.gstatic.com', 'crossorigin' => true]);
 
 AppAsset::register($this);
+
+if(!Yii::$app->user->isGuest) {
+    $auth = Yii::$app->authManager;
+    $role = implode(',', array_keys($auth->getRolesByUser(Yii::$app->user->id)));
+    $userTitle = Yii::$app->user->identity->username.' - '.$role;
+}
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -52,8 +59,8 @@ AppAsset::register($this);
     $sideNavItems = [
         //['label' => 'Overview',         'url' => ['/site/index'],       'icon' => 'dashboard'],
         ['label' => 'Student List',     'url' => ['/lot/index'],    'icon' => 'group'],
-        //['label' => 'Company Partners', 'url' => ['/company/index'],    'icon' => 'business_center'],
-       // ['label' => 'Document Review',  'url' => ['/document/index'],   'icon' => 'description'],
+        ['label' => 'Institutions List', 'url' => ['/institution/index'],    'icon' => 'business_center'],
+        ['label' => 'Placement Areas',  'url' => ['/placement-area/index'],   'icon' => 'map'],
        // ['label' => 'System Logs',      'url' => ['/log/index'],        'icon' => 'analytics'],
 
         // ── Nested group: add a 'children' key, no 'url' ──
@@ -232,7 +239,7 @@ AppAsset::register($this);
                 <?= Html::a(
                     '<span class="material-symbols-outlined">settings</span>',
                     ['/lot/index'],
-                    ['class' => 'p-2 text-slate-600 hover:bg-slate-200/50 rounded-full transition-colors', 'encode' => false, 'title' => 'HR Settings']
+                    ['class' => 'p-2 text-slate-600 hover:bg-slate-200/50 rounded-full transition-colors', 'encode' => false, 'title' => 'HR Settings '.$userTitle ]
                 ) ?>
                 <!-- User avatar -->
                 <div class="h-8 w-8 rounded-full bg-primary-container overflow-hidden">

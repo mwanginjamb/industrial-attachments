@@ -57,6 +57,7 @@ class PlacementArea extends \yii\db\ActiveRecord
             [['description'], 'string'],
             [['created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
             [['name'], 'string', 'max' => 255],
+            ['name', 'required', 'message' => 'Please enter a placement area name (department,center, etc.).'],
         ];
     }
 

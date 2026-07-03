@@ -192,7 +192,7 @@ class ApplicationController extends Controller
             throw new NotFoundHttpException(Yii::t('app', 'The requested lot does not exist.'));
         }
 
-        // check if log is Active
+        // check if lot is Active
         if (!$lot->isActive) {
             Yii::$app->session->addFlash('error', 'The application period for this lot is closed.');
             return $this->redirect(['site/index']);
@@ -207,13 +207,13 @@ class ApplicationController extends Controller
             // do minimal profile save  - save the user id
             $attachee = $this->saveAttacheeProfile(Yii::$app->user->id);
             // redirect to attache update page
-            // return $this->redirect(['attachee/update', 'id' => $attachee->id]);
+            return $this->redirect(['attachee/update', 'id' => $attachee->id]);
         }
 
         // Validate the attachee profile completeness - check if the required fields are filled
         if ($attachee && !\frontend\models\Attachee::isComplete($attachee)) {
-            Yii::$app->session->setFlash('info', 'Please complete your profile before applying for Industrial Attachment.');
-            //return $this->redirect(['attachee/update', 'id' => $attachee->id]);
+            Yii::$app->session->setFlash('info', 'Please complete your profile information before applying for Industrial Attachment.');
+            return $this->redirect(['attachee/update', 'id' => $attachee->id]);
         }
 
 
@@ -224,7 +224,7 @@ class ApplicationController extends Controller
 
         if ($total_templates > $total_attachee_documents) {
             Yii::$app->session->setFlash('info', 'Please upload all required documents before applying for Industrial Attachment.');
-            // return $this->redirect(['attachee/update', 'id' => $attachee->id]);
+            return $this->redirect(['attachee/update', 'id' => $attachee->id]);
         }
 
 
