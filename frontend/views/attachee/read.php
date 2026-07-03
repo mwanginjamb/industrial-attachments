@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Reader');
 <!-- Iframe Container with Placeholder -->
 <div class="flex-1 bg-surface-container rounded-full relative group overflow-hidden shadow-[0_12px_40px_rgba(25,28,33,0.04)] border border-outline-variant/10">
 <!-- Loading State / Placeholder -->
-<div class="absolute inset-0 flex flex-col items-center justify-center z-10 bg-surface-container-lowest/50">
+<div class="absolute left-0 right-0 bottom-0 top-0 flex flex-col items-center justify-center z-10 bg-surface-container-lowest/50">
 <div class="w-16 h-16 rounded-full bg-primary-container/10 flex items-center justify-center mb-4">
 <span class="material-symbols-outlined text-primary text-4xl animate-pulse">description</span>
 </div>

@@ -10,6 +10,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\FileHelper;
 use frontend\models\AttacheeDocuments;
 use frontend\models\AttacheeDocumentsTemplates;
+use yii\filters\AccessControl;
 
 use Yii;
 
@@ -32,6 +33,22 @@ class AttacheeController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
+                'access' => [
+                'class' => AccessControl::class,
+                'only' => ['index', 'update', 'create', 'delete','read','view'],
+                'rules' => [
+                    [
+                        'actions' => ['signup', 'listing'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['read', 'index', 'delete','create','update','view'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             ]
         );
     }
