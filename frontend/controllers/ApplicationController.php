@@ -28,7 +28,7 @@ class ApplicationController extends Controller
             [
                 'access' => [
                     'class' => AccessControl::class,
-                    'only' => ['logout', 'signup', 'apply','create','update','view','index'],
+                    'only' => ['logout', 'signup', 'apply', 'create', 'update', 'view', 'index'],
                     'rules' => [
                         [
                             'actions' => ['signup'],
@@ -36,7 +36,7 @@ class ApplicationController extends Controller
                             'roles' => ['?'],
                         ],
                         [
-                            'actions' => ['logout', 'apply','create','update','view','index'],
+                            'actions' => ['logout', 'apply', 'create', 'update', 'view', 'index'],
                             'allow' => true,
                             'roles' => ['@'],
                         ],
@@ -267,7 +267,7 @@ class ApplicationController extends Controller
     {
         $attachee = new Attachee();
         $attachee->user_id = $userId;
-        if ($attachee->save()) {
+        if ($attachee->save(false)) {
             return $attachee;
         }
         return null;
