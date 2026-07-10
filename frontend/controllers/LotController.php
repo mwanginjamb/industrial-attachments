@@ -45,7 +45,7 @@ class LotController extends Controller
                 ],
                 'access' => [
                     'class' => AccessControl::class,
-                    'only' => ['logout', 'signup', 'index'],
+                    'only' => ['logout', 'signup', 'index', 'view', 'create', 'update', 'delete', 'commit', 'placements'],
                     'rules' => [
                         [
                             'actions' => ['signup'],
@@ -53,9 +53,34 @@ class LotController extends Controller
                             'roles' => ['?'],
                         ],
                         [
-                            'actions' => ['logout', 'index'],
+                            'actions' => ['logout', 'index', 'view'],
                             'allow' => true,
-                            'roles' => ['@'],
+                            'roles' => ['view-lot'],
+                        ],
+                        [
+                            'actions' => ['create'],
+                            'allow' => true,
+                            'roles' => ['create-lot'],
+                        ],
+                        [
+                            'actions' => ['update'],
+                            'allow' => true,
+                            'roles' => ['update-lot'],
+                        ],
+                        [
+                            'actions' => ['delete'],
+                            'allow' => true,
+                            'roles' => ['delete-lot'],
+                        ],
+                        [
+                            'actions' => ['commit'],
+                            'allow' => true,
+                            'roles' => ['staff', 'hr'],
+                        ],
+                        [
+                            'actions' => ['placements'],
+                            'allow' => true,
+                            'roles' => ['staff', 'hr'],
                         ],
                     ],
                 ],

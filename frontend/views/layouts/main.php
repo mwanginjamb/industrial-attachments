@@ -19,7 +19,7 @@ $this->registerLinkTag(['rel' => 'preconnect', 'href' => 'https://fonts.googleap
 $this->registerLinkTag(['rel' => 'preconnect', 'href' => 'https://fonts.gstatic.com', 'crossorigin' => true]);
 
 AppAsset::register($this);
-
+$userTitle = '';
 if(!Yii::$app->user->isGuest) {
     $auth = Yii::$app->authManager;
     $role = implode(',', array_keys($auth->getRolesByUser(Yii::$app->user->id)));
@@ -58,9 +58,9 @@ if(!Yii::$app->user->isGuest) {
     <?php
     $sideNavItems = [
         //['label' => 'Overview',         'url' => ['/site/index'],       'icon' => 'dashboard'],
-        ['label' => 'Student List',     'url' => ['/lot/index'],    'icon' => 'group'],
-        ['label' => 'Institutions List', 'url' => ['/institution/index'],    'icon' => 'business_center'],
-        ['label' => 'Placement Areas',  'url' => ['/placement-area/index'],   'icon' => 'map'],
+        ['label' => 'Student List',     'url' => ['/lot/index'],    'icon' => 'group', 'visible' => Yii::$app->user->can('view-lot')],
+        ['label' => 'Institutions List', 'url' => ['/institution/index'],    'icon' => 'business_center', 'visible' => Yii::$app->user->can('view-institution')],
+        ['label' => 'Placement Areas',  'url' => ['/placement-area/index'],   'icon' => 'map', 'visible' => Yii::$app->user->can('view-placement-area')],
        // ['label' => 'System Logs',      'url' => ['/log/index'],        'icon' => 'analytics'],
 
         // ── Nested group: add a 'children' key, no 'url' ──
@@ -77,6 +77,7 @@ if(!Yii::$app->user->isGuest) {
                 ['label' => 'Placement Areas',           'url' => ['/placement-area/index'],        'icon' => 'map'],
                 ['label' => 'Intake Lots',           'url' => ['/lot/index'],        'icon' => 'view_list'],
             ],
+            'visible' => Yii::$app->user->can('admin'),
         ],
     ];
 
@@ -85,6 +86,11 @@ if(!Yii::$app->user->isGuest) {
     $inactiveClasses = 'text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 hover:pl-2 transition-all duration-300 font-medium';
 
     foreach ($sideNavItems as $idx => $item):
+
+        if(isset($item['visible']) && !$item['visible']) {
+            continue; // Skip items that are not visible to the user
+            
+        }
 
         // ── GROUP / ACCORDION ──────────────────────────────────────────────────
         if (!empty($item['group'])):
