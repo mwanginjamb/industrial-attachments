@@ -10,8 +10,10 @@ use yii\filters\VerbFilter;
 use yii\helpers\FileHelper;
 use frontend\models\AttacheeDocuments;
 use frontend\models\AttacheeDocumentsTemplates;
+use yii\filters\AccessControl;
 
 use Yii;
+use yii\web\ForbiddenHttpException;
 
 /**
  * AttacheeController implements the CRUD actions for Attachee model.
@@ -32,6 +34,22 @@ class AttacheeController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
+                'access' => [
+                'class' => AccessControl::class,
+                'only' => ['index', 'update', 'create', 'delete','read','view'],
+                'rules' => [
+                    [
+                        'actions' => ['signup', 'listing'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['read', 'index', 'delete','create','update','view'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             ]
         );
     }
@@ -74,9 +92,8 @@ class AttacheeController extends Controller
     public function actionView($id)
     {
         $this->layout = 'dashboard';
-        $model = \frontend\models\Attachee::find()->where(['id' => $id])->one();
+        $model = $this->findModel($id);
         $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
-        //Yii::$app->utility->printrr($model, 10, true);
 
         return $this->render('view', [
             'model' => $model,
@@ -176,11 +193,24 @@ class AttacheeController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Attachee::findOne(['id' => $id])) !== null) {
+       $model = Attachee::findOne(['id' => $id]);
+       
+        if($model === null) {
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        }
+
+        // HR and Staff can access  any record
+        if(Yii::$app->user->can('hr') || Yii::$app->user->can('staff')){
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        // creator can access their record
+        if($model->created_by == Yii::$app->user->id) {
+            return $model;
+        }
+
+        // Everyone else of denied access
+        throw new ForbiddenHttpException('You are not allowed to access this resource!!');
     }
 
 
