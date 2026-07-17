@@ -19,11 +19,18 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['id' => 'reset-password-form']); ?>
 
-                <?= $form->field($model, 'password')->passwordInput(['autofocus' => true]) ?>
+            <?= $form->errorSummary($model) ?>
 
-                <div class="form-group">
-                    <?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
-                </div>
+            <?= $form->field($model, 'password')->passwordInput(['autofocus' => true]) ?>
+
+            <?= $form->field($model, 'passwordConfirm')->passwordInput([
+                'placeholder' => '••••••••',
+                'autocomplete' => 'new-password'
+            ]) ?>
+
+            <div class="form-group">
+                <?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
+            </div>
 
             <?php ActiveForm::end(); ?>
         </div>
