@@ -30,8 +30,9 @@ class Application extends \yii\db\ActiveRecord
     // status constants : submitted, under review, accepted, placed
     const STATUS_SUBMITTED = 1;
     const STATUS_UNDER_REVIEW = 2;
-    const STATUS_ACCEPTED = 3;
-    const STATUS_PLACED = 4;
+    const STATUS_SELECTED = 3;
+    
+   
 
 
     /**
