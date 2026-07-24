@@ -189,7 +189,7 @@ class LongListController extends Controller
             ])
             ->all();
 
-        $metrics = \Yii::$app->dashboard->getMetrics($id);
+        $metrics = \Yii::$app->dashboard->metrics($id);
 
 
         return $this->render('review', [
@@ -227,7 +227,7 @@ class LongListController extends Controller
             ])
             ->all();
 
-            $metrics = \Yii::$app->dashboard->getMetrics($id);
+            $metrics = \Yii::$app->dashboard->metrics($id);
 
         return $this->render('review', [
             'longList' => $longList,

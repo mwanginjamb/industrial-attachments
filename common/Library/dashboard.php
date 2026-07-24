@@ -21,7 +21,7 @@ class Dashboard extends Component
         return 0;
     }
 
-     public function getMetrics(int $longListId): array
+     public function metrics(int $longListId): array
     {
         $total = \frontend\models\LongListApplication::find()
             ->where([
