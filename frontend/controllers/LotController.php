@@ -308,7 +308,7 @@ class LotController extends Controller
     }
 
     // Email Department with longlist link for selection after creating the longlist based on placement area (department, center, etc.)
-    public function actionEmailDepartment($lotid, $placementId)
+    public function actionEmailDepartment($lotid, $placementid)
     {
         $tx = Yii::$app->db->beginTransaction();
         $lot = Lot::findOne($lotid);
@@ -316,15 +316,15 @@ class LotController extends Controller
             // create Long List
             $list = new \frontend\models\LongList();
             $list->lot_id = $lotid;
-            $list->placement_id = $placementId;
-            $list->description = 'Long List for Attachment Application Lot ID: ' . $lot->description . ' and Placement ID: ' . $this->getPlacementAreaName($placementId);
+            $list->placement_id = $placementid;
+            $list->description = 'Long List for Attachment Application Lot ID: ' . $lot->description . ' and Placement ID: ' . $this->getPlacementAreaName($placementid);
             $list->save(false);
 
             // Get filtered applications context
             $applications = \frontend\models\Application::find()
                 ->where([
                     'lot_id' => $lotid,
-                    'placement' => $placementId
+                    'placement' => $placementid
                 ])
                 ->all();
 
