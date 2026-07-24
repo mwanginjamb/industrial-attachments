@@ -5,7 +5,7 @@ use frontend\assets\ApplicantsAsset;
 
 
 /** @var yii\web\View $this */
-/** @var app\models\LongList $longList */
+/** @var frontend\models\LongList $longList */
 
 $model = $longList;
 
@@ -33,54 +33,61 @@ ICO;
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-1 mb-10">
                 <span class="text-green-600 text-sm font-medium">Application Start Date:
-                    <?= Yii::$app->formatter->asDate($model->applicationStartDate) ?>
+                    <?= Yii::$app->formatter->asDate($model->lot->applicationStartDate) ?>
                 </span>
                 <span class="text-error text-sm font-medium">Application End Date:
-                    <?= Yii::$app->formatter->asDate($model->applicationDeadline) ?>
+                    <?= Yii::$app->formatter->asDate($model->lot->applicationDeadline) ?>
                 </span>
                 <span class="text-on-surface-variant text-sm font-medium">Processing Deadline:
-                    <?= Yii::$app->formatter->asDate($model->placementDeadline) ?>
+                    <?= Yii::$app->formatter->asDate($model->lot->placementDeadline) ?>
                 </span>
             </div>
         </div>
-        <div class="flex gap-3">
-            <?php Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-            <?php Html::a('Delete', ['delete', 'id' => $model->id], [
-                'class' => 'btn btn-danger',
-                'data' => [
-                    'confirm' => 'Are you sure you want to delete this item?',
-                    'method' => 'post',
-                ],
-            ]) ?>
-        </div>
+       
     </div>
     <!-- end header div -->
 
     <!-- Stats Overview (Asymmetric Grid) -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-        <div class="md:col-span-1 bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
+     
+    <!-- global count of apps -->
+    <div class="md:col-span-1 bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
             <span class="text-on-surface-variant text-sm font-medium">Total Applicants</span>
             <div class="mt-4">
                 <span class="text-3xl font-black text-on-surface">
-                    <?= $model->applicationsCount ?>
+                    <?= $metrics['total'] ?>
                 </span>
                 <span class="text-green-600 text-xs font-bold ml-2"></span>
             </div>
         </div>
+        
+        <!-- selected count -->
         <div class="md:col-span-1 bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
-            <span class="text-on-surface-variant text-sm font-medium">Pending Review</span>
+            <span class="text-on-surface-variant text-sm font-medium">Selected</span>
             <div class="mt-4">
                 <span class="text-3xl font-black text-on-surface">
-                    <?= $model->reviewedCount ?>
+                    <?=  $metrics['selected'] ?>
                 </span>
             </div>
         </div>
+
+        <!-- review count -->
+        <div class="md:col-span-1 bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
+            <span class="text-on-surface-variant text-sm font-medium">Not Selected</span>
+            <div class="mt-4">
+                <span class="text-3xl font-black text-on-surface">
+                    <?=  $metrics['pending'] ?>
+                </span>
+            </div>
+        </div>
+        
+        <!-- processing status -->
         <div
             class="md:col-span-2 bg-primary-container p-6 rounded-xl flex items-center justify-between text-on-primary-container relative overflow-hidden">
             <div class="z-10">
-                <span class="text-sm font-medium opacity-80">Processing Status</span>
+                <span class="text-sm font-medium opacity-80">Progress</span>
                 <h3 class="text-2xl font-bold mt-1">Batch
-                    <?= Yii::$app->formatter->asPercent($model->percentageReviewed, 1) ?> Complete
+                    <?= Yii::$app->formatter->asPercent( $metrics['progress'], 1) ?> Complete
                 </h3>
                 <div class="w-48 h-2 bg-white/20 rounded-full mt-3 overflow-hidden">
                     <div class="bg-white h-full w-[84%]"></div>
@@ -105,7 +112,7 @@ ICO;
                     class="flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors">
                     <span class="material-symbols-outlined text-lg">filter_list</span> Filter
                 </button> -->
-                <?=
+                <?= ($metrics['selected'])> 0?
 
                     Html::a(
                         '<span class="material-symbols-outlined text-lg">check</span> Finalize Selection',
@@ -119,13 +126,13 @@ ICO;
                                 'confirm' => 'Are you sure you want to finalize this selection?',
                             ]
                         ]
-                    );
+                    ): '';
                 ?>
 
                 <?=
 
                     Html::a(
-                        '<span class="material-symbols-outlined text-lg">visibility</span> View Selected Applicants',
+                        '<span class="material-symbols-outlined text-lg">visibility</span> View Selected Applicants ('.$metrics['selected'].')',
                         [
                             'long-list/shortlist',
                             'id' => $longlist->id
@@ -160,7 +167,7 @@ ICO;
                         <th class="px-6 py-4" data-priority="2">Year</th>
                         <th class="px-6 py-4" data-priority="3">Level</th>
                         <th class="px-6 py-4" data-priority="4">Institution</th>
-                        <th class="px-6 py-4 text-success" data-priority="5">Preferred Placement</th>
+                        <th class="px-6 py-4  data-priority="5">Preferred Placement</th>
                         <th class="px-6 py-4 text-success" data-priority="6">Selected</th>
                         <th class="px-6 py-4" data-priority="7">Status</th>
                         <th class="px-8 py-4 text-right" data-priority="8">Actions</th>
