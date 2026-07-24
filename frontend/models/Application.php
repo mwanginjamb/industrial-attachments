@@ -31,8 +31,8 @@ class Application extends \yii\db\ActiveRecord
     const STATUS_SUBMITTED = 1;
     const STATUS_UNDER_REVIEW = 2;
     const STATUS_SELECTED = 3;
-    
-   
+
+
 
 
     /**
@@ -62,10 +62,10 @@ class Application extends \yii\db\ActiveRecord
             [['attachee_id'], 'exist', 'skipOnError' => true, 'targetClass' => Attachee::class, 'targetAttribute' => ['attachee_id' => 'id']],
             [['lot_id'], 'exist', 'skipOnError' => true, 'targetClass' => Lot::class, 'targetAttribute' => ['lot_id' => 'id']],
             //[['status'], 'exist', 'skipOnError' => true, 'targetClass' => ApplicationStatus::class, 'targetAttribute' => ['status' => 'id']],
-       
+
             [['placement'], 'integer'],
             [['closed'], 'boolean'],
-            ];
+        ];
     }
 
     /**
@@ -106,7 +106,7 @@ class Application extends \yii\db\ActiveRecord
     // Get Applications Placement Area
     public function getPlacementArea()
     {
-        return $this->hasOne(PlacementArea::class,['id' => 'placement']);
+        return $this->hasOne(PlacementArea::class, ['id' => 'placement']);
     }
 
     /**
@@ -129,6 +129,13 @@ class Application extends \yii\db\ActiveRecord
         return $this->hasOne(ApplicationStatus::class, ['id' => 'status']);
     }
 
+    // longlist memmbership
+
+    public function getLongListApplications()
+    {
+        return $this->hasMany(LongListApplication::class, ['application_id' => 'id']);
+    }
+
     // If placement field is updated , update status to review
     public function beforeSave($insert)
     {
@@ -139,6 +146,14 @@ class Application extends \yii\db\ActiveRecord
             return true;
         }
         return false;
+    }
+
+
+    // Current longList application
+
+    public function getCurrentLongListItem()
+    {
+        return $this->hasOne(LongListApplication::class, ['application_id' => 'id']);
     }
 
 }

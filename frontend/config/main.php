@@ -62,6 +62,7 @@ return [
                     'class' => yii\rest\UrlRule::class,
                     'controller' => [
                         'apiv1/application',
+                        'apiv1/long-list-application',
                     ],
                 ]
             ],

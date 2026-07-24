@@ -5,7 +5,9 @@ use frontend\assets\ApplicantsAsset;
 
 
 /** @var yii\web\View $this */
-/** @var app\models\lot $model */
+/** @var app\models\LongList $longList */
+
+$model = $longList;
 
 $this->title = $model->description;
 $this->params['breadcrumbs'][] = ['label' => 'Lots', 'url' => ['index']];
@@ -24,16 +26,21 @@ ICO;
     <!-- header div -->
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
         <div>
-            <h1 class="text-4xl font-extrabold tracking-tight text-on-surface"><?= Html::encode($this->title) ?></h1>
+            <h1 class="text-4xl font-extrabold tracking-tight text-on-surface">
+                <?= Html::encode($longList->placement->name) ?> Review List
+            </h1>
 
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-1 mb-10">
                 <span class="text-green-600 text-sm font-medium">Application Start Date:
-                    <?= Yii::$app->formatter->asDate($model->applicationStartDate) ?></span>
+                    <?= Yii::$app->formatter->asDate($model->applicationStartDate) ?>
+                </span>
                 <span class="text-error text-sm font-medium">Application End Date:
-                    <?= Yii::$app->formatter->asDate($model->applicationDeadline) ?></span>
+                    <?= Yii::$app->formatter->asDate($model->applicationDeadline) ?>
+                </span>
                 <span class="text-on-surface-variant text-sm font-medium">Processing Deadline:
-                    <?= Yii::$app->formatter->asDate($model->placementDeadline) ?></span>
+                    <?= Yii::$app->formatter->asDate($model->placementDeadline) ?>
+                </span>
             </div>
         </div>
         <div class="flex gap-3">
@@ -54,14 +61,18 @@ ICO;
         <div class="md:col-span-1 bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
             <span class="text-on-surface-variant text-sm font-medium">Total Applicants</span>
             <div class="mt-4">
-                <span class="text-3xl font-black text-on-surface"><?= $model->applicationsCount ?></span>
+                <span class="text-3xl font-black text-on-surface">
+                    <?= $model->applicationsCount ?>
+                </span>
                 <span class="text-green-600 text-xs font-bold ml-2"></span>
             </div>
         </div>
         <div class="md:col-span-1 bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
             <span class="text-on-surface-variant text-sm font-medium">Pending Review</span>
             <div class="mt-4">
-                <span class="text-3xl font-black text-on-surface"><?= $model->reviewedCount ?></span>
+                <span class="text-3xl font-black text-on-surface">
+                    <?= $model->reviewedCount ?>
+                </span>
             </div>
         </div>
         <div
@@ -95,20 +106,40 @@ ICO;
                     <span class="material-symbols-outlined text-lg">filter_list</span> Filter
                 </button> -->
                 <?=
-                    (\Yii::$app->request->get('placement') !== null) ?
+
                     Html::a(
-                        '<span class="material-symbols-outlined text-lg">mail</span> Email Department',
+                        '<span class="material-symbols-outlined text-lg">check</span> Finalize Selection',
                         [
-                            'lot/email-department',
-                            'lotId' => $model->id,
-                            'placement' => Yii::$app->request->get('placement')
+                            'long-list/finalize',
+                            'id' => $longlist->id
                         ],
                         [
-                            'class' => 'btn-mail-candidates inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors no-underline'
+                            'class' => 'btn btn-success inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors no-underline',
+                            'data' => [
+                                'confirm' => 'Are you sure you want to finalize this selection?',
+                            ]
                         ]
-                    )
-                    : '';
+                    );
                 ?>
+
+                <?=
+
+                    Html::a(
+                        '<span class="material-symbols-outlined text-lg">visibility</span> View Selected Applicants',
+                        [
+                            'long-list/shortlist',
+                            'id' => $longlist->id
+                        ],
+                        [
+                            'class' => 'btn inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors no-underline',
+                            'data' => [
+                                'confirm' => 'Are you sure you want to finalize this selection?',
+                            ]
+                        ]
+                    );
+                ?>
+
+
                 <button id="btnExportExcel"
                     class="btn-export-excel flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors">
                     <span class="material-symbols-outlined text-lg">download</span> Export
@@ -117,32 +148,7 @@ ICO;
         </div>
 
 
-        <!-- Search form -->
-        <form method="get" class="px-8 py-4 flex items-center gap-3 bg-surface-container-low border-b border-black/5">
-            <label for="placement">Filter By Placement Area</label>
-            <input type="hidden" name="id" value="<?= $model->id ?? '' ?>">
-            <?php if (count($pas)): ?>
-                <select name="placement" id="placement" class="px-5 py-2 rounded-lg border border-slate-200 text-sm">
-                    <?php foreach ($pas as $pa): ?>
 
-                        <option value="<?= $pa->id ?>" <?= ($params['placement'] ?? '') === $pa->id ? 'selected' : '' ?>>
-                            <?= $pa->name ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            <?php endif; ?>
-
-            <button class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-semibold">
-                Search
-            </button>
-
-            <!-- Reset -->
-            <a href="<?= \yii\helpers\Url::to(['view', 'id' => $model->id]) ?>"
-                class="text-sm text-on-surface-variant hover:underline">
-                Reset
-            </a>
-
-        </form>
 
 
         <div class="overflow-x-auto">
@@ -162,9 +168,10 @@ ICO;
                 </thead>
                 <tbody class="divide-y divide-surface-container">
                     <?php foreach ($applications as $application):
+                        $membership = $application->currentLongListItem;
                         if ($application?->attachee?->name == null)
                             continue;
-                        $endpoint = \yii\helpers\Url::home(true) . 'apiv1/applications/' . $application->id;
+                        $endpoint = \yii\helpers\Url::home(true) . 'apiv1/long-list-applications/' . $membership->id;
                         ?>
                         <!-- Row 1 -->
                         <tr class="hover:bg-surface-container-low/50 transition-colors group">
@@ -175,7 +182,9 @@ ICO;
                                         <?= ($application?->attachee?->name) ? strtoupper(substr($application?->attachee?->name, 0, 1)) : '' ?>
                                     </div>
                                     <div>
-                                        <p class="font-bold text-on-surface"><?= $application['attachee']['name'] ?></p>
+                                        <p class="font-bold text-on-surface">
+                                            <?= $application['attachee']['name'] ?>
+                                        </p>
                                         <p class="text-xs text-on-surface-variant">ID:
                                             <?= $application['attachee']['attachee_reference'] ?>
                                         </p>
@@ -183,10 +192,13 @@ ICO;
                                 </div>
                             </td>
                             <td class="px-6 py-5">
-                                <p class="text-sm font-medium"><?= $application['attachee']['year_of_study'] ?></p>
+                                <p class="text-sm font-medium">
+                                    <?= $application['attachee']['year_of_study'] ?>
+                                </p>
                             </td>
                             <td class="px-6 py-5 text-sm">
-                                <p class="text-xs text-on-surface-variant"><?= $application['attachee']['course_name'] ?>
+                                <p class="text-xs text-on-surface-variant">
+                                    <?= $application['attachee']['course_name'] ?>
                                 </p>
                             </td>
                             <td class="px-6 py-5 text-sm">
@@ -194,24 +206,26 @@ ICO;
                                     <?= $application?->attachee?->institution?->name ?>
                                 </span>
                                 <p class="text-xs text-on-surface-variant text-wrap max-w-xs">
-                                    <strong>Interests: </strong> <?= $application?->attachee?->area_of_interest ?>
+                                    <strong>Interests: </strong>
+                                    <?= $application?->attachee?->area_of_interest ?>
                                 </p>
                             </td>
-                            <td class="px-6 py-5 text-sm" data-key="<?= $application->id ?>" data-name="placement"
-                                data-service="<?= $endpoint ?>" ondblclick="addDropDown(this,'placements')" data-reload=1>
+                            <td class="px-6 py-5 text-sm" data-key="<?= $application->id ?>" data-name="placement">
                                 <span class="text-on-surface-variant font-medium">
                                     <?= !is_null($application['placement']) ? $application->placementArea->name : 'N/A' ?>
                                 </span>
                             </td>
-                            <td class="px-6 py-5 text-sm" data-key="<?= $application->id ?>" data-name="closed"
+                            <td class="px-6 py-5 text-sm" data-key="<?= $membership->id ?>" data-name="shortlisted"
                                 data-service="<?= $endpoint ?>" ondblclick="addInput(this,'checkbox')" data-reload=1>
                                 <span class="text-on-surface-variant font-medium">
-                                    <?= !is_null($application['closed']) ? $selected : '' ?>
+                                    <?= $membership->shortlisted ? $selected : '' ?>
                                 </span>
                             </td>
                             <td class="px-6 py-5">
                                 <span
-                                    class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[11px] font-bold uppercase tracking-tight"><?= !is_null($application['status0']) ? $application['status0']['description'] : 'N/A' ?></span>
+                                    class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[11px] font-bold uppercase tracking-tight">
+                                    <?= !is_null($application['status0']) ? $application['status0']['description'] : 'N/A' ?>
+                                </span>
                             </td>
                             <td class="px-8 py-5 text-right">
                                 <div class="flex justify-end gap-2">
