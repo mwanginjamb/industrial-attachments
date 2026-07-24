@@ -118,7 +118,7 @@ ICO;
                         '<span class="material-symbols-outlined text-lg">check</span> Finalize Selection',
                         [
                             'long-list/finalize',
-                            'id' => $longlist->id
+                            'id' => $longList->id
                         ],
                         [
                             'class' => 'btn btn-success inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors no-underline',
@@ -135,7 +135,7 @@ ICO;
                         '<span class="material-symbols-outlined text-lg">visibility</span> View Selected Applicants ('.$metrics['selected'].')',
                         [
                             'long-list/shortlist',
-                            'id' => $longlist->id
+                            'id' => $longList->id
                         ],
                         [
                             'class' => 'btn inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors no-underline',
