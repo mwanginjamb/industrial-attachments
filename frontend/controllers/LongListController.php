@@ -38,6 +38,22 @@ class LongListController extends Controller
         );
     }
 
+
+    public function beforeAction($action)
+    {
+
+        $ExceptedActions = [
+            'commit',
+            'placements'
+        ];
+
+        if (in_array($action->id, $ExceptedActions)) {
+            $this->enableCsrfValidation = false;
+        }
+
+        return parent::beforeAction($action);
+    }
+
     /**
      * Lists all LongList models.
      *
