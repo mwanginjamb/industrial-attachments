@@ -7,6 +7,7 @@ use frontend\models\LongList;
 use frontend\models\LongListApplication;
 use frontend\models\LongListSearch;
 use yii\filters\VerbFilter;
+use yii\filters\ContentNegotiator;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -33,6 +34,14 @@ class LongListController extends Controller
                     'actions' => [
                         'delete' => ['POST'],
                     ],
+                ],
+                 'contentNegotiator' => [
+                    'class' => ContentNegotiator::class,
+                    'only' => ['commit', 'placements'],
+                    'formatParam' => '_format',
+                    'formats' => [
+                        'application/json' => \yii\web\Response::FORMAT_JSON
+                    ]
                 ],
             ]
         );
