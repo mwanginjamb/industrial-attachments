@@ -27,7 +27,7 @@ ICO;
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
         <div>
             <h1 class="text-4xl font-extrabold tracking-tight text-on-surface">
-                <?= Html::encode($longList->lot->placement->name) ?> Review List
+                <?= Html::encode($longList->placement->name) ?> Review List
             </h1>
 
 
