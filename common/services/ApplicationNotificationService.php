@@ -9,11 +9,17 @@ class ApplicationNotificationService
 
     private array $handlers = [
 
+        Application::STATUS_SUBMITTED
+        => 'sendSubmissionEmail',
+
+        Application::STATUS_UNDER_REVIEW
+            => 'sendReviewEmail',
+
         Application::STATUS_SELECTED
-            => 'sendSelection',
+            => 'sendSelectionEmail',
 
         Application::STATUS_UNSUCCESSFUL
-            => 'sendRegret',
+            => 'sendRegretEmail',
 
     ];
 
@@ -37,6 +43,8 @@ class ApplicationNotificationService
 
         $this->$method($application);
 
+        return true;
+
 
     }
 
@@ -46,7 +54,7 @@ class ApplicationNotificationService
     {
         if (
             !$application->attachee ||
-            empty($application->attachee->email)
+            empty($application->attachee->email_address)
         ) {
             return;
         }
@@ -72,7 +80,7 @@ class ApplicationNotificationService
     {
         if (
             !$application->attachee ||
-            empty($application->attachee->email)
+            empty($application->attachee->email_address)
         ) {
             return;
         }
@@ -99,6 +107,83 @@ class ApplicationNotificationService
             )
             ->send();
     }
+
+    private function sendSubmissionEmail(
+    Application $application
+    ): bool {
+
+        if (
+            !$application->attachee ||
+            empty($application->attachee->email_address)
+        ) {
+            return false;
+        }
+
+        return Yii::$app->mailer
+            ->compose()
+            ->setTo(
+                $application->attachee->email_address
+            )
+            ->setSubject(
+                'Industrial Attachment Application Received'
+            )
+            ->setTextBody(
+                "Dear {$application->attachee->name},\n\n"
+
+                . "Thank you for applying to the Industrial Attachment Programme.\n\n"
+
+                . "We have successfully received your application and it is now awaiting processing.\n\n"
+
+                . "Should any additional information be required, you will be contacted through this email address.\n\n"
+
+                . "Thank you for your interest in our institution.\n\n"
+
+                . "Kind regards,\n"
+                . "HR Team"
+            )
+            ->send();
+}
+
+    private function sendReviewEmail(
+    Application $application
+): bool {
+
+    if (
+        !$application->attachee ||
+        empty($application->attachee->email_address)
+    ) {
+        return false;
+    }
+
+    $placementName =
+        $application->placementArea->name ?? 'assigned department';
+
+    return Yii::$app->mailer
+        ->compose()
+        ->setTo(
+            $application->attachee->email_address
+        )
+        ->setSubject(
+            'Industrial Attachment Application Under Review'
+        )
+        ->setTextBody(
+            "Dear {$application->attachee->name},\n\n"
+
+            . "Your application has progressed to the departmental review stage.\n\n"
+
+            . "It has been assigned to {$placementName} for evaluation.\n\n"
+
+            . "The department will review your application together with other submissions before a final decision is made.\n\n"
+
+            . "No further action is required from you at this time.\n\n"
+
+            . "We appreciate your patience throughout the selection process.\n\n"
+
+            . "Kind regards,\n"
+            . "HR Team"
+        )
+        ->send();
+}
 
 
 }

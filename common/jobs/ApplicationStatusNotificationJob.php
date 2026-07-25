@@ -1,19 +1,24 @@
-    <?php
-    namespace common\jobs;
+<?php
+namespace common\jobs;
 
-    use Yii;
-    use yii\base\BaseObject;
-    use yii\queue\JobInterface;
-    use frontend\models\Application;
+use Yii;
+use yii\base\BaseObject;
+use yii\queue\JobInterface;
+use common\services\ApplicationNotificationService;
 
-    class ApplicationStatusNotificationJob extends BaseObject implements JobInterface
+class ApplicationStatusNotificationJob extends BaseObject implements JobInterface
+{
+    public int $applicationId;
+    public int $status;
+
+    public function execute($queue)
     {
-        public int $applicationId;
-        public int $status;
-
-        public function execute($queue)
-        {
-           (new common\services\ApplicationNotificationService())
-           ->sendStatusNotification($this->applicationId, $this->status);          
+        try{
+            (new ApplicationNotificationService())
+            ->sendStatusNotification($this->applicationId, $this->status);          
+        } catch(\Throwable $e) {
+            Yii::error($e->getMessage(),__METHOD__);
+            throw $e;
         }
     }
+}

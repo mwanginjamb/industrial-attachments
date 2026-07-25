@@ -141,7 +141,7 @@ const STATUS_UNSUCCESSFUL = 6;
     }
 
     // If placement field is updated , update status to review
-    public function beforeSave($insert)
+   /* public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
             if (!$insert && $this->isAttributeChanged('placement')) {
@@ -151,6 +151,7 @@ const STATUS_UNSUCCESSFUL = 6;
         }
         return false;
     }
+        */
 
 
     // Current longList application
@@ -172,6 +173,17 @@ const STATUS_UNSUCCESSFUL = 6;
         }
 
         if ($changedAttributes['status'] == $this->status) {
+            return;
+        }
+
+        $supportedStatuses = [
+            self::STATUS_SUBMITTED,
+            self::STATUS_UNDER_REVIEW,
+            self::STATUS_SELECTED,
+            self::STATUS_UNSUCCESSFUL,
+        ];
+
+        if (!in_array($this->status, $supportedStatuses)) {
             return;
         }
 

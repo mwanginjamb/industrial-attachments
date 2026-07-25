@@ -13,6 +13,7 @@ use yii\filters\ContentNegotiator;
 use yii\helpers\ArrayHelper;
 use yii\httpclient\Client;
 use yii\httpclient\CurlTransport;
+use frontend\models\Application;
 
 use Yii;
 
@@ -334,6 +335,10 @@ class LotController extends Controller
                 $item->long_list_id = $list->id;
                 $item->application_id = $application->id;
                 $item->save(false);
+
+                // mark application as in review
+                $application->status = Application::STATUS_UNDER_REVIEW;
+                $application->save(false);
             }
 
             // commit the transaction
