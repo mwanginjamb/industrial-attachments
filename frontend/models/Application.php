@@ -2,6 +2,7 @@
 
 namespace frontend\models;
 
+use common\jobs\ApplicationStatusNotificationJob;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
@@ -28,9 +29,12 @@ class Application extends \yii\db\ActiveRecord
 {
 
     // status constants : submitted, under review, accepted, placed
-    const STATUS_SUBMITTED = 1;
-    const STATUS_UNDER_REVIEW = 2;
-    const STATUS_SELECTED = 3;
+const STATUS_SUBMITTED = 1;
+const STATUS_UNDER_REVIEW = 2;
+const STATUS_ACCEPTED = 3;
+const STATUS_PLACED = 4;
+const STATUS_SELECTED = 5;
+const STATUS_UNSUCCESSFUL = 6;
 
 
 
@@ -155,5 +159,31 @@ class Application extends \yii\db\ActiveRecord
     {
         return $this->hasOne(LongListApplication::class, ['application_id' => 'id']);
     }
+
+
+    // change detection for status attr
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if (!isset($changedAttributes['status'])) {
+            return;
+        }
+
+        if ($changedAttributes['status'] == $this->status) {
+            return;
+        }
+
+        $job =  new ApplicationStatusNotificationJob([
+            'applicationId' => $this->id,
+            'status' => $this->status
+        ]);
+       Yii::$app->queue->push($job);
+    }
+
+    
+
+   
 
 }

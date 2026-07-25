@@ -267,23 +267,128 @@ class LongListController extends Controller
     }
 
     // Finalize the long list and mark it as closed
-    public function actionFinalize($id)
-    {
+public function actionFinalize($id)
+{
+    $transaction = Yii::$app->db->beginTransaction();
+
+    try {
+
         $longList = $this->findModel($id);
+
         if (!$longList) {
-            throw new NotFoundHttpException('The requested long list does not exist.');
+            throw new NotFoundHttpException(
+                'The requested long list does not exist.'
+            );
         }
 
-        // Mark the long list as closed
+        if ($longList->status === 'CLOSED') {
+
+            Yii::$app->session->setFlash(
+                'warning',
+                'This shortlist has already been finalized.'
+            );
+
+            return $this->redirect([
+                'shortlist',
+                'id' => $longList->id
+            ]);
+        }
+
+        // shortlisted candidates
+
+        $items = LongListApplication::find()
+            ->joinWith([
+                'application.attachee'
+            ])
+            ->where([
+                'long_list_id' => $longList->id,
+                'shortlisted' => 1
+            ])
+            ->all();
+
+        $selectedIds = [];
+
+        foreach ($items as $item) {
+
+            $selectedIds[] = $item->application_id;
+
+            $application = $item->application;
+
+            $application->status =
+                Application::STATUS_SELECTED;
+
+            if (!$application->save(false)) {
+                throw new \RuntimeException(
+                    'Failed updating selected application.'
+                );
+            }
+        }
+
+        // unsuccessful candidates
+
+        $query = Application::find()
+            ->where([
+                'lot_id' => $longList->lot_id,
+                'placement' => $longList->placement_id
+            ]);
+
+        if (!empty($selectedIds)) {
+
+            $query->andWhere([
+                'not in',
+                'id',
+                $selectedIds
+            ]);
+        }
+
+        $unsuccessfulApplications = $query->all();
+
+        foreach ($unsuccessfulApplications as $application) {
+
+            $application->status =
+                Application::STATUS_UNSUCCESSFUL;
+
+            if (!$application->save(false)) {
+                throw new \RuntimeException(
+                    'Failed updating unsuccessful application.'
+                );
+            }
+        }
+
+        // close the review process
+
         $longList->status = 'CLOSED';
-        if ($longList->save(false)) {
-            \Yii::$app->session->setFlash('success', 'Long list has been finalized and marked as closed.');
-        } else {
-            \Yii::$app->session->setFlash('error', 'Failed to finalize the long list. Please try again.');
+       // $longList->closed_at = time();
+       // $longList->closed_by = Yii::$app->user->id;
+
+        if (!$longList->save(false)) {
+            throw new \RuntimeException(
+                'Failed closing long list.'
+            );
         }
 
-        return $this->redirect(['shortlist', 'id' => $longList->id]);
+        $transaction->commit();
+
+        Yii::$app->session->setFlash(
+            'success',
+            'Shortlist finalized successfully.'
+        );
+
+    } catch (\Throwable $e) {
+
+        $transaction->rollBack();
+
+        Yii::$app->session->setFlash(
+            'error',
+            $e->getMessage()
+        );
     }
+
+    return $this->redirect([
+        'shortlist',
+        'id' => $id
+    ]);
+}
 
     public function actionCommit()
     {

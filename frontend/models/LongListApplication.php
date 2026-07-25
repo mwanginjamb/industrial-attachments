@@ -113,4 +113,25 @@ class LongListApplication extends \yii\db\ActiveRecord
         return new LongListApplicationQuery(get_called_class());
     }
 
+
+    public function beforeSave($insert)
+    {
+        if (!$insert) {
+
+            if (
+                $this->longList &&
+                $this->longList->status === 'CLOSED'
+            ) {
+                $this->addError(
+                    'shortlisted',
+                    'This long list has been finalized.'
+                );
+
+                return false;
+            }
+        }
+
+        return parent::beforeSave($insert);
+    }
+
 }
