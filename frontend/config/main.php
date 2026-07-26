@@ -11,7 +11,7 @@ return [
     'id' => 'app-frontend',
     'name' => 'Attachment Manager',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log','queue'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'request' => [
