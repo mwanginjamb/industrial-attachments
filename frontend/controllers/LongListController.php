@@ -175,19 +175,19 @@ class LongListController extends Controller
         // formulate the url
         $reviewUrl = Url::to(['/long-list/review', 'id' => $list->id], true);
 
-        $emailBody = "Dear Colleagues,\n\n"
-            . "Please access the attachee long list for your selection (shortlisting) review using the link below.\n\n"
-            . "Review Link:\n"
-            . $reviewUrl . "\n\n"
-            . "Review applicants and mark successful candidates.\n\n"
-            . "Regards,\n"
+        $emailBody = "Dear Colleagues,\r\n\r\n"
+            . "Please access the attachee long list for your selection (shortlisting) review using the link below.\r\n\r\n"
+            . "Review Link:\r\n"
+            . $reviewUrl . "\r\n\r\n"
+            . "Review applicants and mark successful candidates.\r\n\r\n"
+            . "Regards,\r\n"
             . "HR Team";
 
         // Launch the default email client with the pre-filled email body
         $mailtoLink = 'mailto:'
             . '?subject='
             . rawurlencode('Attachee Long List Selection (Shortlisting) for Lot: ' . $list->lot->description)
-            . '&body=' . urlencode($emailBody);
+            . '&body=' . rawurlencode($emailBody);
         return $this->redirect($mailtoLink);
     }
 
