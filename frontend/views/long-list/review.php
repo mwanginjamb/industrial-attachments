@@ -129,7 +129,7 @@ ICO;
                     ): '';
                 ?>
 
-                <?=
+                <?= ($metrics['selected'])> 0?
 
                     Html::a(
                         '<span class="material-symbols-outlined text-lg">visibility</span> View Selected Applicants ('.$metrics['selected'].')',
@@ -139,11 +139,9 @@ ICO;
                         ],
                         [
                             'class' => 'btn inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors no-underline',
-                            'data' => [
-                                'confirm' => 'Are you sure you want to finalize this selection?',
-                            ]
+                            'target' => '_blank',
                         ]
-                    );
+                    ): '';
                 ?>
 
 
