@@ -85,7 +85,7 @@ ICO;
         <div
             class="md:col-span-2 bg-primary-container p-6 rounded-xl flex items-center justify-between text-on-primary-container relative overflow-hidden">
             <div class="z-10">
-                <span class="text-sm font-medium opacity-80"><?= $metrics['status'] ?> ?></span>
+                <span class="text-sm font-medium opacity-80"><?= $metrics['status'] ?></span>
                 <h3 class="text-2xl font-bold mt-1">Batch
                     <?= $metrics['progress'] ?>% Complete
                 </h3>
