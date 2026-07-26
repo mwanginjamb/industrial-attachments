@@ -3,6 +3,7 @@ namespace common\Library;
 use yii\base\Component;
 use frontend\models\User;
 use common\models\User as CommonUser;
+use frontend\models\LongListApplication;
 class Dashboard extends Component
 {
 
@@ -34,7 +35,16 @@ class Dashboard extends Component
                 'long_list_id' => $longListId,
                 'shortlisted' => 1
             ])
-            ->count();
+            ->count();  
+
+       $selectedRows = LongListApplication::find()
+            ->where([
+                'long_list_id' => $longListId
+            ])
+            ->asArray()
+            ->all();
+
+        \Yii::warning($selectedRows, 'LONG_LIST_DEBUG');
 
         $pending = max(0, $total - $selected);
 

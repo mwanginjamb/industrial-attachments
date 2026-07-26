@@ -9,7 +9,7 @@ use frontend\assets\ApplicantsAsset;
 
 $model = $longList;
 
-$this->title = $model->description;
+$this->title = $model->lot->description;
 $this->params['breadcrumbs'][] = ['label' => 'Lots', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -85,12 +85,12 @@ ICO;
         <div
             class="md:col-span-2 bg-primary-container p-6 rounded-xl flex items-center justify-between text-on-primary-container relative overflow-hidden">
             <div class="z-10">
-                <span class="text-sm font-medium opacity-80">Progress</span>
+                <span class="text-sm font-medium opacity-80"><?= $metrics['status'] ?> ?></span>
                 <h3 class="text-2xl font-bold mt-1">Batch
-                    <?= Yii::$app->formatter->asPercent( $metrics['progress'], 1) ?> Complete
+                    <?= $metrics['progress'] ?>% Complete
                 </h3>
                 <div class="w-48 h-2 bg-white/20 rounded-full mt-3 overflow-hidden">
-                    <div class="bg-white h-full w-[84%]"></div>
+                    <div class="bg-white h-full w-[<?= $metrics['progress'] ?>%]"></div>
                 </div>
             </div>
             <span
@@ -121,7 +121,7 @@ ICO;
                             'id' => $model->id
                         ],
                         [
-                            'class' => 'btn btn-success inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors no-underline',
+                            'class' => 'btn inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-primary-container hover:bg-primary-container-high rounded-lg transition-colors no-underline',
                             'data' => [
                                 'confirm' => 'Are you sure you want to finalize this selection?',
                             ]
@@ -175,7 +175,12 @@ ICO;
                 </thead>
                 <tbody class="divide-y divide-surface-container">
                     <?php foreach ($applications as $application):
-                        $membership = $application->currentLongListItem;
+
+                       $membership = \frontend\models\LongListApplication::findOne([
+                            'long_list_id' => $model->id,
+                            'application_id' => $application->id,
+                        ]);
+
                         if ($application?->attachee?->name == null)
                             continue;
                         $endpoint = \yii\helpers\Url::home(true) . 'apiv1/long-list-applications/' . $membership->id;
