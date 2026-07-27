@@ -183,15 +183,15 @@ const STATUS_UNSUCCESSFUL = 6;
             self::STATUS_UNSUCCESSFUL,
         ];
 
-        if (!in_array($this->status, $supportedStatuses)) {
+        if (!in_array($this->status, $supportedStatuses, true)) {
+             Yii::info("Status {$this->status} is not supported for queue notifications.", 'queue.notifications');
             return;
         }
 
-        $job =  new ApplicationStatusNotificationJob([
+       Yii::$app->queue->push(new ApplicationStatusNotificationJob([
             'applicationId' => $this->id,
             'status' => $this->status
-        ]);
-       Yii::$app->queue->push($job);
+        ]));
     }
 
     

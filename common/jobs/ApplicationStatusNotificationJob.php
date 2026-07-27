@@ -13,11 +13,25 @@ class ApplicationStatusNotificationJob extends BaseObject implements JobInterfac
 
     public function execute($queue)
     {
-        try{
-            (new ApplicationNotificationService())
-            ->sendStatusNotification($this->applicationId, $this->status);          
-        } catch(\Throwable $e) {
-            Yii::error($e->getMessage(),__METHOD__);
+        try {
+            $service = new ApplicationNotificationService();
+            $success = $service->sendStatusNotification($this->applicationId, $this->status);
+
+            if (!$success) {
+                // Custom warning if soft failure occurs without throwing an exception
+                Yii::warning(
+                    "Notification job skipped or failed silently for Application #{$this->applicationId}.",
+                    'queue.notifications'
+                );
+            }
+        } catch (\Throwable $e) {
+            // Include stack trace so you know where it broke
+            Yii::error(
+                "Job failed for Application #{$this->applicationId}: {$e->getMessage()}\n{$e->getTraceAsString()}",
+                'queue.notifications'
+            );
+
+            // Rethrowing allows yii2-queue to trigger retry mechanisms / ttr timeout
             throw $e;
         }
     }

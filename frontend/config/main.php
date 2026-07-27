@@ -54,7 +54,7 @@ return [
                     'class' => \yii\log\FileTarget::class,
                     'levels' => ['info','warning','error'],
                     'categories' => [
-                        'queue.notification'
+                        'queue.notifications'
                     ],
                     'logFile' => '@runtime/logs/queue-notifications.log',
                     'logVars' => [],
