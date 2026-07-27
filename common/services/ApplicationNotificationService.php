@@ -30,7 +30,7 @@ class ApplicationNotificationService
          if (!$application) {
             Yii::warning(
                 "Application {$applicationId} not found.",
-                __METHOD__
+                'queue.notifications'
             );
             return false;
         }
@@ -56,7 +56,11 @@ class ApplicationNotificationService
             !$application->attachee ||
             empty($application->attachee->email_address)
         ) {
-            return;
+             Yii::warning(
+                "Application Selection not found.",
+                'queue.notifications'
+            );
+            return false;
         }
 
         Yii::$app->mailer
@@ -82,7 +86,11 @@ class ApplicationNotificationService
             !$application->attachee ||
             empty($application->attachee->email_address)
         ) {
-            return;
+            Yii::warning(
+                "Application Regret not found.",
+                'queue.notifications'
+            );
+            return false;
         }
 
         Yii::$app->mailer
@@ -108,14 +116,16 @@ class ApplicationNotificationService
             ->send();
     }
 
-    private function sendSubmissionEmail(
-    Application $application
-    ): bool {
+    private function sendSubmissionEmail(Application $application): bool {
 
         if (
             !$application->attachee ||
             empty($application->attachee->email_address)
         ) {
+            Yii::warning(
+                "Application Submission could not be Sent.",
+                'queue.notifications'
+            );
             return false;
         }
 
@@ -144,19 +154,17 @@ class ApplicationNotificationService
             ->send();
 }
 
-    private function sendReviewEmail(
-    Application $application
-): bool {
+    private function sendReviewEmail(Application $application): bool {
 
-    if (
-        !$application->attachee ||
-        empty($application->attachee->email_address)
-    ) {
+    if (!$application->attachee || empty($application->attachee->email_address)) {
+        Yii::warning(
+                "Application Review Notification Could not be Sent.",
+                'queue.notifications'
+            );
         return false;
     }
 
-    $placementName =
-        $application->placementArea->name ?? 'assigned department';
+    $placementName = $application->placementArea->name ?? 'assigned department';
 
     return Yii::$app->mailer
         ->compose()
