@@ -45,7 +45,7 @@ class ApplicationNotificationService
         try {
             return $this->$method($application);
         } catch (\Throwable $e) {
-            Yii::error("Failed sending email for Application #{$applicationId}: " . $e->getMessage(), 'queue.notification');
+            Yii::error("Failed sending email for Application #{$applicationId}: " . $e->getMessage(), 'queue.notifications');
             return false;
         }
 
