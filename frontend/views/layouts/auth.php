@@ -55,7 +55,8 @@ AppAsset::register($this);
             <!-- Header/Logo Area -->
             <div class="relative z-10 flex items-center gap-4">
                 <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm">
-                    <span class="material-symbols-outlined text-primary text-3xl">school</span>
+                    <!-- <span class="material-symbols-outlined text-primary text-3xl">school</span> -->
+                    <img src="/icons/icon-144x144.png" alt="KEMRI Logo" class="w-6 h-6">
                 </div>
                 <div>
                     <h1 class="font-headline font-black text-2xl text-white tracking-tighter">
