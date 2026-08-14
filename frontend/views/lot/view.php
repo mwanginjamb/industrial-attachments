@@ -100,8 +100,8 @@ ICO;
                         '<span class="material-symbols-outlined text-lg">mail</span> Email Department',
                         [
                             'lot/email-department',
-                            'lotId' => $model->id,
-                            'placement' => Yii::$app->request->get('placement')
+                            'lotid' => $model->id,
+                            'placementid' => Yii::$app->request->get('placement')
                         ],
                         [
                             'class' => 'btn-mail-candidates inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors no-underline'

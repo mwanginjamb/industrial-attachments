@@ -7,9 +7,14 @@ use frontend\models\LongList;
 use frontend\models\LongListApplication;
 use frontend\models\LongListSearch;
 use yii\filters\VerbFilter;
+use yii\filters\ContentNegotiator;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\helpers\ArrayHelper;
+use yii\httpclient\Client;
+use yii\httpclient\CurlTransport;
+use Yii;
 
 /**
  * LongListController implements the CRUD actions for LongList model.
@@ -30,8 +35,32 @@ class LongListController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
+                 'contentNegotiator' => [
+                    'class' => ContentNegotiator::class,
+                    'only' => ['commit', 'placements'],
+                    'formatParam' => '_format',
+                    'formats' => [
+                        'application/json' => \yii\web\Response::FORMAT_JSON
+                    ]
+                ],
             ]
         );
+    }
+
+
+    public function beforeAction($action)
+    {
+
+        $ExceptedActions = [
+            'commit',
+            'placements'
+        ];
+
+        if (in_array($action->id, $ExceptedActions)) {
+            $this->enableCsrfValidation = false;
+        }
+
+        return parent::beforeAction($action);
     }
 
     /**
@@ -146,19 +175,19 @@ class LongListController extends Controller
         // formulate the url
         $reviewUrl = Url::to(['/long-list/review', 'id' => $list->id], true);
 
-        $emailBody = "Dear Colleagues,\n\n"
-            . "Please access the attachee long list for your selection (shortlisting) review using the link below.\n\n"
-            . "Review Link:\n"
-            . $reviewUrl . "\n\n"
-            . "Review applicants and mark successful candidates.\n\n"
-            . "Regards,\n"
+        $emailBody = "Dear Colleagues,\r\n\r\n"
+            . "Please access the attachee long list for your selection (shortlisting) review using the link below.\r\n\r\n"
+            . "Review Link:\r\n"
+            . $reviewUrl . "\r\n\r\n"
+            . "Review applicants and mark successful candidates.\r\n\r\n"
+            . "Regards,\r\n"
             . "HR Team";
 
         // Launch the default email client with the pre-filled email body
         $mailtoLink = 'mailto:'
             . '?subject='
             . rawurlencode('Attachee Long List Selection (Shortlisting) for Lot: ' . $list->lot->description)
-            . '&body=' . urlencode($emailBody);
+            . '&body=' . rawurlencode($emailBody);
         return $this->redirect($mailtoLink);
     }
 
@@ -189,10 +218,13 @@ class LongListController extends Controller
             ])
             ->all();
 
+        $metrics = \Yii::$app->dashboard->metrics($id);
+
 
         return $this->render('review', [
             'longList' => $longList,
             'applications' => $applications,
+            'metrics' => $metrics,
         ]);
     }
 
@@ -224,29 +256,182 @@ class LongListController extends Controller
             ])
             ->all();
 
+            $metrics = \Yii::$app->dashboard->metrics($id);
+
         return $this->render('review', [
             'longList' => $longList,
-            'applications' => $applications
+            'applications' => $applications,
+            'metrics' => $metrics,
         ]);
 
     }
 
     // Finalize the long list and mark it as closed
-    public function actionFinalize($id)
-    {
+public function actionFinalize($id)
+{
+    $transaction = Yii::$app->db->beginTransaction();
+
+    try {
+
         $longList = $this->findModel($id);
+
         if (!$longList) {
-            throw new NotFoundHttpException('The requested long list does not exist.');
+            throw new NotFoundHttpException(
+                'The requested long list does not exist.'
+            );
         }
 
-        // Mark the long list as closed
+        if ($longList->status === 'CLOSED') {
+
+            Yii::$app->session->setFlash(
+                'warning',
+                'This shortlist has already been finalized.'
+            );
+
+            return $this->redirect([
+                'shortlist',
+                'id' => $longList->id
+            ]);
+        }
+
+        // shortlisted candidates
+
+        $items = LongListApplication::find()
+            ->joinWith([
+                'application.attachee'
+            ])
+            ->where([
+                'long_list_id' => $longList->id,
+                'shortlisted' => 1
+            ])
+            ->all();
+
+        $selectedIds = [];
+
+        foreach ($items as $item) {
+
+            $selectedIds[] = $item->application_id;
+
+            $application = $item->application;
+
+            $application->status =
+                Application::STATUS_SELECTED;
+
+            if (!$application->save(false)) {
+                throw new \RuntimeException(
+                    'Failed updating selected application.'
+                );
+            }
+        }
+
+        // unsuccessful candidates
+
+        $query = Application::find()
+            ->where([
+                'lot_id' => $longList->lot_id,
+                'placement' => $longList->placement_id
+            ]);
+
+        if (!empty($selectedIds)) {
+
+            $query->andWhere([
+                'not in',
+                'id',
+                $selectedIds
+            ]);
+        }
+
+        $unsuccessfulApplications = $query->all();
+
+        foreach ($unsuccessfulApplications as $application) {
+
+            $application->status =
+                Application::STATUS_UNSUCCESSFUL;
+
+            if (!$application->save(false)) {
+                throw new \RuntimeException(
+                    'Failed updating unsuccessful application.'
+                );
+            }
+        }
+
+        // close the review process
+
         $longList->status = 'CLOSED';
-        if ($longList->save(false)) {
-            \Yii::$app->session->setFlash('success', 'Long list has been finalized and marked as closed.');
-        } else {
-            \Yii::$app->session->setFlash('error', 'Failed to finalize the long list. Please try again.');
+       // $longList->closed_at = time();
+       // $longList->closed_by = Yii::$app->user->id;
+
+        if (!$longList->save(false)) {
+            throw new \RuntimeException(
+                'Failed closing long list.'
+            );
         }
 
-        return $this->redirect(['shortlist', 'id' => $longList->id]);
+        $transaction->commit();
+
+        Yii::$app->session->setFlash(
+            'success',
+            'Shortlist finalized successfully.'
+        );
+
+    } catch (\Throwable $e) {
+
+        $transaction->rollBack();
+
+        Yii::$app->session->setFlash(
+            'error',
+            $e->getMessage()
+        );
+    }
+
+    return $this->redirect([
+        'shortlist',
+        'id' => $id
+    ]);
+}
+
+    public function actionCommit()
+    {
+        try {
+            $endpoint = Yii::$app->request->post('service');
+            $field = Yii::$app->request->post('name');
+            $value = Yii::$app->request->post('value');
+            $id = Yii::$app->request->post('key');
+
+            $payload = [
+                $field => $value,
+                'id' => $id
+            ];
+
+            $client = new Client([
+                'transport' => CurlTransport::class,
+            ]);
+
+            $request = $client->createRequest()
+                ->setMethod('PUT')
+                ->setUrl($endpoint)
+                ->addHeaders(['Content-Type' => 'application/json'])
+                ->setFormat(Client::FORMAT_JSON)  // Ensures JSON encoding for request
+                ->setData($payload)
+                ->setOptions([
+                    CURLOPT_SSL_VERIFYPEER => false,
+                    CURLOPT_SSL_VERIFYHOST => false
+                ]);
+
+            $response = $request->send();
+            Yii::info('Raw response content: ' . $response->content, 'api_debug');
+            if ($response->isOk) { // Check if the response status is 200-299
+                return $response->data; // Return the relevant response data
+            } else {
+                // Log error details if needed and return a clear message
+                return [
+                    'status' => $response->statusCode,
+                    'error' => $response->data ?? 'Unexpected error occurred'
+                ];
+            }
+        } catch (\Exception $e) {
+            return "HTTP request failed with error: " . $e->getMessage();
+        }
+
     }
 }

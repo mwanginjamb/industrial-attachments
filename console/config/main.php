@@ -21,6 +21,14 @@ return [
             'class' => \yii\console\controllers\FixtureController::class,
             'namespace' => 'common\fixtures',
           ],
+          'migrate' => [
+            'class' => 'yii\console\controllers\MigrateController',
+            'migrationPath' => null,
+            'migrationNamespaces' => [
+                // ...
+                'yii\queue\db\migrations',
+            ],
+        ],
     ],
     'components' => [
         'log' => [
@@ -28,6 +36,17 @@ return [
                 [
                     'class' => \yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
+                ],
+                [
+                    'class' => \yii\log\FileTarget::class,
+                    'levels' => ['info', 'warning', 'error'],
+                    'categories' => [
+                        'queue.notification',
+                        'queue.notifications', // Added plural as a safety net
+                        'common\jobs\*',
+                    ],
+                    'logFile' => '@console/runtime/logs/queue-notifications.log',
+                    'logVars' => [], // Keeps $_SERVER / env vars OUT of your logs
                 ],
             ],
         ],

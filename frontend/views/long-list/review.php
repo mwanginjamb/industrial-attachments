@@ -5,11 +5,11 @@ use frontend\assets\ApplicantsAsset;
 
 
 /** @var yii\web\View $this */
-/** @var app\models\LongList $longList */
+/** @var frontend\models\LongList $longList */
 
 $model = $longList;
 
-$this->title = $model->description;
+$this->title = $model->lot->description;
 $this->params['breadcrumbs'][] = ['label' => 'Lots', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -43,38 +43,58 @@ ICO;
                 </span>
             </div>
         </div>
+<<<<<<< HEAD
         
+=======
+       
+>>>>>>> 193bfde24afdac5cff7590e1dda033280f7aefa4
     </div>
     <!-- end header div -->
 
     <!-- Stats Overview (Asymmetric Grid) -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-        <div class="md:col-span-1 bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
+     
+    <!-- global count of apps -->
+    <div class="md:col-span-1 bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
             <span class="text-on-surface-variant text-sm font-medium">Total Applicants</span>
             <div class="mt-4">
                 <span class="text-3xl font-black text-on-surface">
-                    <?= $model->applicationsCount ?>
+                    <?= $metrics['total'] ?>
                 </span>
                 <span class="text-green-600 text-xs font-bold ml-2"></span>
             </div>
         </div>
+        
+        <!-- selected count -->
         <div class="md:col-span-1 bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
-            <span class="text-on-surface-variant text-sm font-medium">Pending Review</span>
+            <span class="text-on-surface-variant text-sm font-medium">Selected</span>
             <div class="mt-4">
                 <span class="text-3xl font-black text-on-surface">
-                    <?= $model->reviewedCount ?>
+                    <?=  $metrics['selected'] ?>
                 </span>
             </div>
         </div>
+
+        <!-- review count -->
+        <div class="md:col-span-1 bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
+            <span class="text-on-surface-variant text-sm font-medium">Not Selected</span>
+            <div class="mt-4">
+                <span class="text-3xl font-black text-on-surface">
+                    <?=  $metrics['pending'] ?>
+                </span>
+            </div>
+        </div>
+        
+        <!-- processing status -->
         <div
             class="md:col-span-2 bg-primary-container p-6 rounded-xl flex items-center justify-between text-on-primary-container relative overflow-hidden">
             <div class="z-10">
-                <span class="text-sm font-medium opacity-80">Processing Status</span>
+                <span class="text-sm font-medium opacity-80"><?= $metrics['status'] ?></span>
                 <h3 class="text-2xl font-bold mt-1">Batch
-                    <?= Yii::$app->formatter->asPercent($model->percentageReviewed, 1) ?> Complete
+                    <?= $metrics['progress'] ?>% Complete
                 </h3>
                 <div class="w-48 h-2 bg-white/20 rounded-full mt-3 overflow-hidden">
-                    <div class="bg-white h-full w-[84%]"></div>
+                    <div class="bg-white h-full w-[<?= $metrics['progress'] ?>%]"></div>
                 </div>
             </div>
             <span
@@ -96,38 +116,36 @@ ICO;
                     class="flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors">
                     <span class="material-symbols-outlined text-lg">filter_list</span> Filter
                 </button> -->
-                <?=
+                <?= ($metrics['selected'])> 0?
 
                     Html::a(
                         '<span class="material-symbols-outlined text-lg">check</span> Finalize Selection',
                         [
                             'long-list/finalize',
-                            'id' => $longlist->id
+                            'id' => $model->id
                         ],
                         [
-                            'class' => 'btn btn-success inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors no-underline',
+                            'class' => 'btn inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-primary-container hover:bg-primary-container-high rounded-lg transition-colors no-underline',
                             'data' => [
                                 'confirm' => 'Are you sure you want to finalize this selection?',
                             ]
                         ]
-                    );
+                    ): '';
                 ?>
 
-                <?=
+                <?= ($metrics['selected'])> 0?
 
                     Html::a(
-                        '<span class="material-symbols-outlined text-lg">visibility</span> View Selected Applicants',
+                        '<span class="material-symbols-outlined text-lg">visibility</span> View Selected Applicants ('.$metrics['selected'].')',
                         [
                             'long-list/shortlist',
-                            'id' => $longlist->id
+                            'id' => $model->id
                         ],
                         [
                             'class' => 'btn inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors no-underline',
-                            'data' => [
-                                'confirm' => 'Are you sure you want to finalize this selection?',
-                            ]
+                            'target' => '_blank',
                         ]
-                    );
+                    ): '';
                 ?>
 
 
@@ -151,7 +169,7 @@ ICO;
                         <th class="px-6 py-4" data-priority="2">Year</th>
                         <th class="px-6 py-4" data-priority="3">Level</th>
                         <th class="px-6 py-4" data-priority="4">Institution</th>
-                        <th class="px-6 py-4 text-success" data-priority="5">Preferred Placement</th>
+                        <th class="px-6 py-4  data-priority="5">Preferred Placement</th>
                         <th class="px-6 py-4 text-success" data-priority="6">Selected</th>
                         <th class="px-6 py-4" data-priority="7">Status</th>
                         <th class="px-8 py-4 text-right" data-priority="8">Actions</th>
@@ -159,7 +177,12 @@ ICO;
                 </thead>
                 <tbody class="divide-y divide-surface-container">
                     <?php foreach ($applications as $application):
-                        $membership = $application->currentLongListItem;
+
+                       $membership = \frontend\models\LongListApplication::findOne([
+                            'long_list_id' => $model->id,
+                            'application_id' => $application->id,
+                        ]);
+
                         if ($application?->attachee?->name == null)
                             continue;
                         $endpoint = \yii\helpers\Url::home(true) . 'apiv1/long-list-applications/' . $membership->id;

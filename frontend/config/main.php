@@ -11,7 +11,7 @@ return [
     'id' => 'app-frontend',
     'name' => 'Attachment Manager',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log','queue'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'request' => [
@@ -49,7 +49,24 @@ return [
                     'class' => \yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
                 ],
+                // Queue notification logs
+                [
+                    'class' => \yii\log\FileTarget::class,
+                    'levels' => ['info','warning','error'],
+                    'categories' => [
+                        'queue.notifications'
+                    ],
+                    'logFile' => '@runtime/logs/queue-notifications.log',
+                    'logVars' => [],
+                ],
             ],
+        ],
+        'queue' => [
+            'class' => \yii\queue\db\Queue::class,
+            'db' => 'db', // DB connection component or its config 
+            'tableName' => '{{%queue}}', // Table name
+            'channel' => 'default', // Queue channel key
+            'mutex' => \yii\mutex\MysqlMutex::class, // Mutex used to sync queries
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',

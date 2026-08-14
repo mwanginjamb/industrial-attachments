@@ -104,6 +104,14 @@ class LongList extends \yii\db\ActiveRecord
         return $this->hasOne(Lot::class, ['id' => 'lot_id']);
     }
 
+    public function getPlacement()
+{
+    return $this->hasOne(
+        PlacementArea::class,
+        ['id' => 'placement_id']
+    );
+}
+
     /**
      * {@inheritdoc}
      * @return LongListQuery the active query used by this AR class.
