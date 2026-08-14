@@ -8,6 +8,12 @@ use frontend\assets\AppAsset;
 use yii\helpers\Html;
 
 
+$this->registerCsrfMetaTags();
+$this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
+$this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1.0']);
+$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => Yii::$app->request->baseUrl . '/icons/icon-32x32.png']);
+
+
 AppAsset::register($this);
 
 ?>
@@ -18,8 +24,17 @@ AppAsset::register($this);
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
+
+    <!-- Favicons all common sizes -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+    <link rel="mask-icon" href="/icons/192x192-maskable.png" color="#5bbad5">
+    <meta name="theme-color" content="#ffffff">
+
+
+
     <?php $this->head() ?>
 </head>
 
@@ -64,7 +79,7 @@ AppAsset::register($this);
             </div>
 
             <div class="relative z-10 text-white/50 text-xs font-label">
-                © <?= date('Y') ?> Academic Curator Portal. System version 4.2.0-stable
+                © <?= date('Y') ?> KEMRI Industrial Attachment Portal. All rights reserved.
             </div>
         </section>
 
@@ -72,7 +87,8 @@ AppAsset::register($this);
             <div class="w-full max-w-md">
                 <div class="md:hidden flex items-center gap-3 mb-12">
                     <span class="material-symbols-outlined text-primary text-4xl">school</span>
-                    <h1 class="font-headline font-black text-xl text-on-background tracking-tighter">Academic Curator
+                    <h1 class="font-headline font-black text-xl text-on-background tracking-tighter">Industrial
+                        Attachment Portal
                     </h1>
                 </div>
 

@@ -9,6 +9,13 @@ use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 
 
+
+$this->registerCsrfMetaTags();
+$this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
+$this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1.0']);
+$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => Yii::$app->request->baseUrl . '/icons/icon-32x32.png']);
+
+
 AppAsset::register($this);
 
 $this->beginPage();
@@ -22,6 +29,12 @@ $this->beginPage();
     <title>
         <?= Html::encode($this->title) ?> | <?= Yii::$app->name ?>
     </title>
+    <!-- Favicons all common sizes -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+    <link rel="mask-icon" href="/icons/192x192-maskable.png" color="#5bbad5">
+    <meta name="theme-color" content="#ffffff">
     <?php $this->head() ?>
 </head>
 
@@ -284,21 +297,21 @@ $this->beginPage();
         class="bg-slate-50 dark:bg-slate-950 w-full py-8 md:py-12 mt-auto border-t border-slate-200 dark:border-slate-800">
         <div class="flex flex-col items-center px-4 md:px-8 max-w-screen-2xl mx-auto gap-6 text-center md:text-left">
             <div class="flex flex-col md:flex-row justify-between items-center w-full gap-4">
-                <span class="font-headline font-bold text-slate-400">Academic Curator</span>
+                <span class="font-headline font-bold text-slate-400"><?= Yii::$app->name ?></span>
                 <div class="flex flex-wrap justify-center gap-4 md:gap-6">
                     <a class="font-body text-[10px] md:text-xs text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-opacity"
-                        href="<?= Url::to(['/site/privacy']) ?>">Privacy Policy</a>
+                        href="<?= Url::to(['#']) ?>">Privacy Policy</a>
                     <a class="font-body text-[10px] md:text-xs text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-opacity"
-                        href="<?= Url::to(['/site/terms']) ?>">Terms of Service</a>
+                        href="<?= Url::to(['#']) ?>">Terms of Service</a>
                     <a class="font-body text-[10px] md:text-xs text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-opacity"
-                        href="<?= Url::to(['/site/accessibility']) ?>">Accessibility</a>
+                        href="<?= Url::to(['#']) ?>">Accessibility</a>
                     <a class="font-body text-[10px] md:text-xs text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-opacity"
-                        href="<?= Url::to(['/site/contact']) ?>">Contact Support</a>
+                        href="<?= Url::to(['#']) ?>">Contact Support</a>
                 </div>
             </div>
             <span class="font-body text-[10px] md:text-xs text-slate-500">
                 &copy;
-                <?= date('Y') ?> Academic Curator Portal. All rights reserved.
+                <?= date('Y') ?> KEMRI Industrial Attachment Portal. All rights reserved.
             </span>
         </div>
     </footer>

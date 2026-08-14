@@ -12,7 +12,7 @@ use yii\helpers\Url;
 $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
 $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1.0']);
-$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::$app->request->baseUrl . '/favicon.ico']);
+$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => Yii::$app->request->baseUrl . '/icons/icon-32x32.png']);
 
 // Enqueue Google Fonts & Material Symbols
 $this->registerLinkTag(['rel' => 'preconnect', 'href' => 'https://fonts.googleapis.com']);
@@ -31,6 +31,13 @@ if(!Yii::$app->user->isGuest) {
 <html lang="<?= Yii::$app->language ?>" class="light">
 <head>
     <title><?= Html::encode($this->title) ?> | <?= Html::encode(Yii::$app->name) ?></title>
+    <!-- Favicons all common sizes -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+    <link rel="mask-icon" href="/icons/192x192-maskable.png" color="#5bbad5">
+    <meta name="theme-color" content="#ffffff">
+
     <?php $this->head() ?>
     
 </head>
@@ -172,9 +179,9 @@ if(!Yii::$app->user->isGuest) {
 
     <!-- Bottom Actions -->
     <div class="mt-auto pt-4 space-y-1">
-        <button class="w-full bg-primary-container text-white py-2.5 rounded-xl font-semibold text-sm mb-4 shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
+        <!-- <button class="w-full bg-primary-container text-white py-2.5 rounded-xl font-semibold text-sm mb-4 shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
             Generate Report
-        </button>
+        </button> -->
         <?= Html::a(
             '<span class="material-symbols-outlined">help</span><span>Help Center</span>',
             ['/site/help'],
