@@ -27,32 +27,23 @@ ICO;
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
         <div>
             <h1 class="text-4xl font-extrabold tracking-tight text-on-surface">
-                <?= Html::encode($longList->placement->name) ?> Review List
+                <?= Html::encode($model->placement->name) ?> Review List
             </h1>
 
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-1 mb-10">
                 <span class="text-green-600 text-sm font-medium">Application Start Date:
-                    <?= Yii::$app->formatter->asDate($model->applicationStartDate) ?>
+                    <?= Yii::$app->formatter->asDate($model->lot->applicationStartDate) ?>
                 </span>
                 <span class="text-error text-sm font-medium">Application End Date:
-                    <?= Yii::$app->formatter->asDate($model->applicationDeadline) ?>
+                    <?= Yii::$app->formatter->asDate($model->lot->applicationDeadline) ?>
                 </span>
                 <span class="text-on-surface-variant text-sm font-medium">Processing Deadline:
-                    <?= Yii::$app->formatter->asDate($model->placementDeadline) ?>
+                    <?= Yii::$app->formatter->asDate($model->lot->placementDeadline) ?>
                 </span>
             </div>
         </div>
-        <div class="flex gap-3">
-            <?php Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-            <?php Html::a('Delete', ['delete', 'id' => $model->id], [
-                'class' => 'btn btn-danger',
-                'data' => [
-                    'confirm' => 'Are you sure you want to delete this item?',
-                    'method' => 'post',
-                ],
-            ]) ?>
-        </div>
+        
     </div>
     <!-- end header div -->
 
