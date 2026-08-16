@@ -230,4 +230,16 @@ class Attachee extends \yii\db\ActiveRecord
         return false;
     }
 
+
+    // Academic Levels
+    public static function getAcademicLevels()
+    {
+        return [
+            1 => 'Certificate',
+            2 => 'Diploma',
+            3 => 'Undergraduate',
+            4 => 'Postgraduate',
+        ];
+    }
+
 }
