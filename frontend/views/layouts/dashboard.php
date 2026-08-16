@@ -35,6 +35,17 @@ $this->beginPage();
     <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
     <link rel="mask-icon" href="/icons/192x192-maskable.png" color="#5bbad5">
     <meta name="theme-color" content="#ffffff">
+
+
+
+    <?php if (YII_ENV_PROD): ?>
+        <!-- Privacy-friendly analytics by Plausible -->
+        <script async src="https://analytics.kemri.go.ke/js/pa-8kSKUd4u4fB-vxMtzkAlz.js"></script>
+        <script>
+            window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+            plausible.init();
+        </script>
+    <?php endif; ?>
     <?php $this->head() ?>
 </head>
 
@@ -323,19 +334,3 @@ $this->beginPage();
 <?php $this->endPage() ?>
 
 
-<?php
-// Only register analytics in the production environment
-if (YII_ENV === 'prod') { // or YII_ENV === 'prod'
-    $this->registerJsFile(
-        'https://analytics.kemri.go.ke/js/pa-8kSKUd4u4fB-vxMtzkAlz.js',
-        [
-            'async' => true,
-            'position' => View::POS_HEAD,
-        ]
-    );
-
-    $this->registerJs(
-        'window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}}; plausible.init();',
-        View::POS_HEAD
-    );
-}

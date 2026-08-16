@@ -36,6 +36,16 @@ AppAsset::register($this);
     <meta name="theme-color" content="#ffffff">
 
 
+    <?php if (YII_ENV_PROD): ?>
+        <!-- Privacy-friendly analytics by Plausible -->
+        <script async src="https://analytics.kemri.go.ke/js/pa-8kSKUd4u4fB-vxMtzkAlz.js"></script>
+        <script>
+            window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+            plausible.init();
+        </script>
+    <?php endif; ?>
+
+
 
     <?php $this->head() ?>
 </head>
@@ -118,19 +128,3 @@ AppAsset::register($this);
 </html>
 <?php $this->endPage() ?>
 
-<?php
-// Only register analytics in the production environment
-if (YII_ENV === 'prod') { // or YII_ENV === 'prod'
-    $this->registerJsFile(
-        'https://analytics.kemri.go.ke/js/pa-8kSKUd4u4fB-vxMtzkAlz.js',
-        [
-            'async' => true,
-            'position' => View::POS_HEAD,
-        ]
-    );
-
-    $this->registerJs(
-        'window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}}; plausible.init();',
-        View::POS_HEAD
-    );
-}
