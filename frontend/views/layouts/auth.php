@@ -7,6 +7,7 @@ use common\widgets\Alert;
 use frontend\assets\AppAsset;
 use yii\helpers\Html;
 use yii\web\View;
+use yii\helpers\Url;
 
 
 $this->registerCsrfMetaTags();
