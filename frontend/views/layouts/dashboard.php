@@ -5,8 +5,7 @@
 
 use frontend\assets\AppAsset;
 use yii\bootstrap5\Html;
-use yii\helpers\Url;
-use yii\widgets\Breadcrumbs;
+use yii\web\View;
 
 
 
@@ -321,3 +320,21 @@ $this->beginPage();
 
 </html>
 <?php $this->endPage() ?>
+
+
+<?php
+// Only register analytics in the production environment
+if (YII_ENV === 'prod') { // or YII_ENV === 'prod'
+    $this->registerJsFile(
+        'https://analytics.kemri.go.ke/js/pa-8kSKUd4u4fB-vxMtzkAlz.js',
+        [
+            'async' => true,
+            'position' => View::POS_HEAD,
+        ]
+    );
+
+    $this->registerJs(
+        'window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}}; plausible.init();',
+        View::POS_HEAD
+    );
+}
