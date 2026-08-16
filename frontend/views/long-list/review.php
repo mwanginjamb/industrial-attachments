@@ -27,7 +27,7 @@ ICO;
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
         <div>
             <h1 class="text-4xl font-extrabold tracking-tight text-on-surface">
-                <?= Html::encode($longList->placement->name) ?> Review List
+                <?= Html::encode($model->placement->name) ?> Review List
             </h1>
 
 
@@ -43,15 +43,15 @@ ICO;
                 </span>
             </div>
         </div>
-       
+
     </div>
     <!-- end header div -->
 
     <!-- Stats Overview (Asymmetric Grid) -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-     
-    <!-- global count of apps -->
-    <div class="md:col-span-1 bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
+
+        <!-- global count of apps -->
+        <div class="md:col-span-1 bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
             <span class="text-on-surface-variant text-sm font-medium">Total Applicants</span>
             <div class="mt-4">
                 <span class="text-3xl font-black text-on-surface">
@@ -60,13 +60,13 @@ ICO;
                 <span class="text-green-600 text-xs font-bold ml-2"></span>
             </div>
         </div>
-        
+
         <!-- selected count -->
         <div class="md:col-span-1 bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
             <span class="text-on-surface-variant text-sm font-medium">Selected</span>
             <div class="mt-4">
                 <span class="text-3xl font-black text-on-surface">
-                    <?=  $metrics['selected'] ?>
+                    <?= $metrics['selected'] ?>
                 </span>
             </div>
         </div>
@@ -76,11 +76,11 @@ ICO;
             <span class="text-on-surface-variant text-sm font-medium">Not Selected</span>
             <div class="mt-4">
                 <span class="text-3xl font-black text-on-surface">
-                    <?=  $metrics['pending'] ?>
+                    <?= $metrics['pending'] ?>
                 </span>
             </div>
         </div>
-        
+
         <!-- processing status -->
         <div
             class="md:col-span-2 bg-primary-container p-6 rounded-xl flex items-center justify-between text-on-primary-container relative overflow-hidden">
@@ -112,7 +112,7 @@ ICO;
                     class="flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors">
                     <span class="material-symbols-outlined text-lg">filter_list</span> Filter
                 </button> -->
-                <?= ($metrics['selected'])> 0?
+                <?= ($metrics['selected']) > 0 ?
 
                     Html::a(
                         '<span class="material-symbols-outlined text-lg">check</span> Finalize Selection',
@@ -126,13 +126,13 @@ ICO;
                                 'confirm' => 'Are you sure you want to finalize this selection?',
                             ]
                         ]
-                    ): '';
+                    ) : '';
                 ?>
 
-                <?= ($metrics['selected'])> 0?
+                <?= ($metrics['selected']) > 0 ?
 
                     Html::a(
-                        '<span class="material-symbols-outlined text-lg">visibility</span> View Selected Applicants ('.$metrics['selected'].')',
+                        '<span class="material-symbols-outlined text-lg">visibility</span> View Selected Applicants (' . $metrics['selected'] . ')',
                         [
                             'long-list/shortlist',
                             'id' => $model->id
@@ -141,7 +141,7 @@ ICO;
                             'class' => 'btn inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold border-none bg-surface-container hover:bg-surface-container-high rounded-lg transition-colors no-underline',
                             'target' => '_blank',
                         ]
-                    ): '';
+                    ) : '';
                 ?>
 
 
@@ -165,7 +165,7 @@ ICO;
                         <th class="px-6 py-4" data-priority="2">Year</th>
                         <th class="px-6 py-4" data-priority="3">Level</th>
                         <th class="px-6 py-4" data-priority="4">Institution</th>
-                        <th class="px-6 py-4  data-priority="5">Preferred Placement</th>
+                        <th class="px-6 py-4  data-priority=" 5">Preferred Placement</th>
                         <th class="px-6 py-4 text-success" data-priority="6">Selected</th>
                         <th class="px-6 py-4" data-priority="7">Status</th>
                         <th class="px-8 py-4 text-right" data-priority="8">Actions</th>
@@ -174,7 +174,7 @@ ICO;
                 <tbody class="divide-y divide-surface-container">
                     <?php foreach ($applications as $application):
 
-                       $membership = \frontend\models\LongListApplication::findOne([
+                        $membership = \frontend\models\LongListApplication::findOne([
                             'long_list_id' => $model->id,
                             'application_id' => $application->id,
                         ]);

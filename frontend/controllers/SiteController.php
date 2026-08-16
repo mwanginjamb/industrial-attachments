@@ -205,6 +205,7 @@ class SiteController extends Controller
      */
     public function actionContact()
     {
+        $this->layout = 'dashboard';
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
