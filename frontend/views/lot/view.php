@@ -186,6 +186,9 @@ ICO;
                                 <p class="text-sm font-medium"><?= $application['attachee']['year_of_study'] ?></p>
                             </td>
                             <td class="px-6 py-5 text-sm">
+                                <span class="text-on-surface-variant font-medium">
+                                    <?= $application?->attachee?->level_of_education ? $application->attachee->getAcademicLevels()[$application->attachee->level_of_education] : 'N/A' ?>
+                                </span>
                                 <p class="text-xs text-on-surface-variant"><?= $application['attachee']['course_name'] ?>
                                 </p>
                             </td>

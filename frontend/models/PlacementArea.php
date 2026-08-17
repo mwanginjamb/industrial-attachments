@@ -86,4 +86,16 @@ class PlacementArea extends \yii\db\ActiveRecord
         return new PlacementAreaQuery(get_called_class());
     }
 
+    // created by relation
+    public function getCreator()
+    {
+        return $this->hasOne(User::class, ['id' => 'created_by']);
+    }
+
+    // updated by relation
+    public function getUpdater()
+    {
+        return $this->hasOne(User::class, ['id' => 'updated_by']);
+    }
+
 }

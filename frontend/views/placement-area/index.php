@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Yii::t('app', 'Create Placement Area'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -32,15 +32,27 @@ $this->params['breadcrumbs'][] = $this->title;
             //'id',
             'name',
             'description:ntext',
-           // 'created_by',
-           // 'updated_by',
-            //'created_at',
-            //'updated_at',
+            [
+                'attribute' => 'created_by',
+                'label' => 'Created By',
+                'value' => function ($model) {
+                        return $model->creator->username;
+                    },
+            ],
+            [
+                'attribute' => 'updated_by',
+                'label' => 'Updated By',
+                'value' => function ($model) {
+                        return $model->updater->username;
+                    },
+            ],
+            'created_at:datetime',
+            'updated_at:datetime',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, PlacementArea $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                        return Url::toRoute([$action, 'id' => $model->id]);
+                    }
             ],
         ],
     ]); ?>
