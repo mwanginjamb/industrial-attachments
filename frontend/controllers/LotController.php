@@ -150,23 +150,19 @@ class LotController extends Controller
         // Lot applications
         if (isset($params['placement']) && $params['placement'] != '') {
             $applications = \frontend\models\Application::find()
-                ->joinWith(['lot', 'status0', 'attachee'])
+                ->with(['lot', 'status0', 'attachee'])
                 ->where(['lot_id' => $id])
                 ->andFilterWhere([
                     'placement' => $params['placement']
                 ])
                 ->orderBy(['id' => SORT_DESC])
-                ->distinct()
                 // ->asArray()
                 ->all();
         } else {
             $applications = \frontend\models\Application::find()
-                ->joinWith('lot')
-                ->joinWith('status0')
-                ->joinWith('attachee')
+                ->with(['lot', 'status0', 'attachee'])
                 ->where(['lot_id' => $id])
                 ->orderBy(['id' => SORT_DESC])
-                ->distinct()
                 // ->asArray()
                 ->all();
         }
