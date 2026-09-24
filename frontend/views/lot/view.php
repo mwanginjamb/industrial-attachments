@@ -157,7 +157,9 @@ ICO;
                         <th class="px-6 py-4 text-success" data-priority="5">Preferred Placement</th>
                         <th class="px-6 py-4 text-success" data-priority="6">Selected</th>
                         <th class="px-6 py-4" data-priority="7">Status</th>
-                        <th class="px-8 py-4 text-right" data-priority="8">Actions</th>
+                        <th class="px-6 py-4" data-priority="8">Email</th>
+                        <th class="px-6 py-4" data-priority="9">Phone Number</th>
+                        <th class="px-8 py-4 text-right" data-priority="10">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-surface-container">
@@ -216,6 +218,22 @@ ICO;
                                 <span
                                     class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[11px] font-bold uppercase tracking-tight"><?= !is_null($application['status0']) ? $application['status0']['description'] : 'N/A' ?></span>
                             </td>
+
+                            <!--Attachee  Email and Phone Number -->
+
+                            <td class="px-6 py-5">
+                                <span class="text-on-surface-variant font-medium">
+                                    <?= $application?->attachee?->email_address ?>
+                                </span>
+                            </td>
+
+                            <td class="px-6 py-5">
+                                <span class="text-on-surface-variant font-medium">
+                                    <?= $application?->attachee?->attachee_phone_number ?>
+                                </span>
+                            </td>
+
+
                             <td class="px-8 py-5 text-right">
                                 <div class="flex justify-end gap-2">
                                     <!-- <button
