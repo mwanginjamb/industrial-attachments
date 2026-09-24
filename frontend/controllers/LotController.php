@@ -156,6 +156,7 @@ class LotController extends Controller
                     'placement' => $params['placement']
                 ])
                 ->orderBy(['id' => SORT_DESC])
+                ->distinct()
                 // ->asArray()
                 ->all();
         } else {
@@ -165,6 +166,7 @@ class LotController extends Controller
                 ->joinWith('attachee')
                 ->where(['lot_id' => $id])
                 ->orderBy(['id' => SORT_DESC])
+                ->distinct()
                 // ->asArray()
                 ->all();
         }
