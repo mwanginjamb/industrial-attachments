@@ -29,12 +29,12 @@ class Application extends \yii\db\ActiveRecord
 {
 
     // status constants : submitted, under review, accepted, placed
-const STATUS_SUBMITTED = 1;
-const STATUS_UNDER_REVIEW = 2;
-const STATUS_ACCEPTED = 3;
-const STATUS_PLACED = 4;
-const STATUS_SELECTED = 5;
-const STATUS_UNSUCCESSFUL = 6;
+    const STATUS_SUBMITTED = 1;
+    const STATUS_UNDER_REVIEW = 2;
+    const STATUS_ACCEPTED = 3;
+    const STATUS_PLACED = 4;
+    const STATUS_SELECTED = 5;
+    const STATUS_UNSUCCESSFUL = 6;
 
 
 
@@ -69,6 +69,8 @@ const STATUS_UNSUCCESSFUL = 6;
 
             [['placement'], 'integer'],
             [['closed'], 'boolean'],
+            // validate attachee_id  and lot_id combo are uique
+            [['attachee_id'], 'unique', 'targetAttribute' => ['attachee_id', 'lot_id'], 'message' => 'You have already applied for this lot.'],
         ];
     }
 
@@ -141,17 +143,17 @@ const STATUS_UNSUCCESSFUL = 6;
     }
 
     // If placement field is updated , update status to review
-   /* public function beforeSave($insert)
-    {
-        if (parent::beforeSave($insert)) {
-            if (!$insert && $this->isAttributeChanged('placement')) {
-                $this->status = self::STATUS_UNDER_REVIEW;
-            }
-            return true;
-        }
-        return false;
-    }
-        */
+    /* public function beforeSave($insert)
+     {
+         if (parent::beforeSave($insert)) {
+             if (!$insert && $this->isAttributeChanged('placement')) {
+                 $this->status = self::STATUS_UNDER_REVIEW;
+             }
+             return true;
+         }
+         return false;
+     }
+         */
 
 
     // Current longList application
@@ -184,18 +186,18 @@ const STATUS_UNSUCCESSFUL = 6;
         ];
 
         if (!in_array($this->status, $supportedStatuses, true)) {
-             Yii::info("Status {$this->status} is not supported for queue notifications.", 'queue.notifications');
+            Yii::info("Status {$this->status} is not supported for queue notifications.", 'queue.notifications');
             return;
         }
 
-       Yii::$app->queue->push(new ApplicationStatusNotificationJob([
+        Yii::$app->queue->push(new ApplicationStatusNotificationJob([
             'applicationId' => $this->id,
             'status' => $this->status
         ]));
     }
 
-    
 
-   
+
+
 
 }

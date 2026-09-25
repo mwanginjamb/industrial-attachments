@@ -200,6 +200,20 @@ class ApplicationController extends Controller
 
         // check if the user has a complete Attachee profile
         $attachee = Attachee::findOne(['user_id' => Yii::$app->user->id]);
+
+
+
+        // check if an application already exists for this attachee + lot
+        $existing = Application::findOne([
+            'attachee_id' => $attachee->id,
+            'lot_id' => $lot->id,
+        ]);
+
+        if ($existing) {
+            Yii::$app->session->addFlash('error', 'You have already applied for this lot.');
+            return $this->redirect(['site/index']);
+        }
+
         // if not, redirect to the Attachee profile page
         if (!$attachee) {
             // add flash message for profile completion
