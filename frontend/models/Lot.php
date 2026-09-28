@@ -214,17 +214,28 @@ class Lot extends \yii\db\ActiveRecord
 
 
     // Check if lot is active
-    public function getIsActive()
+    public function getIsActive(): bool
     {
         if (empty($this->opening_date)) {
             return false;
         }
-        // Application window (days)
-        $days = Yii::$app->params['lotApplicationWindowDays'];
-        $today = new \DateTime();
-        $opening = new \DateTime($this->opening_date);
-        $start = (clone $opening)->modify("-{$days} days");
-        return ($today >= $start && $today < $opening);
+
+        $windowDays = (int) Yii::$app->params['lotApplicationWindowDays'];    // 75, counted back from the deadline
+        $deadlineDays = (int) Yii::$app->params['lotApplicationDeadlineDays'];  // 14, counted back from opening
+
+        try {
+            $tz = new \DateTimeZone(Yii::$app->timeZone);
+            $today = new \DateTimeImmutable('today', $tz);                    // midnight, app timezone
+            $opening = (new \DateTimeImmutable($this->opening_date, $tz))->setTime(0, 0);
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        $deadline = $opening->modify("-{$deadlineDays} days");
+        $windowStart = $deadline->modify("-{$windowDays} days");
+
+        // Inclusive on both ends: open on the first day of the window and on the deadline day
+        return $today >= $windowStart && $today <= $deadline;
     }
 
     public static function find()

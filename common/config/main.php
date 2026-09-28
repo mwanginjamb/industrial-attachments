@@ -6,6 +6,7 @@ return [
         '@npm' => '@vendor/npm-asset',
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+    'timeZone' => 'Africa/Nairobi',
     'components' => [
         'authManager' => [
             'class' => \yii\rbac\DbManager::class,
