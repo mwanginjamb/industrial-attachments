@@ -164,8 +164,21 @@ class Lot extends \yii\db\ActiveRecord
         if (!$this->opening_date) {
             return null;
         }
-        $applicationWIndow = Yii::$app->params['lotApplicationWindowDays'];
-        return date('Y-m-d', strtotime($this->opening_date . ' -' . $applicationWIndow . ' days'));
+
+        $windowDays = (int) Yii::$app->params['lotApplicationWindowDays'];    // 75, counted back from the deadline
+        $deadlineDays = (int) Yii::$app->params['lotApplicationDeadlineDays'];  // 14, counted back from opening
+
+        try {
+            $opening = new \DateTimeImmutable($this->opening_date, new \DateTimeZone(Yii::$app->timeZone));
+        } catch (\Exception $e) {
+            return null;
+        }
+
+        // window start = (opening - 14 days) - 75 days = opening - 89 days
+        return $opening
+            ->modify("-{$deadlineDays} days")
+            ->modify("-{$windowDays} days")
+            ->format('Y-m-d');
     }
 
     public function getApplicationDeadline()
