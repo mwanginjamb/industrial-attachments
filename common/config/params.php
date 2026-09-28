@@ -9,6 +9,7 @@ return [
     'user.passwordMinLength' => 8,
     'lotApplicationWindowDays' => env('LOT_APPLICATION_WINDOW_DAYS', 75),
     'lotProcessingWindowDays' => env('LOT_PROCESSING_WINDOW_DAYS', 14),
+    'lotApplicationDeadlineDays' => env('LOT_APPLICATION_DEADLINE_DAYS', 14),
     // Array for annual quarters and their corresponding date ranges
     'quarters' => [
         'Q1' => ['start' => '01-01', 'end' => '03-31'],

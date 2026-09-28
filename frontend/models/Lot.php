@@ -173,8 +173,8 @@ class Lot extends \yii\db\ActiveRecord
         if (!$this->opening_date) {
             return null;
         }
-
-        return date('Y-m-d', strtotime($this->opening_date . ' -1 day'));
+        $applicationDeadlineDays = Yii::$app->params['lotApplicationDeadlineDays'];
+        return date('Y-m-d', strtotime($this->opening_date . ' -' . $applicationDeadlineDays . ' days'));
     }
 
     // Milestone 2: get Placement deadline (2 weeks after closing date)
