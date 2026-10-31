@@ -44,6 +44,14 @@ return [
             //   ],
 
         ],
+        // Shared by frontend (push) and console (worker: php yii queue/listen)
+        'queue' => [
+            'class' => \yii\queue\db\Queue::class,
+            'db' => 'db',
+            'tableName' => '{{%queue}}',
+            'channel' => 'default',
+            'mutex' => \yii\mutex\MysqlMutex::class,
+        ],
         'utility' => [
             'class' => \common\Library\Utility::class,
         ],

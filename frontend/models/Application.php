@@ -170,11 +170,15 @@ class Application extends \yii\db\ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
 
-        if (!isset($changedAttributes['status'])) {
+        // On insert the old value is null, so isset() would skip it - use array_key_exists
+        if (!array_key_exists('status', $changedAttributes) || $this->status === null) {
             return;
         }
 
-        if ($changedAttributes['status'] == $this->status) {
+        // status may arrive as a string from forms / the API
+        $status = (int) $this->status;
+
+        if (!$insert && (int) $changedAttributes['status'] === $status) {
             return;
         }
 
@@ -185,14 +189,14 @@ class Application extends \yii\db\ActiveRecord
             self::STATUS_UNSUCCESSFUL,
         ];
 
-        if (!in_array($this->status, $supportedStatuses, true)) {
-            Yii::info("Status {$this->status} is not supported for queue notifications.", 'queue.notifications');
+        if (!in_array($status, $supportedStatuses, true)) {
+            Yii::info("Status {$status} is not supported for queue notifications.", 'queue.notifications');
             return;
         }
 
         Yii::$app->queue->push(new ApplicationStatusNotificationJob([
             'applicationId' => $this->id,
-            'status' => $this->status
+            'status' => $status
         ]));
     }
 

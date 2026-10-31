@@ -52,6 +52,12 @@ class ApplicationNotificationService
 
     }
 
+    // Symfony Mailer rejects messages without a From header
+    private function sender(): array
+    {
+        return [Yii::$app->params['senderEmail'] => Yii::$app->params['senderName']];
+    }
+
     // selection email notification
 
     private function sendSelectionEmail(Application $application): bool
@@ -69,6 +75,7 @@ class ApplicationNotificationService
 
         return Yii::$app->mailer
             ->compose()
+            ->setFrom($this->sender())
             ->setTo($application->attachee->email_address)
             ->setSubject('Industrial Attachment Application Outcome')
             ->setTextBody(
@@ -99,6 +106,7 @@ class ApplicationNotificationService
 
        return Yii::$app->mailer
             ->compose()
+            ->setFrom($this->sender())
             ->setTo($application->attachee->email_address)
             ->setSubject('Industrial Attachment Application Outcome')
             ->setTextBody(
@@ -135,6 +143,7 @@ class ApplicationNotificationService
 
         return Yii::$app->mailer
             ->compose()
+            ->setFrom($this->sender())
             ->setTo(
                 $application->attachee->email_address
             )
@@ -172,6 +181,7 @@ class ApplicationNotificationService
 
     return Yii::$app->mailer
         ->compose()
+        ->setFrom($this->sender())
         ->setTo(
             $application->attachee->email_address
         )
