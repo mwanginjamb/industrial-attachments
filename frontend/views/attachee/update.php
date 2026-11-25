@@ -5,8 +5,9 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\Attachee $model */
 
-$this->title = Yii::t('app', 'Update Attachee: {name}', [
+$this->title = Yii::t('app', 'Update Attachee: {name} - {reference}', [
     'name' => $model->name,
+    'reference' => $model->attachee_reference ?? 'Not Set',
 ]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Attachees'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];

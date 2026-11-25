@@ -1,3 +1,5 @@
+// Toggle between Grid and List views in the vacancies listing page
+
 (function () {
     const gridBtn = document.getElementById('grid-view-btn');
     const listBtn = document.getElementById('list-view-btn');

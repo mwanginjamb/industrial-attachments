@@ -60,7 +60,7 @@ return [
         ],
         'dashboard' => [
             'class' => \common\Library\Dashboard::class
-        ],
+        ]
 
     ],
 ];

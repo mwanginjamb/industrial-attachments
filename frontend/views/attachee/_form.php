@@ -226,8 +226,8 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
                                 <td class="px-6 py-5 font-medium text-on-surface"><?= $t['document_description'] ?></td>
                                 <td class="px-6 py-5">
                                     <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-error-container text-on-error-container">
-                                        <span class="material-symbols-outlined text-[14px] mr-1">warning</span> Missing
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold <?= $statusClass ?>">
+                                        <?= $status ?>
                                     </span>
                                 </td>
                                 <td class="px-6 py-5 text-right">
@@ -244,7 +244,6 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
 
                                         <?php endif; ?>
                                         <!-- inline upload form -->
-                                        <?php // one upload form per template: ids carry the template id so they stay unique ?>
                                         <?php $form = ActiveForm::begin(['id' => 'national-id-form-' . $t['id'], 'options' => ['name' => $file->formName()]]); ?>
                                         <?= $form->field($file, 'attachee_id')->hiddenInput(['value' => $model->attachee_reference, 'id' => 'file-attachee_id-' . $t['id']])->label(false) ?>
                                         <?= $form->field($file, 'document_type')->hiddenInput(['value' => $t['id'], 'id' => 'file-document_type-' . $t['id']])->label(false) ?>

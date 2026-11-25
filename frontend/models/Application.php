@@ -126,7 +126,7 @@ class Application extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Status]].
+     * Gets query for [[Status0]].
      *
      * @return \yii\db\ActiveQuery
      */

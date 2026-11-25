@@ -99,34 +99,23 @@ class AttacheeDocumentsTemplates extends \yii\db\ActiveRecord
         return $this->hasOne(AttacheeDocuments::class, ['document_type' => 'id']);
     }
 
-    // Get Total Templates Count
+    // get Total templates
     public static function getTotalTemplates()
     {
-        return AttacheeDocumentsTemplates::find()->count();
+        return self::find()->count();
     }
 
-    //Get status of whether a particular template has an attachment for a given attachee
-    public static function getAttacheeUploadedDocument($templateId, $attacheeId): bool
+    // Given a template id and an attachee reference, determine if that attachee has uploaded a document of that template type
+    public static function getAttacheeUploadedDocument($template_id, $attachee_reference)
     {
-        return (bool) AttacheeDocumentsTemplates::find()->with([
-            'attacheeDocument' => function ($query) use ($attacheeId) {
-                $query->andWhere(['attachee_id' => $attacheeId]);
-            }
-        ])->andWhere(['id' => $templateId])->exists();
+        return AttacheeDocuments::find()->where(['document_type' => $template_id, 'attachee_id' => $attachee_reference])->andWhere(['not', ['path' => null]])->andWhere(['not', ['path' => '']])->exists();
     }
 
-    // Get the path of the uploaded document for a given template and attachee
-    public static function getAttacheeUploadedDocumentPath($templateId, $attacheeId): string|null
+    // Return path of uploaded document given a template id and an attachee reference
+    public static function getAttacheeUploadedDocumentPath($template_id, $attachee_reference)
     {
-        $document = AttacheeDocumentsTemplates::find()->with([
-            'attacheeDocument' => function ($query) use ($attacheeId) {
-                $query->andWhere(['attachee_id' => $attacheeId]);
-            }
-        ])->andWhere(['id' => $templateId])->one();
-
-        return $document && $document->attacheeDocument ? $document->attacheeDocument->path : null;
+        $document = AttacheeDocuments::find()->where(['document_type' => $template_id, 'attachee_id' => $attachee_reference])->andWhere(['not', ['path' => null]])->andWhere(['not', ['path' => '']])->one();
+        return $document ? $document->path : null;
     }
-
-
 
 }

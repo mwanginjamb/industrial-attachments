@@ -20,8 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     be sent there.</p>
             </div>
 
-    <div class="row">
-        <div class="col-lg-5">
             <?php $form = ActiveForm::begin([
                 'id' => 'request-password-reset-form',
                 'options' => ['class' => 'space-y-6'],
@@ -32,7 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ]); ?>
 
-            <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
+            <?= $form->errorSummary($model) ?>
+
+            <?= $form->field($model, 'email')->textInput(['autofocus' => true, 'placeholder' => 'Enter Your Registered E-mail', 'type' => 'email']) ?>
 
             <?= Html::submitButton('Request Password Reset <span class="material-symbols-outlined">arrow_forward</span>', [
                 'class' => 'w-full py-4 bg-primary text-white font-headline font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-primary-container transition-all flex items-center justify-center gap-2',
@@ -51,5 +51,6 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
 
         </div>
-    </div>
+    </section>
+
 </div>

@@ -138,6 +138,8 @@ class SiteController extends Controller
             4 => 'health_and_safety'
         ];
 
+        //  Yii::$app->utility->printrr($applications);
+
         return $this->render('index', [
             'model' => $attachee,
             'docTemplates' => $attachedDocuments,
@@ -153,7 +155,7 @@ class SiteController extends Controller
     {
 
         $this->layout = 'dashboard';
-        // All lots, open ones first; the view marks each Active/Inactive via Lot::isActive
+        // Get all lots with their related applications and applicants
         $lots = \frontend\models\Lot::find()->orderByActive()->all();
         return $this->render('listing', [
             'lots' => $lots

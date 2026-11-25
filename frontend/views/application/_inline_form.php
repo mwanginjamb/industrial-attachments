@@ -12,8 +12,8 @@ use yii\helpers\Url;
 <!-- inline upload form -->
 <?php $form = ActiveForm::begin(['id' => 'national-id-form-' . $t['id'], 'options' => ['name' => $file->formName()]]); ?>
 
-<?= $form->field($file, 'attachee_id')->hiddenInput(['value' => $model->attachee_reference])->label(false) ?>
-<?= $form->field($file, 'document_type')->hiddenInput(['value' => $t['id']])->label(false) ?>
+<?= $form->field($file, 'attachee_id')->hiddenInput(['value' => $model->attachee_reference, 'id' => 'file-attachee_id-' . $t['id']])->label(false) ?>
+<?= $form->field($file, 'document_type')->hiddenInput(['value' => $t['id'], 'id' => 'file-document_type-' . $t['id']])->label(false) ?>
 <?= $form->field($file, 'attachment', [
     'template' => '{input}{error}',
     'errorOptions' => ['class' => 'text-xs text-error mt-1 text-right'],

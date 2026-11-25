@@ -27,7 +27,7 @@ $this->beginPage();
     <meta charset="<?= Yii::$app->charset ?>" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>
-        <?= Html::encode($this->title) ?> | <?= env('APP_NAME') ?>
+        <?= Html::encode($this->title) ?> | <?= Yii::$app->name ?>
     </title>
     <!-- Favicons all common sizes -->
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png">
@@ -66,15 +66,14 @@ $this->beginPage();
                     <span class="material-symbols-outlined text-on-surface">menu</span>
                 </button>
 
-                <?= Html::a('<span class="material-symbols-outlined text-primary">school</span><span class="text-xl font-black text-blue-900 dark:text-blue-100 tracking-tighter font-headline">' . env('APP_NAME') . '</span>', ['/site/index'], ['class' => 'flex items-center gap-3']) ?>
+                <?= Html::a('<span class="text-xl md:text-2xl font-black text-blue-900 dark:text-blue-100 tracking-tighter font-headline">' . Yii::$app->name . '</span>', ['site/index'], ['class' => 'flex items-center gap-2']) ?>
 
                 <div class="hidden md:flex items-center gap-6">
                     <?php
                     $navItems = [
                         ['label' => 'Dashboard', 'url' => ['/site/index']],
-                        ['label' => 'Attachment Vacancies', 'url' => ['/site/listing']],
-
-
+                        ['label' => 'Vacancies', 'url' => ['/site/listing']],
+                       
                     ];
                     foreach ($navItems as $item):
                         $isActive = Yii::$app->controller->action->uniqueId === ltrim($item['url'][0], '/');
@@ -218,6 +217,7 @@ $this->beginPage();
                     <span class="px-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">Profile &amp;
                         Account</span>
                     <nav class="mt-4 space-y-1">
+                        <?php // /student/profile and /user/settings do not exist; link to the attachee profile instead ?>
                         <?php if (!Yii::$app->user->isGuest && !Yii::$app->user->identity->attachee): ?>
                             <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 hover:bg-slate-50 font-semibold"
                                 href="<?= Url::to(['/attachee/create']) ?>">
@@ -248,20 +248,17 @@ $this->beginPage();
             <!-- Sidebar Footer: User Info -->
             <div class="p-6 bg-slate-50 dark:bg-slate-800/50 flex items-center gap-4">
                 <img alt="User profile avatar" class="w-12 h-12 rounded-full border-2 border-primary/20"
-                    src="<?= Html::encode(Yii::$app->user->identity->profile_photo ?? '/images/default-avatar.png') ?>" />
+                    src="<?= Html::encode(Yii::$app->user->identity->avatarUrl ?? '/images/default-avatar.png') ?>" />
                 <div>
                     <p class="font-bold text-on-surface">
                         <?= Html::encode(Yii::$app->user->identity->name ?? '') ?>
                     </p>
+                    <?php // User has no programme/yearOfStudy; read them from the attachee profile ?>
                     <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->attachee): ?>
                         <p class="text-xs text-on-surface-variant">
                             <?= Html::encode(Yii::$app->user->identity->attachee->course_name ?? '') ?>,
                             Year
                             <?= Html::encode(Yii::$app->user->identity->attachee->year_of_study ?? '') ?>
-                        </p>
-                        <p class="text-xs text-on-surface-variant">
-                            Institution
-                            <?= Html::encode(Yii::$app->user->identity->attachee->institution->name ?? '') ?>
                         </p>
                     <?php endif; ?>
                 </div>
@@ -269,8 +266,9 @@ $this->beginPage();
         </div>
     </div>
 
-    <!-- ===== MAIN CONTENT AREA ===== -->
-    <main class="max-w-screen-2xl mx-auto px-4 md:px-8 py-8 md:py-12">
+
+  
+
         <!-- Flash Alerts -->
         <?php foreach (Yii::$app->session->getAllFlashes() as $type => $messages): ?>
             <?php
@@ -288,7 +286,7 @@ $this->beginPage();
             ?>
             <div
                 role="alert"
-                class="flex items-start gap-4 mb-4 px-5 py-4 rounded-2xl <?= $alertConfig['bg'] ?> <?= $alertConfig['text'] ?> shadow-sm"
+                class="flex items-start gap-4 mb-4 px-5 py-4 my-3 rounded-2xl <?= $alertConfig['bg'] ?> <?= $alertConfig['text'] ?> shadow-sm"
                 x-data="{ show: true }"
             >
                 <span class="material-symbols-outlined mt-0.5 flex-shrink-0"><?= $alertConfig['icon'] ?></span>
@@ -305,6 +303,10 @@ $this->beginPage();
             </div>
             <?php endforeach; ?>
         <?php endforeach; ?>
+
+
+    <!-- ===== MAIN CONTENT AREA ===== -->
+    <main class="max-w-screen-2xl mx-auto px-4 md:px-8 py-8 md:py-12">
         <?= $content ?>
     </main>
 

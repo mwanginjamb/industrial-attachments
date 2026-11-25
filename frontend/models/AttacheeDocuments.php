@@ -83,7 +83,7 @@ class AttacheeDocuments extends \yii\db\ActiveRecord
         return $this->hasOne(AttacheeDocumentsTemplates::class, ['id' => 'document_type']);
     }
 
-    // Get Attached Dococuments Count for an Attachee
+    // get NUmber of documents uploaded by an attachee
     public static function getDocumentsCount($attachee_id)
     {
 

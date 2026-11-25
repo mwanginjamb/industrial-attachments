@@ -2,7 +2,6 @@
 
 namespace frontend\models;
 
-use frontend\models\Attachee;
 use Yii;
 
 /**
@@ -19,7 +18,7 @@ use Yii;
  * @property int $updated_at
  * @property string|null $verification_token
  *
- * @property Attachee[] $attachees
+ * @property Attachee|null $attachee
  */
 class User extends \yii\db\ActiveRecord
 {
@@ -71,18 +70,11 @@ class User extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Attachees]].
+     * Gets query for [[Attachee]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getAttachees()
-    {
-        return $this->hasMany(Attachee::class, ['user_id' => 'id']);
-    }
-
-    // Has Attachee profile
-
-    public function attachee()
+    public function getAttachee()
     {
         return $this->hasOne(Attachee::class, ['user_id' => 'id']);
     }

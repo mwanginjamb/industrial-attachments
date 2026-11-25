@@ -4,13 +4,14 @@ namespace frontend\controllers;
 
 use frontend\models\Application;
 use frontend\models\ApplicationSearch;
-use frontend\models\Attachee;
-use Yii;
-use yii\filters\AccessControl;
-use yii\filters\ContentNegotiator;
-use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use frontend\models\Attachee;
+use yii\helpers\Url;
+
+use Yii;
 
 /**
  * ApplicationController implements the CRUD actions for Application model.
@@ -47,31 +48,8 @@ class ApplicationController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
-                'contentNegotiator' => [
-                    'class' => ContentNegotiator::class,
-                    'only' => ['commit', 'placements'],
-                    'formatParam' => '_format',
-                    'formats' => [
-                        'application/json' => \yii\web\Response::FORMAT_JSON
-                    ]
-                ],
             ]
         );
-    }
-
-    public function beforeAction($action)
-    {
-
-        $ExceptedActions = [
-            'commit',
-            'placements'
-        ];
-
-        if (in_array($action->id, $ExceptedActions)) {
-            $this->enableCsrfValidation = false;
-        }
-
-        return parent::beforeAction($action);
     }
 
     /**
@@ -98,8 +76,57 @@ class ApplicationController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+
+        // Show the documents and applications of the attachee who made this application
+        // (not the logged-in user, who may be HR/staff or have no attachee profile)
+        $attachee = $model->attachee;
+        $reference = $attachee ? $attachee->attachee_reference : null;
+
+        $total_templates = \frontend\models\AttacheeDocumentsTemplates::getTotalTemplates();
+        $total_attachee_documents = $reference ? \frontend\models\AttacheeDocuments::getDocumentsCount($reference) : 0;
+        $attachedDocuments = \frontend\models\AttacheeDocumentsTemplates::find()->With([
+            'attacheeDocument' => function ($query) use ($reference) {
+                $query->andWhere(['not', ['path' => null]])
+                    ->andWhere(['not', ['path' => '']])
+                    ->andWhere(['attachee_id' => $reference]);
+            }
+        ])->all();
+
+        $applications = $attachee ? \frontend\models\Application::find()
+            ->joinWith('lot')
+            ->joinWith('status0')
+            ->joinWith('attachee')
+            ->where(['attachee_id' => $attachee->id])
+            ->asArray()
+            ->limit(4)
+            ->all() : [];
+
+        $icons = [
+            1 => 'description',
+            2 => 'school',
+            3 => 'badge',
+            4 => 'health_and_safety'
+        ];
+
+        $StatusIcons = [
+            Application::STATUS_SUBMITTED => 'hourglass_top',
+            Application::STATUS_UNDER_REVIEW => 'search',
+            Application::STATUS_ACCEPTED => 'check_circle',
+            Application::STATUS_PLACED => 'verified',
+        ];
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'attachee' => $attachee,
+            //'attacheeDocuments' => \frontend\models\AttacheeDocuments::find()->where(['attachee_id' => $this->findModel($id)->attachee_id])->with('documentType')->all(),
+            'docTemplates' => $attachedDocuments,
+            'lots' => \frontend\models\Lot::find()->active()->all(),
+            'total_templates' => $total_templates,
+            'total_attachee_documents' => $total_attachee_documents,
+            'icons' => $icons,
+            'StatusIcons' => $StatusIcons,
+            'applications' => $applications
+
         ]);
     }
 
@@ -181,6 +208,7 @@ class ApplicationController extends Controller
         $attachee = Attachee::findOne(['user_id' => Yii::$app->user->id]);
 
         // no profile yet - create a minimal one and send the user to complete it
+        // (must run before $attachee->id is read below)
         if (!$attachee) {
             Yii::$app->session->setFlash('info', 'Please complete your profile before applying for Industrial Attachment.');
             // do minimal profile save  - save the user id
@@ -226,11 +254,16 @@ class ApplicationController extends Controller
         $application = new Application();
         $application->attachee_id = $attachee->id;
         $application->lot_id = $lot->id;
+        $application->status = Application::STATUS_SUBMITTED; // set initial status to submitted
+        //Yii::$app->utility->printrr($application->attributes);
         if ($application->save()) {
             // redirect to site/index - dashboard
             Yii::$app->session->addFlash('success', 'Application submitted successfully');
         } else {
-            Yii::$app->session->addFlash('error', 'Application submission failed: ' . implode(' ', $application->getErrorSummary(false)));
+            // show errors too in the flash message but stringify the errors array
+            $errors = $application->getErrors();
+            Yii::$app->session->addFlash('error', 'Application submission failed: ' . json_encode($errors));
+
         }
         return $this->redirect(['site/index']);
     }
@@ -261,7 +294,4 @@ class ApplicationController extends Controller
         }
         return null;
     }
-
-
-
 }

@@ -63,10 +63,15 @@ if(!Yii::$app->user->isGuest) {
 ═══════════════════════════════════════════ -->
 <aside class="h-screen w-64 fixed left-0 top-0 overflow-y-auto bg-slate-100 dark:bg-slate-950 flex flex-col gap-2 p-4 border-r border-slate-200/10 z-40">
 
-    <!-- Brand -->
+    <!-- Brand  -->
+     <a href="<?= Url::toRoute('site/index') ?>">
     <div class="mb-8 px-2">
-        <?= Html::a('<span class="material-symbols-outlined text-primary text-4xl">school</span><h1 class="font-headline font-black text-xl text-on-background tracking-tighter">' . env('APP_NAME') . '</h1>', ['/site/index'], ['class' => 'flex items-center gap-3']) ?>
+        <h2 class="font-['Manrope'] font-bold text-lg text-slate-900 dark:text-slate-50">
+            <?= Html::encode(Yii::$app->name) ?>
+        </h2>
+        <p class="text-xs text-on-surface-variant opacity-70"><?= Html::encode(env('CUSTOMER')) ?></p>
     </div>
+    </a>
 
     <!-- Primary Navigation -->
     <nav class="flex-1 space-y-1">

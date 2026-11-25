@@ -39,15 +39,14 @@ class LotSearch extends Lot
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $formName = null)
+    public function search($params, $formName = null, $showActiveOnly = false)
     {
         $query = Lot::find()->orderByActive();
 
         // add conditions that should always apply here
-
-        // skip all records with no opening date and closing date
-        $query->andWhere(['not', ['opening_date' => null]])
-            ->andWhere(['not', ['closing_date' => null]]);
+        if ($showActiveOnly) {
+            $query->active();
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -73,6 +72,7 @@ class LotSearch extends Lot
         ]);
 
         $query->andFilterWhere(['like', 'description', $this->description]);
+        
 
         return $dataProvider;
     }

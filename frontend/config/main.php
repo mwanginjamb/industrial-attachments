@@ -11,7 +11,7 @@ return [
     'id' => 'app-frontend',
     'name' => 'Attachment Manager',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log', 'queue'],
+    'bootstrap' => ['log','queue'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'request' => [
@@ -52,7 +52,7 @@ return [
                 // Queue notification logs
                 [
                     'class' => \yii\log\FileTarget::class,
-                    'levels' => ['info', 'warning', 'error'],
+                    'levels' => ['info','warning','error'],
                     'categories' => [
                         'queue.notifications'
                     ],
@@ -79,7 +79,7 @@ return [
         ],
         'assetManager' => [
             'appendTimestamp' => true
-        ],
+        ]
 
     ],
     'modules' => [

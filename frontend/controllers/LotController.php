@@ -31,7 +31,7 @@ class LotController extends Controller
             parent::behaviors(),
             [
                 'verbs' => [
-                    'class' => VerbFilter::class,
+                    'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -85,7 +85,8 @@ class LotController extends Controller
                         ],
                     ],
                 ],
-            ],
+
+            ]
         );
     }
 
@@ -104,6 +105,7 @@ class LotController extends Controller
         return parent::beforeAction($action);
     }
 
+
     /**
      * Lists all lot models.
      *
@@ -112,7 +114,16 @@ class LotController extends Controller
     public function actionIndex()
     {
         $searchModel = new LotSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        // use parameters from existing filter
+        $params = $this->request->queryParams;
+        $showActiveOnly = false;
+
+        if (isset($params['LotSearch']['status']) && $params['LotSearch']['status'] === 'active') {
+            $showActiveOnly = true;
+        }
+
+        $dataProvider = $searchModel->search($this->request->queryParams, null, $showActiveOnly);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -158,7 +169,7 @@ class LotController extends Controller
 
         $placement_areas = \frontend\models\PlacementArea::find()->all();
 
-        // Yii::$app->utility->printrr($applications);
+        //Yii::$app->utility->printrr($applications);
 
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -230,7 +241,7 @@ class LotController extends Controller
      * Finds the lot model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Lot the loaded model
+     * @return lot the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)

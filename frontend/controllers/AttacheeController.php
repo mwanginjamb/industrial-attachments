@@ -35,21 +35,21 @@ class AttacheeController extends Controller
                     ],
                 ],
                 'access' => [
-                    'class' => AccessControl::class,
-                    'only' => ['index', 'update', 'create', 'delete', 'read', 'view'],
-                    'rules' => [
-                        [
-                            'actions' => ['signup', 'listing'],
-                            'allow' => true,
-                            'roles' => ['?'],
-                        ],
-                        [
-                            'actions' => ['read', 'index', 'delete', 'create', 'update', 'view'],
-                            'allow' => true,
-                            'roles' => ['@'],
-                        ],
+                'class' => AccessControl::class,
+                'only' => ['index', 'update', 'create', 'delete','read','view'],
+                'rules' => [
+                    [
+                        'actions' => ['signup', 'listing'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['read', 'index', 'delete','create','update','view'],
+                        'allow' => true,
+                        'roles' => ['@'],
                     ],
                 ],
+            ],
             ]
         );
     }
@@ -193,19 +193,19 @@ class AttacheeController extends Controller
      */
     protected function findModel($id)
     {
-        $model = Attachee::findOne(['id' => $id]);
-
-        if ($model === null) {
+       $model = Attachee::findOne(['id' => $id]);
+       
+        if($model === null) {
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
 
         // Admin, HR and Staff can access any record
-        if (Yii::$app->user->can('admin') || Yii::$app->user->can('hr') || Yii::$app->user->can('staff')) {
+        if(Yii::$app->user->can('admin') || Yii::$app->user->can('hr') || Yii::$app->user->can('staff')){
             return $model;
         }
 
         // creator can access their record
-        if ($model->created_by == Yii::$app->user->id) {
+        if($model->created_by == Yii::$app->user->id) {
             return $model;
         }
 
