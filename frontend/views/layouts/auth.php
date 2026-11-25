@@ -125,10 +125,6 @@ AppAsset::register($this);
                 </a>
 
                 <div class="mt-10 flex justify-center gap-6">
-                    <button
-                        class="flex items-center gap-1 text-xs font-label text-outline hover:text-on-surface transition-colors">
-                        <span class="material-symbols-outlined text-sm">language</span> English (US)
-                    </button>
                     <a href="<?= Url::to(['/site/help']) ?>" target="_blank" rel="noopener"
                         class="flex items-center gap-1 text-xs font-label text-primary font-semibold hover:underline">
                         <span class="material-symbols-outlined text-sm">help</span> Help &amp; User Guide
