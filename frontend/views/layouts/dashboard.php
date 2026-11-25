@@ -27,7 +27,7 @@ $this->beginPage();
     <meta charset="<?= Yii::$app->charset ?>" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>
-        <?= Html::encode($this->title) ?> | Academic Curator
+        <?= Html::encode($this->title) ?> | <?= env('APP_NAME') ?>
     </title>
     <!-- Favicons all common sizes -->
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png">
@@ -66,7 +66,7 @@ $this->beginPage();
                     <span class="material-symbols-outlined text-on-surface">menu</span>
                 </button>
 
-                <?= Html::a('<span class="text-xl md:text-2xl font-black text-blue-900 dark:text-blue-100 tracking-tighter font-headline">' . Yii::$app->name . '</span>', ['site/index'], ['class' => 'flex items-center gap-2']) ?>
+                <?= Html::a('<span class="material-symbols-outlined text-primary">school</span><span class="text-xl font-black text-blue-900 dark:text-blue-100 tracking-tighter font-headline">' . env('APP_NAME') . '</span>', ['/site/index'], ['class' => 'flex items-center gap-3']) ?>
 
                 <div class="hidden md:flex items-center gap-6">
                     <?php
@@ -269,6 +269,8 @@ $this->beginPage();
         </div>
     </div>
 
+    <!-- ===== MAIN CONTENT AREA ===== -->
+    <main class="max-w-screen-2xl mx-auto px-4 md:px-8 py-8 md:py-12">
         <!-- Flash Alerts -->
         <?php foreach (Yii::$app->session->getAllFlashes() as $type => $messages): ?>
             <?php
@@ -286,7 +288,7 @@ $this->beginPage();
             ?>
             <div
                 role="alert"
-                class="flex items-start gap-4 mb-4 px-5 py-4 my-3 rounded-2xl <?= $alertConfig['bg'] ?> <?= $alertConfig['text'] ?> shadow-sm"
+                class="flex items-start gap-4 mb-4 px-5 py-4 rounded-2xl <?= $alertConfig['bg'] ?> <?= $alertConfig['text'] ?> shadow-sm"
                 x-data="{ show: true }"
             >
                 <span class="material-symbols-outlined mt-0.5 flex-shrink-0"><?= $alertConfig['icon'] ?></span>
@@ -303,11 +305,6 @@ $this->beginPage();
             </div>
             <?php endforeach; ?>
         <?php endforeach; ?>
-
-
-
-    <!-- ===== MAIN CONTENT AREA ===== -->
-    <main class="max-w-screen-2xl mx-auto px-4 md:px-8 py-8 md:py-12">
         <?= $content ?>
     </main>
 
