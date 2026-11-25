@@ -104,7 +104,6 @@ class LotController extends Controller
         return parent::beforeAction($action);
     }
 
-
     /**
      * Lists all lot models.
      *

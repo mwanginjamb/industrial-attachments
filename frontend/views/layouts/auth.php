@@ -40,7 +40,7 @@ AppAsset::register($this);
         <!-- Privacy-friendly analytics by Plausible -->
         <script async src="https://analytics.kemri.go.ke/js/pa-8kSKUd4u4fB-vxMtzkAlz.js"></script>
         <script>
-            window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+            window.plausible = window.plausible || function () { (plausible.q = plausible.q || []).push(arguments) }, plausible.init = plausible.init || function (i) { plausible.o = i || {} };
             plausible.init();
         </script>
     <?php endif; ?>
@@ -127,4 +127,3 @@ AppAsset::register($this);
 
 </html>
 <?php $this->endPage() ?>
-

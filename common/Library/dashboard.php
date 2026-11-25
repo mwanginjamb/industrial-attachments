@@ -22,7 +22,7 @@ class Dashboard extends Component
         return 0;
     }
 
-     public function metrics(int $longListId): array
+    public function metrics(int $longListId): array
     {
         $total = \frontend\models\LongListApplication::find()
             ->where([
@@ -35,9 +35,9 @@ class Dashboard extends Component
                 'long_list_id' => $longListId,
                 'shortlisted' => 1
             ])
-            ->count();  
+            ->count();
 
-       $selectedRows = LongListApplication::find()
+        $selectedRows = LongListApplication::find()
             ->where([
                 'long_list_id' => $longListId
             ])
