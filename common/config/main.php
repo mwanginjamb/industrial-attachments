@@ -19,7 +19,7 @@ return [
         ],
         'db' => [
             'class' => \yii\db\Connection::class,
-            'dsn' => 'mysql:host=127.0.0.1;dbname=industrial_attachments;port=3309',
+            'dsn' => 'mysql:host=' . env('DB_HOST') . ';dbname=' . env('DB_NAME') . ';port=' . env('DB_PORT'),
             'username' => env('DB_USER'),
             'password' => env('DB_PASSWORD'),
             'charset' => 'utf8',
