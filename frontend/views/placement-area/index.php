@@ -36,14 +36,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'created_by',
                 'label' => 'Created By',
                 'value' => function ($model) {
-                        return $model->creator->username;
+                        // creator may have been deleted
+                        return $model->creator->username ?? 'N/A';
                     },
             ],
             [
                 'attribute' => 'updated_by',
                 'label' => 'Updated By',
                 'value' => function ($model) {
-                        return $model->updater->username;
+                        // updater may have been deleted
+                        return $model->updater->username ?? 'N/A';
                     },
             ],
             'created_at:datetime',
