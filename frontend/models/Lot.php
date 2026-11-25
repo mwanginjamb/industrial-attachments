@@ -45,9 +45,10 @@ class Lot extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['description', 'opening_date', 'closing_date', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'default', 'value' => null],
+            [['description', 'opening_date', 'closing_date'], 'default', 'value' => null],
             [['description'], 'string'],
-            [['opening_date', 'closing_date'], 'safe'],
+            [['description', 'opening_date', 'closing_date'], 'required'],
+            [['opening_date', 'closing_date'], 'date', 'format' => 'php:Y-m-d\TH:i'],
             [['created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             // make description unique
             [['description'], 'unique', 'message' => 'This lot description already exists. Please choose a different description.'],
@@ -123,6 +124,7 @@ class Lot extends \yii\db\ActiveRecord
      * generate milestone for lots
      */
 
+    // Applicant Count per Lot
     public function getApplicationsCount()
     {
         return $this->hasMany(Application::class, ['lot_id' => 'id'])->count();
@@ -181,9 +183,8 @@ class Lot extends \yii\db\ActiveRecord
 
     public function getApplicationDeadline()
     {
-        if (!$this->closing_date) {
+        if (!$this->opening_date) {
             return null;
-
         }
         $applicationDeadlineDays = Yii::$app->params['lotApplicationDeadlineDays'];
         return date('Y-m-d', strtotime($this->opening_date . ' -' . $applicationDeadlineDays . ' days'));
@@ -206,6 +207,11 @@ class Lot extends \yii\db\ActiveRecord
     public function getMilestones()
     {
         return [
+            [
+                'title' => 'Application Start Date',
+                'date' => $this->getApplicationStartDate(),
+                'description' => $this->description
+            ],
             [
                 'title' => 'Application Deadline',
                 'date' => $this->getApplicationDeadline(),
@@ -243,6 +249,56 @@ class Lot extends \yii\db\ActiveRecord
 
         // Inclusive on both ends: open on the first day of the window and on the deadline day
         return $today >= $windowStart && $today <= $deadline;
+    }
+
+    public static function find()
+    {
+        return new LotQuery(get_called_class());
+    }
+
+    // convert opening and closing date to mysql format before saving to database
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+
+            if (!empty($this->opening_date)) {
+                $this->opening_date = date(
+                    'Y-m-d H:i:s',
+                    strtotime($this->opening_date)
+                );
+            }
+
+            if (!empty($this->closing_date)) {
+                $this->closing_date = date(
+                    'Y-m-d H:i:s',
+                    strtotime($this->closing_date)
+                );
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    // During update preload DB values to form fields in the correct format
+    public function afterFind()
+    {
+        parent::afterFind();
+
+        if (!empty($this->opening_date)) {
+            $this->opening_date = date(
+                'Y-m-d\TH:i',
+                strtotime($this->opening_date)
+            );
+        }
+
+        if (!empty($this->closing_date)) {
+            $this->closing_date = date(
+                'Y-m-d\TH:i',
+                strtotime($this->closing_date)
+            );
+        }
     }
 
 

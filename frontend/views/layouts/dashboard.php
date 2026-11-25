@@ -218,13 +218,13 @@ $this->beginPage();
                     <span class="px-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">Profile &amp;
                         Account</span>
                     <nav class="mt-4 space-y-1">
-                        <?php if (!Yii::$app->user->identity->attachee): ?>
+                        <?php if (!Yii::$app->user->isGuest && !Yii::$app->user->identity->attachee): ?>
                             <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 hover:bg-slate-50 font-semibold"
                                 href="<?= Url::to(['/attachee/create']) ?>">
                                 <span class="material-symbols-outlined">person_outline</span>
                                 Create Profile
                             </a>
-                        <?php else: ?>
+                        <?php elseif (!Yii::$app->user->isGuest): ?>
                             <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-600 hover:bg-slate-50 font-semibold"
                                 href="<?= Url::to(['/attachee/update', 'id' => Yii::$app->user->identity->attachee->id]) ?>">
                                 <span class="material-symbols-outlined">manage_accounts</span>
@@ -253,7 +253,7 @@ $this->beginPage();
                     <p class="font-bold text-on-surface">
                         <?= Html::encode(Yii::$app->user->identity->name ?? '') ?>
                     </p>
-                    <?php if (Yii::$app->user->identity->attachee): ?>
+                    <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->attachee): ?>
                         <p class="text-xs text-on-surface-variant">
                             <?= Html::encode(Yii::$app->user->identity->attachee->course_name ?? '') ?>,
                             Year
@@ -268,6 +268,43 @@ $this->beginPage();
             </div>
         </div>
     </div>
+
+        <!-- Flash Alerts -->
+        <?php foreach (Yii::$app->session->getAllFlashes() as $type => $messages): ?>
+            <?php
+            // Map Yii flash types → Tailwind color tokens
+            $alertConfig = match($type) { 
+                'success' => ['bg' => 'bg-secondary-fixed',      'text' => 'text-on-secondary-fixed', 'icon' => 'check_circle',      'dot' => 'bg-primary'],
+                'error',
+                'danger'  => ['bg' => 'bg-error-container',      'text' => 'text-on-error-container', 'icon' => 'error',             'dot' => 'bg-error'],
+                'warning' => ['bg' => 'bg-tertiary-fixed',        'text' => 'text-on-tertiary-fixed',  'icon' => 'warning',           'dot' => 'bg-tertiary'],
+                'info'    => ['bg' => 'bg-primary-fixed',         'text' => 'text-on-primary-fixed',   'icon' => 'info',              'dot' => 'bg-primary'],
+                default   => ['bg' => 'bg-surface-container-high','text' => 'text-on-surface-variant', 'icon' => 'notifications',     'dot' => 'bg-outline'],
+            };
+            $messages = (array) $messages;
+            foreach ($messages as $message):
+            ?>
+            <div
+                role="alert"
+                class="flex items-start gap-4 mb-4 px-5 py-4 my-3 rounded-2xl <?= $alertConfig['bg'] ?> <?= $alertConfig['text'] ?> shadow-sm"
+                x-data="{ show: true }"
+            >
+                <span class="material-symbols-outlined mt-0.5 flex-shrink-0"><?= $alertConfig['icon'] ?></span>
+                <span class="flex-1 text-sm font-medium font-['Inter']"><?= Html::encode($message) ?></span>
+                <!-- Dismiss button (purely CSS-driven; swap for JS if needed) -->
+                <button
+                    type="button"
+                    class="ml-auto p-1 rounded-lg hover:bg-black/10 transition-colors flex-shrink-0"
+                    onclick="this.closest('[role=alert]').remove()"
+                    aria-label="Dismiss"
+                >
+                    <span class="material-symbols-outlined text-base">close</span>
+                </button>
+            </div>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+
+
 
     <!-- ===== MAIN CONTENT AREA ===== -->
     <main class="max-w-screen-2xl mx-auto px-4 md:px-8 py-8 md:py-12">
