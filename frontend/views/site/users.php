@@ -1,8 +1,12 @@
 <?php
 
+use frontend\assets\ApplicantsAsset;
 use yii\bootstrap5\Html;
 
 /** @var yii\web\View $this */
+
+// DataTables (+ Buttons) for search, sorting, paging and exports
+ApplicantsAsset::register($this);
 
 $this->title = 'App Users';
 ?>
@@ -33,13 +37,13 @@ $this->title = 'App Users';
                     <table class="table table-bordered" id="table">
                         <thead>
                             <tr>
-                                <td class="fw-bold">#</td>
-                                <td class="fw-bold">Username</td>
-                                <td class="fw-bold">Email</td>
-                                <td class="fw-bold">Created At</td>
-                                <td class="fw-bold">Staff Status</td>
-                                <td class="fw-bold">Status</td>
-                                <td class="fw-bold">Action</td>
+                                <th class="fw-bold">#</th>
+                                <th class="fw-bold">Username</th>
+                                <th class="fw-bold">Email</th>
+                                <th class="fw-bold">Created At</th>
+                                <th class="fw-bold">Staff Status</th>
+                                <th class="fw-bold">Status</th>
+                                <th class="fw-bold">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,9 +56,9 @@ $this->title = 'App Users';
                                     if ($c->status == 10) {
                                         $status = '<div class="badge bg-success">Active</div>';
                                     } else if ($c->status == 9) {
-                                        $status = '<div class="badge badge-dark">Inactive</div>';
+                                        $status = '<div class="badge bg-dark">Inactive</div>';
                                     } else if ($c->status == 0) {
-                                        $status = '<div class="badge badge-danger">Deleted</div>';
+                                        $status = '<div class="badge bg-danger">Deleted</div>';
                                     }
                                     ?>
                                     <tr>
@@ -67,7 +71,7 @@ $this->title = 'App Users';
                                         <td>
                                             <?= strtoupper($c->email) ?? '' ?>
                                         </td>
-                                        <td>
+                                        <td data-order="<?= (int) $c->created_at ?>">
                                             <?= Yii::$app->formatter->asDatetime($c->created_at) ?? '' ?>
                                         </td>
                                         <td>
@@ -107,6 +111,16 @@ $this->title = 'App Users';
 $script = <<<JS
     let table = $('#table').DataTable({
         pageLength: 50,
+        // newest users first, as the controller sorts them
+        order: [[3, 'desc']],
+        columnDefs: [
+            // the search box covers every column's text except the serial and the action button
+            { targets: [0, 6], searchable: false, orderable: false }
+        ],
+        language: {
+            search: 'Search users:',
+            searchPlaceholder: 'name, email, date, status...'
+        },
         buttons: [
             {
                 extend: 'copy',
@@ -196,7 +210,7 @@ $script = <<<JS
         ]
     });
 
-    table.buttons().container().appendTo($('.card-tools, #toolbar'));
+    table.buttons().container().appendTo($('#toolbar'));
      // Add some custom styling to the buttons container
      $('.dt-buttons').addClass('float-end');
 JS;
