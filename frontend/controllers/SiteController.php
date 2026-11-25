@@ -233,6 +233,46 @@ class SiteController extends Controller
     }
 
     /**
+     * Help page: user manual (PDF) and instructional video.
+     *
+     * Files are deposited in frontend/web/help/ and served from there:
+     *   manual.pdf  - the user manual
+     *   video.mp4   - the instructional video (video.webm is also picked up)
+     * Until a file is present the page says it is not available yet.
+     *
+     * Open to everyone (including guests). Staff (admin/hr/staff) see it in the staff layout,
+     * everyone else in the applicant dashboard layout - matching where their Help link lives.
+     */
+    public function actionHelp()
+    {
+        $user = Yii::$app->user;
+        $isStaff = !$user->isGuest && ($user->can('admin') || $user->can('hr') || $user->can('staff'));
+        $this->layout = $isStaff ? 'main' : 'dashboard';
+
+        $dir = Yii::getAlias('@webroot/help');
+        $url = Yii::getAlias('@web/help');
+        $find = function (array $names) use ($dir, $url) {
+            foreach ($names as $name) {
+                if (is_file("$dir/$name")) {
+                    return [
+                        'url' => "$url/$name",
+                        'name' => $name,
+                        'size' => filesize("$dir/$name"),
+                        'updated' => filemtime("$dir/$name"),
+                        'type' => \yii\helpers\FileHelper::getMimeTypeByExtension($name),
+                    ];
+                }
+            }
+            return null;
+        };
+
+        return $this->render('help', [
+            'manual' => $find(['manual.pdf']),
+            'video' => $find(['video.mp4', 'video.webm']),
+        ]);
+    }
+
+    /**
      * Signs user up.
      *
      * @return mixed
