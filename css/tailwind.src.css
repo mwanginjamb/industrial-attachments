@@ -17,8 +17,6 @@
         vertical-align: middle;
     }
 
-    material-symbols-outlined
-
     /* Glassmorphism Effect for Cards */
     .glass-card {
         background: rgba(255, 255, 255, 0.8);
@@ -95,5 +93,26 @@
 
     #mobile-sidebar {
         transition: transform 0.3s ease-in-out;
+    }
+
+
+    /* Nested Menu Items Styling */
+    /* accordion panel — grid-template-rows trick (no max-height guessing) */
+    .nav-accordion-panel {
+        display: grid;
+        grid-template-rows: 0fr;
+        opacity: 0;
+        transition: grid-template-rows 260ms cubic-bezier(.4, 0, .2, 1),
+            opacity 260ms ease;
+    }
+
+    .nav-accordion-panel.open {
+        grid-template-rows: 1fr;
+        opacity: 1;
+    }
+
+    .nav-accordion-panel>.inner {
+        overflow: hidden;
+        /* required for the grid trick to clip content */
     }
 }
