@@ -108,7 +108,7 @@ use yii\helpers\Url;
                                 <div class="w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center
                                         <?= $uploaded ? 'bg-primary/5 text-primary' : 'bg-error/5 text-error' ?>">
                                     <span class="material-symbols-outlined">
-                                        <?= Html::encode($icons[$doc['id']]) ?>
+                                        <?= Html::encode($icons[$doc['id']] ?? 'description') ?>
                                     </span>
                                 </div>
                                 <div>

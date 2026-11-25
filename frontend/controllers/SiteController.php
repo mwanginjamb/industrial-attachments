@@ -138,32 +138,14 @@ class SiteController extends Controller
             4 => 'health_and_safety'
         ];
 
-        //  Yii::$app->utility->printrr($applications);
-
         return $this->render('index', [
-            'docTemplates' => \frontend\models\AttacheeDocumentsTemplates::find()->With([
-                'attacheeDocument' => function ($query) {
-                    $query->andWhere(['not', ['path' => null]])
-                        ->andWhere(['not', ['path' => '']])
-                        ->andWhere(['not', ['attachee_id' => null]])
-                        ->andWhere(['not', ['attachee_id' => '']]);
-                }
-            ])->all(),
-            'lots' => \frontend\models\Lot::find()->all(),
-            'docTemplates' => \frontend\models\AttacheeDocumentsTemplates::find()->With([
-                'attacheeDocument' => function ($query) {
-                    $query->andWhere(['not', ['path' => null]])
-                        ->andWhere(['not', ['path' => '']])
-                        ->andWhere(['not', ['attachee_id' => null]])
-                        ->andWhere(['not', ['attachee_id' => '']]);
-                }
-            ])->all(),
-            'icons' => [
-                1 => 'description',
-                2 => 'school',
-                3 => 'badge',
-                4 => 'health_and_safety'
-            ]
+            'model' => $attachee,
+            'docTemplates' => $attachedDocuments,
+            'lots' => \frontend\models\Lot::find()->active()->all(),
+            'total_templates' => $total_templates,
+            'total_attachee_documents' => $total_attachee_documents,
+            'icons' => $icons,
+            'applications' => $applications
         ]);
     }
 
