@@ -108,15 +108,31 @@ AppAsset::register($this);
                 <?= Alert::widget() ?>
                 <?= $content ?>
 
-                <div class="mt-16 flex justify-center gap-6">
+                <!-- Help callout: user manual + walkthrough video (site/help is open to guests) -->
+                <a href="<?= Url::to(['/site/help']) ?>" target="_blank" rel="noopener"
+                    class="mt-10 flex items-center gap-4 p-4 rounded-xl bg-primary/5 ring-1 ring-primary/20 hover:bg-primary/10 hover:ring-primary/40 transition-colors group">
+                    <span
+                        class="w-11 h-11 rounded-lg bg-primary text-on-primary flex items-center justify-center flex-shrink-0 shadow-sm">
+                        <span class="material-symbols-outlined">menu_book</span>
+                    </span>
+                    <span class="flex-1">
+                        <span class="block font-headline font-bold text-sm text-on-surface">New here? Get help applying</span>
+                        <span class="block text-xs text-on-surface-variant mt-0.5">Read the user manual or watch the
+                            walkthrough video.</span>
+                    </span>
+                    <span
+                        class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </a>
+
+                <div class="mt-10 flex justify-center gap-6">
                     <button
                         class="flex items-center gap-1 text-xs font-label text-outline hover:text-on-surface transition-colors">
                         <span class="material-symbols-outlined text-sm">language</span> English (US)
                     </button>
-                    <button
-                        class="flex items-center gap-1 text-xs font-label text-outline hover:text-on-surface transition-colors">
-                        <span class="material-symbols-outlined text-sm">help</span> Support Center
-                    </button>
+                    <a href="<?= Url::to(['/site/help']) ?>" target="_blank" rel="noopener"
+                        class="flex items-center gap-1 text-xs font-label text-primary font-semibold hover:underline">
+                        <span class="material-symbols-outlined text-sm">help</span> Help &amp; User Guide
+                    </a>
                 </div>
             </div>
         </section>
