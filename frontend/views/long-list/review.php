@@ -162,13 +162,13 @@ ICO;
                     <tr
                         class="bg-surface-container-low text-on-surface-variant uppercase text-[10px] font-black tracking-widest">
                         <th class="px-8 py-4" data-priority="1">Name &amp; ID</th>
-                        <th class="px-6 py-4" data-priority="2">Year</th>
-                        <th class="px-6 py-4" data-priority="3">Level</th>
-                        <th class="px-6 py-4" data-priority="4">Institution</th>
-                        <th class="px-6 py-4  data-priority=" 5">Preferred Placement</th>
-                        <th class="px-6 py-4 text-success" data-priority="6">Selected</th>
-                        <th class="px-6 py-4" data-priority="7">Status</th>
-                        <th class="px-8 py-4 text-right" data-priority="8">Actions</th>
+                        <th class="px-6 py-4" data-priority="6">Year</th>
+                        <th class="px-6 py-4" data-priority="7">Level</th>
+                        <th class="px-6 py-4" data-priority="8">Institution</th>
+                        <th class="px-6 py-4 text-success" data-priority="5">Preferred Placement</th>
+                        <th class="px-6 py-4 text-success" data-priority="4">Selected</th>
+                        <th class="px-6 py-4" data-priority="3">Status</th>
+                        <th class="px-8 py-4 text-right" data-priority="2">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-surface-container">

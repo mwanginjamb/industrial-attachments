@@ -14,6 +14,9 @@ class ApplicantsAsset extends AssetBundle
         'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap',
         'https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css',
         'https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.min.css',
+        // Responsive: tables set `responsive: true` + data-priority; hides low-priority columns
+        // into an expandable child row instead of overflowing horizontally
+        'https://cdn.datatables.net/responsive/3.0.2/css/responsive.dataTables.min.css',
     ];
 
     public $js = [
@@ -21,6 +24,7 @@ class ApplicantsAsset extends AssetBundle
         'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js',
         'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js',
         'https://cdn.datatables.net/2.0.8/js/dataTables.min.js',
+        'https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.min.js',
         'https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js',
         'https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js',
         'https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js',
