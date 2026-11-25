@@ -7,7 +7,7 @@ use yii\data\ActiveDataProvider;
 use frontend\models\Lot;
 
 /**
- * LotSearch represents the model behind the search form of `app\models\lot`.
+ * LotSearch represents the model behind the search form of `app\models\Lot`.
  */
 class LotSearch extends Lot
 {
@@ -41,12 +41,16 @@ class LotSearch extends Lot
      */
     public function search($params, $formName = null)
     {
+<<<<<<< HEAD
         $query = Lot::find();
 
         // All users except admin will see only those lots that are in the future
         if (!\Yii::$app->user->can('admin')) {
             $query->andWhere(['>=', 'closing_date', date('Y-m-d H:i:s')]);
         }
+=======
+        $query = Lot::find()->orderByActive();
+>>>>>>> Featshortlist
 
         // add conditions that should always apply here
 

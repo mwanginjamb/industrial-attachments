@@ -17,6 +17,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'file' => $fileModel,
         'templates' => $docTemplates,
+<<<<<<< HEAD
+=======
+        'institutions' => $institutions,
+>>>>>>> Featshortlist
     ]) ?>
 
 </div>

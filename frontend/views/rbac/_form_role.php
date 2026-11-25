@@ -15,7 +15,11 @@ use yii\widgets\ActiveForm;
 <?= $form->field($model, 'role_name')->textInput([
     'maxlength' => true,
     'autofocus' => !$isUpdate,
+<<<<<<< HEAD
     //'readonly' => $isUpdate && $model->role_name === $model->originalName
+=======
+    /* 'readonly' => $isUpdate && $model->role_name === $model->originalName */
+>>>>>>> Featshortlist
 ]) ?>
 
 <div class="permissions px-3">

@@ -10,8 +10,10 @@ use yii\filters\VerbFilter;
 use yii\helpers\FileHelper;
 use frontend\models\AttacheeDocuments;
 use frontend\models\AttacheeDocumentsTemplates;
+use yii\filters\AccessControl;
 
 use Yii;
+use yii\web\ForbiddenHttpException;
 
 /**
  * AttacheeController implements the CRUD actions for Attachee model.
@@ -32,6 +34,22 @@ class AttacheeController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
+                'access' => [
+                'class' => AccessControl::class,
+                'only' => ['index', 'update', 'create', 'delete','read','view'],
+                'rules' => [
+                    [
+                        'actions' => ['signup', 'listing'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['read', 'index', 'delete','create','update','view'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             ]
         );
     }
@@ -73,7 +91,14 @@ class AttacheeController extends Controller
      */
     public function actionView($id)
     {
+<<<<<<< HEAD
         $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
+=======
+        $this->layout = 'dashboard';
+        $model = $this->findModel($id);
+        $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
+
+>>>>>>> Featshortlist
         return $this->render('view', [
             'model' => $this->findModel($id),
             'templates' => $templates,
@@ -87,21 +112,40 @@ class AttacheeController extends Controller
      */
     public function actionCreate()
     {
+        $this->layout = 'dashboard';
         $model = new Attachee();
+<<<<<<< HEAD
         $model->user_id = Yii::$app->user->id;
         $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
+=======
+        // $model->scenario = 'create';
+        $model->user_id = Yii::$app->user->id;
+
+>>>>>>> Featshortlist
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                // Flash message for successful creation
+                Yii::$app->session->setFlash('success', 'Profile created successfully.');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
             $model->loadDefaultValues();
         }
 
+        $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
+        $institutions = \yii\helpers\ArrayHelper::merge(
+            ['other' => 'Other'],
+            \yii\helpers\ArrayHelper::map(\frontend\models\Institution::find()->all(), 'id', 'name')
+        );
+
         return $this->render('create', [
             'model' => $model,
             'fileModel' => new \frontend\models\File(),
             'docTemplates' => $templates,
+<<<<<<< HEAD
+=======
+            'institutions' => $institutions,
+>>>>>>> Featshortlist
         ]);
     }
 
@@ -114,11 +158,19 @@ class AttacheeController extends Controller
      */
     public function actionUpdate($id)
     {
+        $this->layout = 'dashboard';
         $model = $this->findModel($id);
+<<<<<<< HEAD
+=======
+        $model->scenario = 'update';
+
+>>>>>>> Featshortlist
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Profile updated successfully.');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+<<<<<<< HEAD
         return $this->render('update', [
             'model' => $model,
             'fileModel' => new \frontend\models\File(),
@@ -130,6 +182,19 @@ class AttacheeController extends Controller
                         ->andWhere(['not', ['attachee_id' => '']]);
                 }
             ])->all(),
+=======
+        $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
+        $institutions = \yii\helpers\ArrayHelper::merge(
+            ['other' => 'Other'],
+            \yii\helpers\ArrayHelper::map(\frontend\models\Institution::find()->all(), 'id', 'name')
+        );
+
+        return $this->render('update', [
+            'model' => $model,
+            'fileModel' => new \frontend\models\File(),
+            'docTemplates' => $templates,
+            'institutions' => $institutions,
+>>>>>>> Featshortlist
         ]);
     }
 
@@ -156,11 +221,24 @@ class AttacheeController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Attachee::findOne(['id' => $id])) !== null) {
+       $model = Attachee::findOne(['id' => $id]);
+       
+        if($model === null) {
+            throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        }
+
+        // HR and Staff can access  any record
+        if(Yii::$app->user->can('hr') || Yii::$app->user->can('staff')){
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        // creator can access their record
+        if($model->created_by == Yii::$app->user->id) {
+            return $model;
+        }
+
+        // Everyone else of denied access
+        throw new ForbiddenHttpException('You are not allowed to access this resource!!');
     }
 
 
@@ -257,5 +335,11 @@ class AttacheeController extends Controller
             'profileId' => $profileId,
             'model' => $model
         ]);
+    }
+
+    // Close - redirect to view page of the attachee profile
+    public function actionClose($id)
+    {
+        return $this->redirect(['view', 'id' => $id]);
     }
 }

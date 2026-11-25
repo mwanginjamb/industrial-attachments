@@ -5,7 +5,19 @@
 
 use frontend\assets\AppAsset;
 use yii\bootstrap5\Html;
+use yii\web\View;
 use yii\helpers\Url;
+<<<<<<< HEAD
+=======
+
+
+
+$this->registerCsrfMetaTags();
+$this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
+$this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1.0']);
+$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => Yii::$app->request->baseUrl . '/icons/icon-32x32.png']);
+
+>>>>>>> Featshortlist
 
 AppAsset::register($this);
 
@@ -20,6 +32,23 @@ $this->beginPage();
     <title>
         <?= Html::encode($this->title) ?> | Academic Curator
     </title>
+    <!-- Favicons all common sizes -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+    <link rel="mask-icon" href="/icons/192x192-maskable.png" color="#5bbad5">
+    <meta name="theme-color" content="#ffffff">
+
+
+
+    <?php if (YII_ENV_PROD): ?>
+        <!-- Privacy-friendly analytics by Plausible -->
+        <script async src="https://analytics.kemri.go.ke/js/pa-8kSKUd4u4fB-vxMtzkAlz.js"></script>
+        <script>
+            window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+            plausible.init();
+        </script>
+    <?php endif; ?>
     <?php $this->head() ?>
 </head>
 
@@ -40,10 +69,14 @@ $this->beginPage();
                     <span class="material-symbols-outlined text-on-surface">menu</span>
                 </button>
 
+<<<<<<< HEAD
                 <span
                     class="text-xl md:text-2xl font-black text-blue-900 dark:text-blue-100 tracking-tighter font-headline">
                     Academic Curator
                 </span>
+=======
+                <?= Html::a('<span class="text-xl md:text-2xl font-black text-blue-900 dark:text-blue-100 tracking-tighter font-headline">' . Yii::$app->name . '</span>', ['site/index'], ['class' => 'flex items-center gap-2']) ?>
+>>>>>>> Featshortlist
 
                 <div class="hidden md:flex items-center gap-6">
                     <?php
@@ -72,6 +105,12 @@ $this->beginPage();
                     class="p-2 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-full transition-colors duration-200">
                     <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
                 </button>
+<<<<<<< HEAD
+=======
+
+                <?= (Yii::$app->user->can('hr') || Yii::$app->user->can('admin')) ? Html::a(' <span class="material-symbols-outlined text-on-surface-variant">settings</span> Settings', ['lot/index'], ['class' => 'hidden md:block p-2 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-full transition-colors duration-200','encode' => false,'title' => 'HR Settings']): '' ?>
+                
+>>>>>>> Featshortlist
 
                 <!-- Profile Dropdown -->
                 <div class="flex items-center gap-3 md:pl-4 md:ml-4 md:border-l border-outline-variant/30 cursor-pointer relative group"
@@ -96,6 +135,7 @@ $this->beginPage();
                         <div class="hidden absolute right-0 top-full mt-2 w-56 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-outline-variant/20 overflow-hidden z-[60] py-2"
                             id="profile-dropdown">
 
+<<<<<<< HEAD
                             <!-- check if identity has attachee -->
                             <?php if (Yii::$app->user->identity->attachee): ?>
                                 <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
@@ -110,16 +150,34 @@ $this->beginPage();
                                     Create Profile
                                 </a>
                             <?php endif; ?>
+=======
+
+                            <?php if (!Yii::$app->user->isGuest && !is_null(Yii::$app->user->identity->attachee)): ?>
                             <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                                href="<?= Url::to(['/user/settings']) ?>">
-                                <span class="material-symbols-outlined text-primary">manage_accounts</span>
-                                Account Settings
+                                href="<?= Url::to(['/attachee/update', 'id' => Yii::$app->user->identity->attachee->id]) ?>">
+                                <span class="material-symbols-outlined text-primary">person_outline</span>
+                                View Profile
                             </a>
+                            <?php else: ?>
+>>>>>>> Featshortlist
                             <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                                href="<?= Url::to(['/attachee/create']) ?>">
+                                <span class="material-symbols-outlined text-primary">person_outline</span>
+                                Create Profile
+                            </a>
+                            <?php endif; ?>
+                            <?php if(Yii::$app->user->can('admin')): ?>
+                                <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                                    href="<?= Url::to(['/lot/index']) ?>">
+                                    <span class="material-symbols-outlined text-primary">manage_accounts</span>
+                                    Account Settings
+                                </a>
+                            <?php endif; ?>
+                            <!-- <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
                                 href="<?= Url::to(['/site/help']) ?>">
                                 <span class="material-symbols-outlined text-primary">help_outline</span>
                                 Help &amp; Support
-                            </a>
+                            </a> -->
                             <hr class="my-1 border-outline-variant/10" />
 
 
@@ -165,10 +223,9 @@ $this->beginPage();
                     <nav class="mt-4 space-y-1">
                         <?php
                         $mobileNavItems = [
-                            ['label' => 'Dashboard', 'url' => ['/student/dashboard'], 'icon' => 'dashboard'],
-                            ['label' => 'Applications', 'url' => ['/application/index'], 'icon' => 'description'],
-                            ['label' => 'Placements', 'url' => ['/placement/index'], 'icon' => 'apartment'],
-                            ['label' => 'Resources', 'url' => ['/resource/index'], 'icon' => 'folder_open'],
+                            ['label' => 'Dashboard', 'url' => ['/site/index'], 'icon' => 'dashboard'],
+                            ['label' => 'Placements', 'url' => ['/placement-area/index'], 'icon' => 'apartment'],
+                            
                         ];
                         foreach ($mobileNavItems as $item):
                             $isActive = Yii::$app->controller->action->uniqueId === ltrim($item['url'][0], '/');
@@ -252,21 +309,21 @@ $this->beginPage();
         class="bg-slate-50 dark:bg-slate-950 w-full py-8 md:py-12 mt-auto border-t border-slate-200 dark:border-slate-800">
         <div class="flex flex-col items-center px-4 md:px-8 max-w-screen-2xl mx-auto gap-6 text-center md:text-left">
             <div class="flex flex-col md:flex-row justify-between items-center w-full gap-4">
-                <span class="font-headline font-bold text-slate-400">Academic Curator</span>
+                <span class="font-headline font-bold text-slate-400"><?= Yii::$app->name ?></span>
                 <div class="flex flex-wrap justify-center gap-4 md:gap-6">
                     <a class="font-body text-[10px] md:text-xs text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-opacity"
-                        href="<?= Url::to(['/site/privacy']) ?>">Privacy Policy</a>
+                        href="<?= Url::to(['#']) ?>">Privacy Policy</a>
                     <a class="font-body text-[10px] md:text-xs text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-opacity"
-                        href="<?= Url::to(['/site/terms']) ?>">Terms of Service</a>
+                        href="<?= Url::to(['#']) ?>">Terms of Service</a>
                     <a class="font-body text-[10px] md:text-xs text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-opacity"
-                        href="<?= Url::to(['/site/accessibility']) ?>">Accessibility</a>
+                        href="<?= Url::to(['#']) ?>">Accessibility</a>
                     <a class="font-body text-[10px] md:text-xs text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-opacity"
-                        href="<?= Url::to(['/site/contact']) ?>">Contact Support</a>
+                        href="<?= Url::to(['#']) ?>">Contact Support</a>
                 </div>
             </div>
             <span class="font-body text-[10px] md:text-xs text-slate-500">
                 &copy;
-                <?= date('Y') ?> Academic Curator Portal. All rights reserved.
+                <?= date('Y') ?> KEMRI Industrial Attachment Portal. All rights reserved.
             </span>
         </div>
     </footer>
@@ -276,3 +333,5 @@ $this->beginPage();
 
 </html>
 <?php $this->endPage() ?>
+
+

@@ -16,9 +16,11 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use frontend\models\User;
+use yii\helpers\Url;
 
 use frontend\models\Attachee;
 use frontend\models\AttacheeDocumentsTemplates;
+use yii\web\NotFoundHttpException;
 
 /**
  * Site controller
@@ -102,20 +104,29 @@ class SiteController extends Controller
     {
 
         $this->layout = 'dashboard';
-        if (Yii::$app->user->isGuest) {
-            return $this->redirect(\yii\helpers\Url::to(['site/listing']));
+
+        // check if role is staff , then redirect to settings
+        if (Yii::$app->user->can('staff')) {
+            return $this->redirect(Url::to(['lot/index']));
         }
+
         $attachee = \frontend\models\Attachee::findOne(['user_id' => Yii::$app->user->id]);
         $total_templates = \frontend\models\AttacheeDocumentsTemplates::getTotalTemplates();
+<<<<<<< HEAD
         $total_attachee_documents = ($attachee) ? \frontend\models\AttacheeDocuments::getDocumentsCount($attachee->attachee_reference) : 0;
 
 
         $attachedDocuments = (Yii::$app->user->identity->attachee) ? \frontend\models\AttacheeDocumentsTemplates::find()->With([
+=======
+        $total_attachee_documents = Yii::$app->user->identity->attachee ? \frontend\models\AttacheeDocuments::getDocumentsCount($attachee->attachee_reference) : 0;
+        $attachedDocuments = Yii::$app->user->identity->attachee ? \frontend\models\AttacheeDocumentsTemplates::find()->With([
+>>>>>>> Featshortlist
             'attacheeDocument' => function ($query) {
                 $query->andWhere(['not', ['path' => null]])
                     ->andWhere(['not', ['path' => '']])
                     ->andWhere(['attachee_id' => Yii::$app->user->identity->attachee->attachee_reference]);
             }
+<<<<<<< HEAD
         ])->all() : 0;
 
         $applications = [];
@@ -129,6 +140,19 @@ class SiteController extends Controller
                 ->limit(4)
                 ->all();
         }
+=======
+        ])->all() : [];
+
+        $applications = (Yii::$app->user->identity->attachee) ? \frontend\models\Application::find()
+            ->joinWith('lot')
+            ->joinWith('status0')
+            ->joinWith('attachee')
+            ->where(['attachee_id' => $attachee->id])
+            ->asArray()
+            ->limit(5)
+            ->orderBy(['id' => SORT_DESC])
+            ->all() : 0;
+>>>>>>> Featshortlist
 
         $icons = [
             1 => 'description',
@@ -220,6 +244,7 @@ class SiteController extends Controller
      */
     public function actionContact()
     {
+        $this->layout = 'dashboard';
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
@@ -303,6 +328,7 @@ class SiteController extends Controller
      */
     public function actionResetPassword($token)
     {
+        $this->layout = 'auth';
         try {
             $model = new ResetPasswordForm($token);
         } catch (InvalidArgumentException $e) {
@@ -471,6 +497,26 @@ class SiteController extends Controller
         ]);
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Deletes an existing User model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param int $id ID
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionDelete($id)
+    {
+        //$this->findModel($id)->delete();
+        if (Yii::$app->user->id !== $id && User::findOne($id)->delete()) {
+            Yii::$app->session->setFlash('success', 'User deleted successfully.');
+        }
+
+        return $this->redirect(['users']);
+    }
+
+>>>>>>> Featshortlist
     public function actionLookupEmployee($employeeNumber)
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;

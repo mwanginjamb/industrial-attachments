@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use frontend\models\Lot;
 use frontend\models\LotSearch;
 use frontend\models\PlacementArea;
+<<<<<<< HEAD
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\ContentNegotiator;
@@ -14,6 +15,19 @@ use yii\httpclient\Client;
 use yii\httpclient\CurlTransport;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+=======
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
+use yii\filters\ContentNegotiator;
+use yii\helpers\ArrayHelper;
+use yii\httpclient\Client;
+use yii\httpclient\CurlTransport;
+use frontend\models\Application;
+
+use Yii;
+>>>>>>> Featshortlist
 
 /**
  * LotController implements the CRUD actions for lot model.
@@ -44,7 +58,7 @@ class LotController extends Controller
                 ],
                 'access' => [
                     'class' => AccessControl::class,
-                    'only' => ['logout', 'signup', 'index'],
+                    'only' => ['logout', 'signup', 'index', 'view', 'create', 'update', 'delete', 'commit', 'placements'],
                     'rules' => [
                         [
                             'actions' => ['signup'],
@@ -52,9 +66,34 @@ class LotController extends Controller
                             'roles' => ['?'],
                         ],
                         [
-                            'actions' => ['logout', 'index'],
+                            'actions' => ['logout', 'index', 'view'],
                             'allow' => true,
-                            'roles' => ['@'],
+                            'roles' => ['view-lot'],
+                        ],
+                        [
+                            'actions' => ['create'],
+                            'allow' => true,
+                            'roles' => ['create-lot'],
+                        ],
+                        [
+                            'actions' => ['update'],
+                            'allow' => true,
+                            'roles' => ['update-lot'],
+                        ],
+                        [
+                            'actions' => ['delete'],
+                            'allow' => true,
+                            'roles' => ['delete-lot'],
+                        ],
+                        [
+                            'actions' => ['commit'],
+                            'allow' => true,
+                            'roles' => ['staff', 'hr'],
+                        ],
+                        [
+                            'actions' => ['placements'],
+                            'allow' => true,
+                            'roles' => ['staff', 'hr'],
                         ],
                     ],
                 ],
@@ -62,7 +101,10 @@ class LotController extends Controller
         );
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Featshortlist
     public function beforeAction($action)
     {
 
@@ -78,6 +120,10 @@ class LotController extends Controller
         return parent::beforeAction($action);
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> Featshortlist
     /**
      * Lists all lot models.
      *
@@ -108,21 +154,40 @@ class LotController extends Controller
      */
     public function actionView($id)
     {
+        $params = $this->request->queryParams;
+
         // Lot applications
-        $applications = \frontend\models\Application::find()
-            ->joinWith('lot')
-            ->joinWith('status0')
-            ->joinWith('attachee')
-            ->where(['lot_id' => $id])
-            ->orderBy(['id' => SORT_DESC])
-            ->asArray()
-            ->all();
+        if (isset($params['placement']) && $params['placement'] != '') {
+            $applications = \frontend\models\Application::find()
+                ->with(['lot', 'status0', 'attachee'])
+                ->where(['lot_id' => $id])
+                ->andFilterWhere([
+                    'placement' => $params['placement']
+                ])
+                ->orderBy(['id' => SORT_DESC])
+                // ->asArray()
+                ->all();
+        } else {
+            $applications = \frontend\models\Application::find()
+                ->with(['lot', 'status0', 'attachee'])
+                ->where(['lot_id' => $id])
+                ->orderBy(['id' => SORT_DESC])
+                // ->asArray()
+                ->all();
+        }
+
+        $placement_areas = \frontend\models\PlacementArea::find()->all();
 
         // Yii::$app->utility->printrr($applications);
 
         return $this->render('view', [
             'model' => $this->findModel($id),
+<<<<<<< HEAD
             'applications' => $applications
+=======
+            'applications' => $applications,
+            'pas' => $placement_areas
+>>>>>>> Featshortlist
         ]);
     }
 
@@ -137,6 +202,7 @@ class LotController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                Yii::$app->session->setFlash('success', 'Lot created successfully.');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -178,6 +244,8 @@ class LotController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+        // add a flash message to indicate successful deletion
+        Yii::$app->session->setFlash('success', 'Lot deleted successfully.');
 
         return $this->redirect(['index']);
     }
@@ -198,7 +266,10 @@ class LotController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> Featshortlist
     public function actionCommit()
     {
         try {
@@ -252,4 +323,56 @@ class LotController extends Controller
         return $data;
     }
 
+<<<<<<< HEAD
+=======
+    // Email Department with longlist link for selection after creating the longlist based on placement area (department, center, etc.)
+    public function actionEmailDepartment($lotid, $placementid)
+    {
+        $tx = Yii::$app->db->beginTransaction();
+        $lot = Lot::findOne($lotid);
+        try {
+            // create Long List
+            $list = new \frontend\models\LongList();
+            $list->lot_id = $lotid;
+            $list->placement_id = $placementid;
+            $list->description = 'Long List for Attachment Application Lot ID: ' . $lot->description . ' and Placement ID: ' . $this->getPlacementAreaName($placementid);
+            $list->save(false);
+
+            // Get filtered applications context
+            $applications = \frontend\models\Application::find()
+                ->where([
+                    'lot_id' => $lotid,
+                    'placement' => $placementid
+                ])
+                ->all();
+
+            // Populate LongListApplication table (long list items/ lines) with the filtered applications
+            foreach ($applications as $application) {
+                $item = new \frontend\models\LongListApplication();
+                $item->long_list_id = $list->id;
+                $item->application_id = $application->id;
+                $item->save(false);
+
+                // mark application as in review
+                $application->status = Application::STATUS_UNDER_REVIEW;
+                $application->save(false);
+            }
+
+            // commit the transaction
+            $tx->commit();
+            return $this->redirect(['long-list/email', 'id' => $list->id]);
+        } catch (\Exception $e) {
+            $tx->rollBack();
+            throw $e;
+        }
+    }
+
+    // Get Placement Area Name by ID
+    public function getPlacementAreaName($placementId)
+    {
+        $placementArea = PlacementArea::findOne($placementId);
+        return $placementArea ? $placementArea->name : null;
+    }
+
+>>>>>>> Featshortlist
 }

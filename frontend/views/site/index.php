@@ -224,4 +224,26 @@ use yii\helpers\Url;
             </section>
         </div>
     </div>
+<<<<<<< HEAD
 </div>
+=======
+</div>
+
+
+
+<?php
+
+
+
+$script = <<<JS
+// Add any custom JavaScript here
+ $('input[type=file]').change(function(e){
+        const form = e.target.closest('form');
+        let Service = $(form).find("input[id=file-service]").val();
+        InlineGlobalUpload(Service,'file','attachment','AttacheeDocuments', form);   
+    });
+JS;
+
+$this->registerJs($script);
+?>
+>>>>>>> Featshortlist

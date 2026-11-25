@@ -2,6 +2,7 @@
 
 namespace frontend\models;
 
+use common\jobs\ApplicationStatusNotificationJob;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
@@ -32,6 +33,13 @@ class Application extends \yii\db\ActiveRecord
     const STATUS_UNDER_REVIEW = 2;
     const STATUS_ACCEPTED = 3;
     const STATUS_PLACED = 4;
+<<<<<<< HEAD
+=======
+    const STATUS_SELECTED = 5;
+    const STATUS_UNSUCCESSFUL = 6;
+
+
+>>>>>>> Featshortlist
 
 
     /**
@@ -64,6 +72,11 @@ class Application extends \yii\db\ActiveRecord
 
             [['placement'], 'integer'],
             [['closed'], 'boolean'],
+<<<<<<< HEAD
+=======
+            // validate attachee_id  and lot_id combo are uique
+            [['attachee_id'], 'unique', 'targetAttribute' => ['attachee_id', 'lot_id'], 'message' => 'You have already applied for this lot.'],
+>>>>>>> Featshortlist
         ];
     }
 
@@ -127,5 +140,74 @@ class Application extends \yii\db\ActiveRecord
     {
         return $this->hasOne(ApplicationStatus::class, ['id' => 'status']);
     }
+
+    // longlist memmbership
+
+    public function getLongListApplications()
+    {
+        return $this->hasMany(LongListApplication::class, ['application_id' => 'id']);
+    }
+
+    // If placement field is updated , update status to review
+    /* public function beforeSave($insert)
+     {
+         if (parent::beforeSave($insert)) {
+             if (!$insert && $this->isAttributeChanged('placement')) {
+                 $this->status = self::STATUS_UNDER_REVIEW;
+             }
+             return true;
+         }
+         return false;
+     }
+         */
+
+
+    // Current longList application
+
+    public function getCurrentLongListItem()
+    {
+        return $this->hasOne(LongListApplication::class, ['application_id' => 'id']);
+    }
+
+
+    // change detection for status attr
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        // On insert the old value is null, so isset() would skip it - use array_key_exists
+        if (!array_key_exists('status', $changedAttributes) || $this->status === null) {
+            return;
+        }
+
+        // status may arrive as a string from forms / the API
+        $status = (int) $this->status;
+
+        if (!$insert && (int) $changedAttributes['status'] === $status) {
+            return;
+        }
+
+        $supportedStatuses = [
+            self::STATUS_SUBMITTED,
+            self::STATUS_UNDER_REVIEW,
+            self::STATUS_SELECTED,
+            self::STATUS_UNSUCCESSFUL,
+        ];
+
+        if (!in_array($status, $supportedStatuses, true)) {
+            Yii::info("Status {$status} is not supported for queue notifications.", 'queue.notifications');
+            return;
+        }
+
+        Yii::$app->queue->push(new ApplicationStatusNotificationJob([
+            'applicationId' => $this->id,
+            'status' => $status
+        ]));
+    }
+
+
+
+
 
 }

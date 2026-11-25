@@ -17,7 +17,7 @@ class ApplicationSearch extends Application
     public function rules()
     {
         return [
-            [['id', 'lot_id', 'attachee_id', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['id', 'lot_id', 'attachee_id', 'status', 'created_at', 'placement', 'updated_at', 'created_by', 'updated_by'], 'integer'],
         ];
     }
 
@@ -62,6 +62,7 @@ class ApplicationSearch extends Application
             'lot_id' => $this->lot_id,
             'attachee_id' => $this->attachee_id,
             'status' => $this->status,
+            'placement' => $this->placement,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,

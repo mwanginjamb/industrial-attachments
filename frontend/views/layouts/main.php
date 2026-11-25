@@ -6,25 +6,59 @@ use frontend\assets\AppAsset;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
 use yii\bootstrap5\Alert;
+<<<<<<< HEAD
+=======
+use yii\web\View;
+use yii\helpers\Url;
+>>>>>>> Featshortlist
+
 
 $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
 $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1.0']);
-$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::$app->request->baseUrl . '/favicon.ico']);
+$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => Yii::$app->request->baseUrl . '/icons/icon-32x32.png']);
 
 // Enqueue Google Fonts & Material Symbols
 $this->registerLinkTag(['rel' => 'preconnect', 'href' => 'https://fonts.googleapis.com']);
 $this->registerLinkTag(['rel' => 'preconnect', 'href' => 'https://fonts.gstatic.com', 'crossorigin' => true]);
 
 AppAsset::register($this);
+<<<<<<< HEAD
 
 $currentRoute = Yii::$app->controller->getRoute();
+=======
+$userTitle = '';
+if(!Yii::$app->user->isGuest) {
+    $auth = Yii::$app->authManager;
+    $role = implode(',', array_keys($auth->getRolesByUser(Yii::$app->user->id)));
+    $userTitle = Yii::$app->user->identity->username.' - '.$role;
+}
+>>>>>>> Featshortlist
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>" class="light">
 <head>
     <title><?= Html::encode($this->title) ?> | <?= Html::encode(Yii::$app->name) ?></title>
+    <!-- Favicons all common sizes -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png">
+    <link rel="mask-icon" href="/icons/192x192-maskable.png" color="#5bbad5">
+    <meta name="theme-color" content="#ffffff">
+
+
+
+
+    <?php if (YII_ENV_PROD): ?>
+        <!-- Privacy-friendly analytics by Plausible -->
+        <script async src="https://analytics.kemri.go.ke/js/pa-8kSKUd4u4fB-vxMtzkAlz.js"></script>
+        <script>
+            window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+            plausible.init();
+        </script>
+    <?php endif; ?>
+
     <?php $this->head() ?>
     
 </head>
@@ -50,11 +84,18 @@ $currentRoute = Yii::$app->controller->getRoute();
     <?php
     $sideNavItems = [
         //['label' => 'Overview',         'url' => ['/site/index'],       'icon' => 'dashboard'],
+<<<<<<< HEAD
         ['label' => 'Student List',     'url' => ['/lot/index'],    'icon' => 'group'],
         ['label' => 'Attachment Templates', 'url' => ['/attachee-documents-templates/index'],'icon' => 'business_center','title' => 'Required File Attachment Templates'], 
         ['label' => 'Review Status', 'url' => ['/application-status/index'], 'icon' => 'checklist'],
         ['label' => 'Placement Sections',           'url' => ['/placement-area/index'],        'icon' => 'work'], 
         ['label' => 'Institutions',           'url' => ['/institution/index'],        'icon' => 'apartment'],
+=======
+        ['label' => 'Student List',     'url' => ['/lot/index'],    'icon' => 'group', 'visible' => Yii::$app->user->can('view-lot')],
+        ['label' => 'Institutions List', 'url' => ['/institution/index'],    'icon' => 'business_center', 'visible' => Yii::$app->user->can('view-institution')],
+        ['label' => 'Placement Areas',  'url' => ['/placement-area/index'],   'icon' => 'map', 'visible' => Yii::$app->user->can('view-placement-area')],
+       // ['label' => 'System Logs',      'url' => ['/log/index'],        'icon' => 'analytics'],
+>>>>>>> Featshortlist
 
         // ── Nested group: add a 'children' key, no 'url' ──
         [
@@ -68,6 +109,7 @@ $currentRoute = Yii::$app->controller->getRoute();
                 ['label' => 'System Users',           'url' => ['/site/users'],        'icon' => 'group'],
                
             ],
+            'visible' => Yii::$app->user->can('admin'),
         ],
     ];
 
@@ -75,10 +117,76 @@ $currentRoute = Yii::$app->controller->getRoute();
 
     if (isset($item['group']) && $item['group'] === true): ?>
 
+<<<<<<< HEAD
         <!-- GROUP HEADER -->
         <div class="px-3 py-2 font-bold text-slate-700 dark:text-slate-300 flex items-center gap-3">
             <span class="material-symbols-outlined"><?= $item['icon'] ?></span>
             <span><?= Html::encode($item['label']) ?></span>
+=======
+        if(isset($item['visible']) && !$item['visible']) {
+            continue; // Skip items that are not visible to the user
+            
+        }
+
+        // ── GROUP / ACCORDION ──────────────────────────────────────────────────
+        if (!empty($item['group'])):
+            /*
+             * Check if ANY child is active — if so, open the accordion by default
+             * so the active child is visible on page load.
+             */
+            $groupHasActive = false;
+            foreach ($item['children'] as $child) {
+                if (Yii::$app->urlManager->createUrl($child['url']) === Yii::$app->urlManager->createUrl([$currentRoute])) {
+                    $groupHasActive = true;
+                    break;
+                }
+            }
+            $groupId = 'nav-group-' . $idx;
+    ?>
+        <div class="space-y-1">
+            <!-- Group toggle button -->
+            <button
+                data-accordion-toggle="<?= $groupId ?>"
+                aria-expanded="<?= $groupHasActive ? 'true' : 'false' ?>"
+                aria-controls="<?= $groupId ?>"
+                class="w-full flex items-center justify-between px-4 pt-4 pb-2 group"
+            >
+                <span class="material-symbols-outlined text-xl">
+                    <?= $item['icon'] ?>
+                </span>
+                
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider group-hover:text-slate-600 transition-colors">
+                    <?= Html::encode($item['label']) ?>
+                </p>
+                <span class="material-symbols-outlined text-slate-400 text-sm accordion-chevron <?= $groupHasActive ? 'rotate-180' : '' ?>"
+                      style="transition: transform 260ms cubic-bezier(.4,0,.2,1);">
+                    expand_more
+                </span>
+            </button>
+
+            <!-- Collapsible submenu -->
+            <div
+                id="<?= $groupId ?>"
+                class="nav-accordion-panel space-y-1 <?= $groupHasActive ? 'open' : '' ?>"
+            >
+                <div class="inner">
+                    <?php foreach ($item['children'] as $child):
+                        $isActive = Yii::$app->urlManager->createUrl($child['url']) === Yii::$app->urlManager->createUrl([$currentRoute]);
+                    ?>
+                        <?= Html::a(
+                            '<span class="material-symbols-outlined text-xl">' . $child['icon'] . '</span>'
+                            . '<span>' . Html::encode($child['label']) . '</span>',
+                            $child['url'],
+                            [
+                                'class'  => 'flex items-center gap-3 px-4 py-2.5 text-sm ml-2 rounded-lg '
+                                          . ($isActive ? $activeClasses : $inactiveClasses),
+                                'encode' => false,
+                            ]
+                        ) ?>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+>>>>>>> Featshortlist
         </div>
 
         <!-- CHILDREN -->
@@ -137,9 +245,9 @@ $currentRoute = Yii::$app->controller->getRoute();
 
     <!-- Bottom Actions -->
     <div class="mt-auto pt-4 space-y-1">
-        <button class="w-full bg-primary-container text-white py-2.5 rounded-xl font-semibold text-sm mb-4 shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
+        <!-- <button class="w-full bg-primary-container text-white py-2.5 rounded-xl font-semibold text-sm mb-4 shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
             Generate Report
-        </button>
+        </button> -->
         <?= Html::a(
             '<span class="material-symbols-outlined">help</span><span>Help Center</span>',
             ['/site/help'],
@@ -209,11 +317,16 @@ $currentRoute = Yii::$app->controller->getRoute();
                 </button>
                 <?= Html::a(
                     '<span class="material-symbols-outlined">settings</span>',
+<<<<<<< HEAD
                     // if user identity has a attachee, go to attache/update else go to attachee create
                     (Yii::$app->user->identity->attachee)?
                     ['/attachee/update', 'id' => Yii::$app->user->identity->attachee->id]:
                     ['/attachee/create'],
                     ['class' => 'p-2 text-slate-600 hover:bg-slate-200/50 rounded-full transition-colors', 'encode' => false]
+=======
+                    ['/lot/index'],
+                    ['class' => 'p-2 text-slate-600 hover:bg-slate-200/50 rounded-full transition-colors', 'encode' => false, 'title' => 'HR Settings '.$userTitle ]
+>>>>>>> Featshortlist
                 ) ?>
                 <!-- User avatar -->
                 <div class="h-8 w-8 rounded-full bg-primary-container overflow-hidden">
@@ -239,7 +352,7 @@ $currentRoute = Yii::$app->controller->getRoute();
     <!-- ─────────────────────────────────────
          CONTENT CANVAS
     ───────────────────────────────────── -->
-    <main class="p-8 max-w-screen-2xl mx-auto w-full flex-1 overflow-y-auto">
+    <main class="p-8 max-w-screen-2xl mx-auto w-full flex-1 overflow-y-scroll">
 
         <!-- Breadcrumbs Widget -->
         <?php if (!empty($this->params['breadcrumbs'])): ?>
@@ -327,3 +440,4 @@ $currentRoute = Yii::$app->controller->getRoute();
 </body>
 </html>
 <?php $this->endPage() ?>
+

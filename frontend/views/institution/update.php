@@ -5,10 +5,19 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var frontend\models\Institution $model */
 
+<<<<<<< HEAD
 $this->title = 'Update Institution: ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Institutions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
+=======
+$this->title = Yii::t('app', 'Update Institution: {name}', [
+    'name' => $model->name,
+]);
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Institutions'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+>>>>>>> Featshortlist
 ?>
 <div class="institution-update">
 

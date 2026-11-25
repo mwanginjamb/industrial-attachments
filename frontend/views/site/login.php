@@ -34,7 +34,7 @@ $this->title = 'Login | ' . Yii::$app->name;
 
             <?= $form->field($model, 'username')->textInput([
                 'autofocus' => true,
-                'placeholder' => 'student.name@university.edu'
+                'placeholder' => 'Username'
             ])->label('Your Username') ?>
 
             <?= $form->field($model, 'password')->passwordInput([

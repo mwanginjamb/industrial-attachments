@@ -109,7 +109,83 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
             </div>
 
 
+<<<<<<< HEAD
             <!-- ═══════════════════════════════════════════════════════
+=======
+
+            <!-- Expected Completion Date -->
+            <?= $form->field($model, 'expected_completion_date', $fieldConfig)
+                ->input('date', ['class' => $inputClass, 'readonly' => true]) ?>
+
+            <!-- Area of Interest -->
+            <?= $form->field($model, 'area_of_interest', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => 'e.g. Data Science, UI/UX',
+                    'readonly' => true,
+                ]) ?>
+
+
+             <!-- Institution_id -->
+            <?= $form->field($model, 'institution_id', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'readonly' => true,
+                    'value' => $model->institution->name ?? 'N/A',
+                ]) ?>
+
+
+            <!-- phone number -->
+            <?= $form->field($model, 'attachee_phone_number', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => '07xxxxxxxx',
+                    'type' => 'tel',
+                    'readonly' => true,
+                ]) ?>
+
+
+             <!-- email_address -->
+            <?= $form->field($model, 'email_address', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => 'Enter your email address',
+                    'readonly' => true,
+                ]) ?>
+
+
+             <!-- id_number -->
+            <?= $form->field($model, 'id_number', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => 'Enter your ID number',
+                    'readonly' => true,
+                    'maxlength' => 8
+                ]); ?>
+
+             <!-- nok_phone_number -->
+            <?= $form->field($model, 'nok_phone_number', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => '07xxxxxxxx',
+                    'type' => 'tel',
+                    'readonly' => true,
+                    'maxlength' => 10
+                ]) ?>
+
+
+
+
+
+
+
+
+
+        </div>
+
+
+        <!-- ═══════════════════════════════════════════════════════
+>>>>>>> Featshortlist
          Form Actions
      ═══════════════════════════════════════════════════════ -->
             <div class="flex items-center justify-end gap-6 pt-6 border-t border-outline-variant/20">
@@ -239,4 +315,24 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
             ],
         ]) ?>
 
+<<<<<<< HEAD
     </div>
+=======
+</div>
+
+<?php
+
+
+
+$script = <<<JS
+// Add any custom JavaScript here
+ $('input[type=file]').change(function(e){
+        const form = e.target.closest('form');
+        let Service = $(form).find("input[id=file-service]").val();
+        InlineGlobalUpload(Service,'file','attachment','AttacheeDocuments', form);   
+    });
+JS;
+
+$this->registerJs($script);
+?>
+>>>>>>> Featshortlist

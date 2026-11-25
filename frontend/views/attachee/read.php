@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Reader');
     <!-- Secondary Toolbar -->
 <div class="px-8 py-4 bg-surface flex flex-wrap items-center justify-between gap-4">
 <div class="flex items-center gap-4">
-<h1 class="text-xl font-headline font-bold text-on-surface tracking-tight">Application_Letter_Alex.pdf</h1>
+<h1 class="text-xl font-headline font-bold text-on-surface tracking-tight">Applicant Document</h1>
 <div class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed rounded-full text-xs font-semibold flex items-center gap-1">
 <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">verified</span>
                     Verified
@@ -31,10 +31,15 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Reader');
                     Print
                 </button>
 <div class="w-[1px] h-6 bg-outline-variant/30 mx-2"></div>
+<<<<<<< HEAD
 <button class="flex items-center gap-2 px-4 py-2 bg-error-container hover:opacity-90 text-on-error-container rounded-xl transition-all duration-200 text-sm font-medium">
 <span class="material-symbols-outlined text-[18px]">close</span>
                     Close
                 </button>
+=======
+
+<?= Html::a('<span class="material-symbols-outlined text-[18px]">close</span> Close', ['close', 'id' => $profileId], ['class' => 'flex items-center gap-2 px-4 py-2 bg-error-container hover:opacity-90 text-on-error-container rounded-xl transition-all duration-200 text-sm font-medium','encode' => false]) ?>
+>>>>>>> Featshortlist
 </div>
 </div>
 <!-- Hero Viewer Area -->
@@ -44,7 +49,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Reader');
 <!-- Iframe Container with Placeholder -->
 <div class="flex-1 bg-surface-container rounded-full relative group overflow-hidden shadow-[0_12px_40px_rgba(25,28,33,0.04)] border border-outline-variant/10">
 <!-- Loading State / Placeholder -->
-<div class="absolute inset-0 flex flex-col items-center justify-center z-10 bg-surface-container-lowest/50">
+<div class="absolute left-0 right-0 bottom-0 top-0 flex flex-col items-center justify-center z-10 bg-surface-container-lowest/50">
 <div class="w-16 h-16 rounded-full bg-primary-container/10 flex items-center justify-center mb-4">
 <span class="material-symbols-outlined text-primary text-4xl animate-pulse">description</span>
 </div>

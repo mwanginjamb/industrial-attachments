@@ -13,6 +13,7 @@ use common\models\User;
 class ResetPasswordForm extends Model
 {
     public $password;
+    public $passwordConfirm;
 
     /**
      * @var \common\models\User
@@ -47,6 +48,9 @@ class ResetPasswordForm extends Model
         return [
             ['password', 'required'],
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
+            ['passwordConfirm', 'required'],
+            ['passwordConfirm', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
+            ['passwordConfirm', 'compare', 'compareAttribute' => 'password', 'message' => "Passwords don't match"],
         ];
     }
 

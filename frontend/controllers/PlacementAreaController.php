@@ -27,6 +27,16 @@ class PlacementAreaController extends Controller
                         'delete' => ['POST'],
                     ],
                 ],
+                'access' => [
+                    'class' => \yii\filters\AccessControl::className(),
+                    'only' => ['index', 'view', 'create', 'update', 'delete'],
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['hr', 'admin'], // Allow users with role 'hr' and 'admin' to access these actions
+                        ],
+                    ],
+                ],
             ]
         );
     }

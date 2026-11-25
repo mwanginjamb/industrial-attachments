@@ -103,10 +103,61 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
             <!-- Institution -->
             <?= $form->field($model, 'institution_id', $fieldConfig)
                 ->dropDownList(
+<<<<<<< HEAD
                     \yii\helpers\ArrayHelper::map(\frontend\models\Institution::find()->all(), 'id', 'name'),
                     ['class' => $inputClass]
                 ) ?>
 
+=======
+                    $institutions,
+                    ['class' => $inputClass]
+                ) ?>
+
+            <!-- phone number -->
+            <?= $form->field($model, 'attachee_phone_number', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => '07xxxxxxxx',
+                    'type' => 'tel',
+                    'maxlength' => 10
+                ]) ?>
+
+            <!-- Other Institution Name (conditionally displayed) -->
+            <div id="other-institution-wrapper" style="<?= $model->institution_id === 'other' ? '' : 'display:none' ?>">
+                <?= $form->field($model, 'other_institution_name', $fieldConfig)
+                    ->textInput([
+                        'class' => $inputClass,
+                        'maxlength' => 250,
+                        'placeholder' => 'Enter institution name',
+                    ])->label('Other Institution') ?>
+            </div>
+
+            <!-- email_address -->
+            <?= $form->field($model, 'email_address', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => 'Enter your email address',
+                ]) ?>
+
+            <!-- id_number -->
+            <?= $form->field($model, 'id_number', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => 'Enter your ID number',
+                    'maxlength' => 8
+                ]); ?>
+
+
+            <!-- nok_phone_number -->
+            <?= $form->field($model, 'nok_phone_number', $fieldConfig)
+                ->textInput([
+                    'class' => $inputClass,
+                    'placeholder' => '07xxxxxxxx',
+                    'type' => 'tel',
+                    'maxlength' => 10
+                ]) ?>
+
+>>>>>>> Featshortlist
             <!-- hidden field for user_id -->
             <?= $form->field($model, 'user_id')->hiddenInput()->label(false) ?>
 
@@ -169,8 +220,18 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
 
 
                     <?php if (is_array($templates) && count($templates) > 0): ?>
+<<<<<<< HEAD
                         <?php foreach ($templates as $t): ?>
 
+=======
+                        <?php foreach ($templates as $t):
+
+                            $uploaded = \frontend\models\AttacheeDocumentsTemplates::getAttacheeUploadedDocument($t['id'], $model->attachee_reference);
+                            $status = $uploaded ? '<span class="material-symbols-outlined text-[14px] mr-1">check</span> Uploaded' : ' <span class="material-symbols-outlined text-[14px] mr-1">warning</span> Missing';
+                            $statusClass = $uploaded ? 'text-green-600 bg-green-50' : 'bg-error-container text-on-error-container';
+                            $documentPath = \frontend\models\AttacheeDocumentsTemplates::getAttacheeUploadedDocumentPath($t['id'], $model->attachee_reference);
+                            ?>
+>>>>>>> Featshortlist
 
                             <!-- Row 3: Copy of National ID — Missing (prominent Upload Now CTA) -->
                             <tr class="hover:bg-surface-container-low/50 transition-colors">
@@ -183,6 +244,7 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
                                 </td>
                                 <td class="px-6 py-5 text-right">
                                     <div class="flex items-center gap-4 justify-end">
+<<<<<<< HEAD
                                         <?= Html::a(
                                             '<span class="material-symbols-outlined text-[18px]">visibility</span> View',
                                             ['attachee/read', 'link' => $t->attacheeDocument?->path, 'profileId' => $model->id],   // adjust route as needed
@@ -191,6 +253,19 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
                                                 'encode' => false,
                                             ]
                                         ) ?>
+=======
+                                        <?php if ($uploaded): ?>
+                                            <?= Html::a(
+                                                '<span class="material-symbols-outlined text-[18px]">visibility</span> View',
+                                                ['attachee/read', 'link' => $documentPath, 'profileId' => $model->id],   // adjust route as needed
+                                                [
+                                                    'class' => 'text-primary-container outline outline-1 outline-primary-container/30 rounded-lg px-3 py-1 font-semibold text-sm hover:underline flex items-center gap-1 justify-end ml-auto',
+                                                    'encode' => false,
+                                                ]
+                                            ) ?>
+
+                                        <?php endif; ?>
+>>>>>>> Featshortlist
                                         <!-- inline upload form -->
                                         <?php $form = ActiveForm::begin(['id' => 'national-id-form', 'options' => ['name' => $file->formName()]]); ?>
                                         <?= $form->field($file, 'attachee_id')->hiddenInput(['value' => $model->attachee_reference])->label(false) ?>
@@ -220,7 +295,7 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
             </table>
         </div>
 
-        <p class="text-xs text-on-surface-variant italic px-2">Allowed formats: PDF, PNG, JPG (Max 5MB each)</p>
+        <p class="text-xs text-on-surface-variant italic px-2">Allowed formats: PDF (Max 5MB each)</p>
     </section>
 
 
@@ -228,15 +303,35 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
 </div>
 
 <?php
-$this->registerJsFile('@web/js/custom.js', ['depends' => [\yii\web\YiiAsset::class]]);
 
 
 $script = <<<JS
 // Add any custom JavaScript here
  $('input[type=file]').change(function(e){
-        const form = e.target.closest('form');
-        let Service = $(form).find("input[id=file-service]").val();
-        InlineGlobalUpload(Service,'file','attachment','AttacheeDocuments', form);   
+      // const form = e.target.closest('form');
+       const form = e.target.closest('form');
+       let Service = $(form).find("input[id=file-service]").val();
+       InlineGlobalUpload(Service,'file','attachment','AttacheeDocuments', form);   
+    });
+
+    // Toogle visibility of "Other Institution Name" field based on the selected institution
+
+
+    function toggleOtherInstitution() {
+        const institution = $('#attachee-institution_id').val();
+
+        if (institution === 'other') {
+            $('#other-institution-wrapper').slideDown();
+        } else {
+            $('#other-institution-wrapper').slideUp();
+            $('#attachee-other_institution_name').val('');
+        }
+    }
+
+    toggleOtherInstitution();
+
+    $('#attachee-institution_id').on('change', function () {
+        toggleOtherInstitution();
     });
 JS;
 

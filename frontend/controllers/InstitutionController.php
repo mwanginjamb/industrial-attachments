@@ -129,6 +129,10 @@ class InstitutionController extends Controller
             return $model;
         }
 
+<<<<<<< HEAD
         throw new NotFoundHttpException('The requested page does not exist.');
+=======
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+>>>>>>> Featshortlist
     }
 }

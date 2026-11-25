@@ -17,7 +17,7 @@ $params = Yii::$app->request->get('LotSearch', []);
 ?>
 <div class="lot-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <!-- <h1><?= Html::encode($this->title) ?></h1> -->
 
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -133,7 +133,7 @@ $params = Yii::$app->request->get('LotSearch', []);
                             </div>
                             <div>
                                 <p class="font-bold text-on-surface">' . $text . '</p>
-                                <p class="text-xs text-on-surface-variant">Industrial Attachment</p>
+                                <p class="text-xs text-on-surface-variant">Application Window: ' . (($model->getApplicationStartDate()) ? date('M d, Y', strtotime($model->getApplicationStartDate())) . ' - ' : 'N/A') . (($model->getApplicationDeadline()) ? date('M d, Y', strtotime($model->getApplicationDeadline())) : 'N/A') . '</p>
                             </div>
                         </div>';
                                     }
@@ -146,8 +146,8 @@ $params = Yii::$app->request->get('LotSearch', []);
                         'headerOptions' => ['class' => 'px-6 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant'],
                         'contentOptions' => ['class' => 'px-6 py-6 text-sm text-on-surface-variant font-medium'],
                         'value' => fn($model) =>
-                            date('M d, Y', strtotime($model->opening_date)) . ' - ' .
-                            date('M d, Y', strtotime($model->closing_date)),
+                            (($model->opening_date) ? (date('M d, Y', strtotime($model->opening_date)) . ' - ') : 'N/A') .
+                            (($model->closing_date) ? date('M d, Y', strtotime($model->closing_date)) : 'N/A'),
                     ],
 
                     // STATUS
@@ -217,10 +217,29 @@ $params = Yii::$app->request->get('LotSearch', []);
                                             );
                                         }
 
+                                        // Delete Action
+                                        $delete = '';
+
+                                        if (Yii::$app->user->can('delete-lot')) {
+                                            $delete = Html::a(
+                                                '<span class="material-symbols-outlined text-sm">delete</span>',
+                                                ['lot/delete', 'id' => $model->id],
+                                                [
+                                                    'class' => 'p-2 rounded-lg hover:bg-surface-container-high transition inline-flex items-center text-on-surface-variant',
+                                                    'title' => 'Delete Lot',
+                                                    'data' => [
+                                                        'confirm' => 'Are you sure you want to delete this lot?',
+                                                        'method' => 'post'
+                                                    ]
+                                                ]
+                                            );
+                                        }
+
                                         return '
             <div class="flex justify-end gap-2">
                 ' . $view . '
                 ' . $update . '
+                ' . $delete . '
             </div>
         ';
                                     }

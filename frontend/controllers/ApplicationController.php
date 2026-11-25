@@ -27,7 +27,7 @@ class ApplicationController extends Controller
             [
                 'access' => [
                     'class' => AccessControl::class,
-                    'only' => ['logout', 'signup', 'apply'],
+                    'only' => ['logout', 'signup', 'apply', 'create', 'update', 'view', 'index'],
                     'rules' => [
                         [
                             'actions' => ['signup'],
@@ -35,7 +35,7 @@ class ApplicationController extends Controller
                             'roles' => ['?'],
                         ],
                         [
-                            'actions' => ['logout', 'apply'],
+                            'actions' => ['logout', 'apply', 'create', 'update', 'view', 'index'],
                             'allow' => true,
                             'roles' => ['@'],
                         ],
@@ -98,6 +98,42 @@ class ApplicationController extends Controller
      */
     public function actionView($id)
     {
+<<<<<<< HEAD
+=======
+        $attachee = \frontend\models\Attachee::findOne(['user_id' => Yii::$app->user->id]);
+        $total_templates = \frontend\models\AttacheeDocumentsTemplates::getTotalTemplates();
+        $total_attachee_documents = \frontend\models\AttacheeDocuments::getDocumentsCount($attachee->attachee_reference);
+        $attachedDocuments = \frontend\models\AttacheeDocumentsTemplates::find()->With([
+            'attacheeDocument' => function ($query) {
+                $query->andWhere(['not', ['path' => null]])
+                    ->andWhere(['not', ['path' => '']])
+                    ->andWhere(['attachee_id' => Yii::$app->user->identity->attachee->attachee_reference]);
+            }
+        ])->all();
+
+        $applications = \frontend\models\Application::find()
+            ->joinWith('lot')
+            ->joinWith('status0')
+            ->joinWith('attachee')
+            ->where(['attachee_id' => $attachee->id])
+            ->asArray()
+            ->limit(4)
+            ->all();
+
+        $icons = [
+            1 => 'description',
+            2 => 'school',
+            3 => 'badge',
+            4 => 'health_and_safety'
+        ];
+
+        $StatusIcons = [
+            Application::STATUS_SUBMITTED => 'hourglass_top',
+            Application::STATUS_UNDER_REVIEW => 'search',
+            Application::STATUS_ACCEPTED => 'check_circle',
+            Application::STATUS_PLACED => 'verified',
+        ];
+>>>>>>> Featshortlist
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -165,8 +201,37 @@ class ApplicationController extends Controller
 
     public function actionApply($lot)
     {
+<<<<<<< HEAD
+=======
+        // check lot exists
+        $lot = \frontend\models\Lot::findOne(['id' => $lot]);
+        if (!$lot) {
+            throw new NotFoundHttpException(Yii::t('app', 'The requested lot does not exist.'));
+        }
+
+        // check if lot is Active
+        if (!$lot->isActive) {
+            Yii::$app->session->addFlash('error', 'The application period for this lot is closed.');
+            return $this->redirect(['site/index']);
+        }
+
+>>>>>>> Featshortlist
         // check if the user has a complete Attachee profile
         $attachee = Attachee::findOne(['user_id' => Yii::$app->user->id]);
+
+
+
+        // check if an application already exists for this attachee + lot
+        $existing = Application::findOne([
+            'attachee_id' => $attachee->id,
+            'lot_id' => $lot->id,
+        ]);
+
+        if ($existing) {
+            Yii::$app->session->addFlash('error', 'You have already applied for this lot.');
+            return $this->redirect(['site/index']);
+        }
+
         // if not, redirect to the Attachee profile page
         if (!$attachee) {
             // add flash message for profile completion
@@ -176,6 +241,28 @@ class ApplicationController extends Controller
             // redirect to attache update page
             return $this->redirect(['attachee/update', 'id' => $attachee->id]);
         }
+<<<<<<< HEAD
+=======
+
+        // Validate the attachee profile completeness - check if the required fields are filled
+        if ($attachee && !\frontend\models\Attachee::isComplete($attachee)) {
+            Yii::$app->session->setFlash('info', 'Please complete your profile information before applying for Industrial Attachment.');
+            return $this->redirect(['attachee/update', 'id' => $attachee->id]);
+        }
+
+
+        // documents validation
+
+        $total_templates = \frontend\models\AttacheeDocumentsTemplates::getTotalTemplates();
+        $total_attachee_documents = \frontend\models\AttacheeDocuments::getDocumentsCount($attachee->attachee_reference);
+
+        if ($total_templates > $total_attachee_documents) {
+            Yii::$app->session->setFlash('info', 'Please upload all required documents before applying for Industrial Attachment.');
+            return $this->redirect(['attachee/update', 'id' => $attachee->id]);
+        }
+
+
+>>>>>>> Featshortlist
         // if yes, make an application entry
         $application = new Application();
         $application->attachee_id = $attachee->id;
@@ -210,7 +297,7 @@ class ApplicationController extends Controller
     {
         $attachee = new Attachee();
         $attachee->user_id = $userId;
-        if ($attachee->save()) {
+        if ($attachee->save(false)) {
             return $attachee;
         }
         return null;

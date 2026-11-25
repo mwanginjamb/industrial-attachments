@@ -57,6 +57,7 @@ class PlacementArea extends \yii\db\ActiveRecord
             [['description'], 'string'],
             [['created_by', 'updated_by', 'created_at', 'updated_at'], 'integer'],
             [['name'], 'string', 'max' => 255],
+            ['name', 'required', 'message' => 'Please enter a placement area name (department,center, etc.).'],
         ];
     }
 
@@ -83,6 +84,18 @@ class PlacementArea extends \yii\db\ActiveRecord
     public static function find()
     {
         return new PlacementAreaQuery(get_called_class());
+    }
+
+    // created by relation
+    public function getCreator()
+    {
+        return $this->hasOne(User::class, ['id' => 'created_by']);
+    }
+
+    // updated by relation
+    public function getUpdater()
+    {
+        return $this->hasOne(User::class, ['id' => 'updated_by']);
     }
 
 }

@@ -11,24 +11,36 @@ return [
     'id' => 'app-frontend',
     'name' => 'Attachment Manager',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log','queue'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',
+<<<<<<< HEAD
             ]
+=======
+            ],
+            'enableCsrfValidation' => YII_ENV === 'dev' ? false : true, // disable csrf validation on test only
+            'enableCookieValidation' => true,
+>>>>>>> Featshortlist
         ],
         'user' => [
             'identityClass' => 'common\models\User',
-            'enableAutoLogin' => true,
+            'enableAutoLogin' => false,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+            'authTimeout' => 1800, // 30 min
+            'absoluteAuthTimeout' => 1800, // 30 min
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
+<<<<<<< HEAD
              // this is the name of the session cookie used for login on the frontend
             'name' => 'advanced-frontend-attachee',
+=======
+            'name' => 'advanced-frontend',
+>>>>>>> Featshortlist
             'class' => 'yii\web\Session',
             'timeout' => 3600, // 60 min
             'useCookies' => true,
@@ -46,6 +58,7 @@ return [
                     'class' => \yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
                 ],
+<<<<<<< HEAD
                 [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['info'],
@@ -53,6 +66,18 @@ return [
                     'categories' => ['api_debug'],
                     'logFile' => '@runtime/logs/api.log',
                 ]
+=======
+                // Queue notification logs
+                [
+                    'class' => \yii\log\FileTarget::class,
+                    'levels' => ['info','warning','error'],
+                    'categories' => [
+                        'queue.notifications'
+                    ],
+                    'logFile' => '@runtime/logs/queue-notifications.log',
+                    'logVars' => [],
+                ],
+>>>>>>> Featshortlist
             ],
         ],
         'errorHandler' => [
@@ -66,6 +91,10 @@ return [
                     'class' => yii\rest\UrlRule::class,
                     'controller' => [
                         'apiv1/application',
+<<<<<<< HEAD
+=======
+                        'apiv1/long-list-application',
+>>>>>>> Featshortlist
                     ],
                 ]
             ],

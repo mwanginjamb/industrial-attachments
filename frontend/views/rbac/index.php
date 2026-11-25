@@ -19,7 +19,7 @@ $this->title = 'RBAC Roles';
                 [
                     'attribute' => 'name',
                     'value' => function ($model) {
-                                return strtoupper($model->name);
+                                return ($model->name);
                             }
                 ],
                 // 'description',

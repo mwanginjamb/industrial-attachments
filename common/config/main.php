@@ -6,6 +6,7 @@ return [
         '@npm' => '@vendor/npm-asset',
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+    'timeZone' => 'Africa/Nairobi',
     'components' => [
         'authManager' => [
             'class' => \yii\rbac\DbManager::class,
@@ -34,6 +35,7 @@ return [
                 'host' => env('SMTP_HOST'),
                 'username' => env('SMTP_USERNAME'),
                 'password' => env('SMTP_PASSWORD'),
+<<<<<<< HEAD
                 'port' => env('SMTP_PORT', 587),
                 // 'dsn' => 'native://default',
             ],
@@ -41,7 +43,24 @@ return [
             /*'transport' => [
                 'dsn' => 'smtp://' . env('SMTP_USERNAME') . ':' . env('SMTP_PASSWORD') . '@' . env('SMTP_HOST') . ':25',
             ],*/
+=======
+                'port' => env('SMTP_PORT'),
+                // 'dsn' => 'native://default',
+            ],
+            // DSN example:
+            //  'transport' => [
+            //      'dsn' => 'smtp://' . env('SMTP_USERNAME') . ':' . env('SMTP_PASSWORD') . '@' . env('SMTP_HOST') . ':25',
+            //   ],
+>>>>>>> Featshortlist
 
+        ],
+        // Shared by frontend (push) and console (worker: php yii queue/listen)
+        'queue' => [
+            'class' => \yii\queue\db\Queue::class,
+            'db' => 'db',
+            'tableName' => '{{%queue}}',
+            'channel' => 'default',
+            'mutex' => \yii\mutex\MysqlMutex::class,
         ],
         'utility' => [
             'class' => \common\Library\Utility::class,

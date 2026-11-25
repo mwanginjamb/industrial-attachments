@@ -8,6 +8,9 @@ use yii\rest\ActiveController;
 class ApplicationController extends ActiveController
 {
     public $modelClass = Application::class;
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> Featshortlist
 }

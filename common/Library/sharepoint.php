@@ -40,8 +40,7 @@ class Sharepoint extends Component
     //SHAREPOINT UPLOAD
 
     public function sharepoint_attach($filepath)
-    {  //read list
-
+    {  
         $targetLibraryTitle = env('SP_LIBRARY');
 
         try {
@@ -306,7 +305,6 @@ class Sharepoint extends Component
 
     /*Sharepoint Authentication Context methods */
 
-
     function connectWithUserCredentials($url, $username, $password)
     {
         $authCtx = new AuthenticationContext($url);
@@ -349,7 +347,7 @@ class Sharepoint extends Component
     public function connectWithCertificate()
     {
         $tenant = env('SP_TENENTID'); //tenant id or name
-        $privateKeyPath = "./certs/key.pem";
+        $privateKeyPath = "./certs/sharepoint.pem";
         $privateKey = file_get_contents($privateKeyPath);
 
         $ctx = (new ClientContext(env('SP_URL') . '/' . env('SP_SITE')))->withClientCertificate(
