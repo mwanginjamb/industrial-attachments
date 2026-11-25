@@ -64,8 +64,14 @@ class Attachee extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'name', 'year_of_study', 'course_name', 'expected_completion_date', 'area_of_interest', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'default', 'value' => null],
+            //set expected_completion_date to be a date
+            [['expected_completion_date'], 'date', 'format' => 'php:Y-m-d'],
+            // set expected_completion_date to be in the future by atleast 3 months
+            ['expected_completion_date', 'compare', 'compareValue' => date('Y-m-d', strtotime('+3 months')), 'operator' => '>', 'type' => 'date'],
+            // set required fields
+            [['name', 'year_of_study', 'course_name', 'expected_completion_date', 'area_of_interest', 'level_of_education'], 'required', 'on' => 'update'],
             [['user_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['expected_completion_date'], 'safe'],
+            // [['expected_completion_date'], 'safe'],
             [['area_of_interest'], 'string'],
             [['name'], 'string', 'max' => 150],
             [['year_of_study'], 'string', 'max' => 20],
@@ -168,7 +174,7 @@ class Attachee extends \yii\db\ActiveRecord
      */
     public function getAttacheeDocuments()
     {
-        return $this->hasMany(AttacheeDocuments::class, ['attachee_id' => 'id']);
+        return $this->hasMany(AttacheeDocuments::class, ['attachee_id' => 'attachee_reference']);
     }
 
     // Get institution
