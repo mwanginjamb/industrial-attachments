@@ -86,9 +86,6 @@ class AttacheeDocuments extends \yii\db\ActiveRecord
     // Get Attached Dococuments Count for an Attachee
     public static function getDocumentsCount($attacheeId)
     {
-<<<<<<< HEAD
-        return self::find()->where(['attachee_id' => $attacheeId])->count();
-=======
 
     // select distinct attachee_id, document_type from attachee_documents where attachee_id = $attachee_id and path is not null and path != ''
         return self::find()->where(['attachee_id' => $attachee_id])
@@ -96,7 +93,6 @@ class AttacheeDocuments extends \yii\db\ActiveRecord
         ->andWhere(['not', ['path' => '']])
         ->distinct(['document_type', 'attachee_id'])
         ->count();
->>>>>>> Featshortlist
     }
 
 }

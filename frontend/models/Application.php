@@ -33,13 +33,10 @@ class Application extends \yii\db\ActiveRecord
     const STATUS_UNDER_REVIEW = 2;
     const STATUS_ACCEPTED = 3;
     const STATUS_PLACED = 4;
-<<<<<<< HEAD
-=======
     const STATUS_SELECTED = 5;
     const STATUS_UNSUCCESSFUL = 6;
 
 
->>>>>>> Featshortlist
 
 
     /**
@@ -72,11 +69,8 @@ class Application extends \yii\db\ActiveRecord
 
             [['placement'], 'integer'],
             [['closed'], 'boolean'],
-<<<<<<< HEAD
-=======
             // validate attachee_id  and lot_id combo are uique
             [['attachee_id'], 'unique', 'targetAttribute' => ['attachee_id', 'lot_id'], 'message' => 'You have already applied for this lot.'],
->>>>>>> Featshortlist
         ];
     }
 

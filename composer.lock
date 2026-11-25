@@ -4,11 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "content-hash": "c7772e4e0b59cf37040e69dddd952e04",
-=======
     "content-hash": "1f1e2158631f55d36e699c1c5c91689d",
->>>>>>> Featshortlist
     "packages": [
         {
             "name": "bower-asset/inputmask",
@@ -2291,8 +2287,6 @@
             "time": "2025-02-13T21:09:57+00:00"
         },
         {
-<<<<<<< HEAD
-=======
             "name": "yiisoft/yii2-queue",
             "version": "2.3.8",
             "source": {
@@ -2410,7 +2404,6 @@
             "time": "2026-01-08T07:52:05+00:00"
         },
         {
->>>>>>> Featshortlist
             "name": "yiisoft/yii2-symfonymailer",
             "version": "2.0.4",
             "source": {

@@ -109,9 +109,6 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
             </div>
 
 
-<<<<<<< HEAD
-            <!-- ═══════════════════════════════════════════════════════
-=======
 
             <!-- Expected Completion Date -->
             <?= $form->field($model, 'expected_completion_date', $fieldConfig)
@@ -185,7 +182,6 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
 
 
         <!-- ═══════════════════════════════════════════════════════
->>>>>>> Featshortlist
          Form Actions
      ═══════════════════════════════════════════════════════ -->
             <div class="flex items-center justify-end gap-6 pt-6 border-t border-outline-variant/20">
@@ -315,9 +311,6 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
             ],
         ]) ?>
 
-<<<<<<< HEAD
-    </div>
-=======
 </div>
 
 <?php
@@ -335,4 +328,3 @@ JS;
 
 $this->registerJs($script);
 ?>
->>>>>>> Featshortlist

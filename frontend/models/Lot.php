@@ -49,8 +49,6 @@ class Lot extends \yii\db\ActiveRecord
             [['description'], 'string'],
             [['opening_date', 'closing_date'], 'safe'],
             [['created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-<<<<<<< HEAD
-=======
             // make description unique
             [['description'], 'unique', 'message' => 'This lot description already exists. Please choose a different description.'],
             [['opening_date'], 'compare', 'compareAttribute' => 'closing_date', 'operator' => '<', 'type' => 'datetime', 'message' => 'Opening date must be before closing date.'],
@@ -59,7 +57,6 @@ class Lot extends \yii\db\ActiveRecord
             // Date Range Validation: Ensure that the opening_date and closing_date is =>90 days apart
             [['opening_date', 'closing_date'], 'validateDateRange'],
             [['description', 'opening_date', 'closing_date'], 'required']
->>>>>>> Featshortlist
         ];
     }
 
@@ -160,8 +157,6 @@ class Lot extends \yii\db\ActiveRecord
 
     //  Milestone 1: get lot application deadline (2 weeks before closing date)
 
-<<<<<<< HEAD
-=======
     public function getApplicationStartDate()
     {
         if (!$this->opening_date) {
@@ -184,20 +179,14 @@ class Lot extends \yii\db\ActiveRecord
             ->format('Y-m-d');
     }
 
->>>>>>> Featshortlist
     public function getApplicationDeadline()
     {
         if (!$this->closing_date) {
             return null;
 
         }
-<<<<<<< HEAD
-
-        return date('Y-m-d', strtotime($this->closing_date . ' -2 weeks'));
-=======
         $applicationDeadlineDays = Yii::$app->params['lotApplicationDeadlineDays'];
         return date('Y-m-d', strtotime($this->opening_date . ' -' . $applicationDeadlineDays . ' days'));
->>>>>>> Featshortlist
     }
 
     // Milestone 2: get Placement deadline (2 weeks after closing date)
@@ -208,12 +197,8 @@ class Lot extends \yii\db\ActiveRecord
             return null;
         }
 
-<<<<<<< HEAD
-        return date('Y-m-d', strtotime($this->closing_date . ' +2 weeks'));
-=======
         $applicationProcessingWindow = Yii::$app->params['lotProcessingWindowDays'];
         return date('Y-m-d', strtotime($this->opening_date . ' -' . $applicationProcessingWindow . ' days'));
->>>>>>> Featshortlist
     }
 
     // retrun structured lot milestone data for frontend display
@@ -234,12 +219,6 @@ class Lot extends \yii\db\ActiveRecord
         ];
     }
 
-<<<<<<< HEAD
-    public function getIsActive()
-    {
-        $date = date('Y-m-d');
-        $days = Yii::$app->params['lotApplicationWindowDays'];
-=======
 
     // Check if lot is active
     public function getIsActive(): bool
@@ -264,14 +243,6 @@ class Lot extends \yii\db\ActiveRecord
 
         // Inclusive on both ends: open on the first day of the window and on the deadline day
         return $today >= $windowStart && $today <= $deadline;
-    }
->>>>>>> Featshortlist
-
-        return (
-            strtotime($date) >= strtotime("-{$days} days", strtotime($this->opening_date))
-            &&
-            strtotime($date) < strtotime($this->opening_date)
-        );
     }
 
 

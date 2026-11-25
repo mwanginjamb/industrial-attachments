@@ -103,12 +103,6 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
             <!-- Institution -->
             <?= $form->field($model, 'institution_id', $fieldConfig)
                 ->dropDownList(
-<<<<<<< HEAD
-                    \yii\helpers\ArrayHelper::map(\frontend\models\Institution::find()->all(), 'id', 'name'),
-                    ['class' => $inputClass]
-                ) ?>
-
-=======
                     $institutions,
                     ['class' => $inputClass]
                 ) ?>
@@ -157,7 +151,6 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
                     'maxlength' => 10
                 ]) ?>
 
->>>>>>> Featshortlist
             <!-- hidden field for user_id -->
             <?= $form->field($model, 'user_id')->hiddenInput()->label(false) ?>
 
@@ -220,10 +213,6 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
 
 
                     <?php if (is_array($templates) && count($templates) > 0): ?>
-<<<<<<< HEAD
-                        <?php foreach ($templates as $t): ?>
-
-=======
                         <?php foreach ($templates as $t):
 
                             $uploaded = \frontend\models\AttacheeDocumentsTemplates::getAttacheeUploadedDocument($t['id'], $model->attachee_reference);
@@ -231,7 +220,6 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
                             $statusClass = $uploaded ? 'text-green-600 bg-green-50' : 'bg-error-container text-on-error-container';
                             $documentPath = \frontend\models\AttacheeDocumentsTemplates::getAttacheeUploadedDocumentPath($t['id'], $model->attachee_reference);
                             ?>
->>>>>>> Featshortlist
 
                             <!-- Row 3: Copy of National ID — Missing (prominent Upload Now CTA) -->
                             <tr class="hover:bg-surface-container-low/50 transition-colors">
@@ -244,16 +232,6 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
                                 </td>
                                 <td class="px-6 py-5 text-right">
                                     <div class="flex items-center gap-4 justify-end">
-<<<<<<< HEAD
-                                        <?= Html::a(
-                                            '<span class="material-symbols-outlined text-[18px]">visibility</span> View',
-                                            ['attachee/read', 'link' => $t->attacheeDocument?->path, 'profileId' => $model->id],   // adjust route as needed
-                                            [
-                                                'class' => 'text-primary-container outline outline-1 outline-primary-container/30 rounded-lg px-3 py-1 font-semibold text-sm hover:underline flex items-center gap-1 justify-end ml-auto',
-                                                'encode' => false,
-                                            ]
-                                        ) ?>
-=======
                                         <?php if ($uploaded): ?>
                                             <?= Html::a(
                                                 '<span class="material-symbols-outlined text-[18px]">visibility</span> View',
@@ -265,7 +243,6 @@ $inputClass = 'w-full bg-surface-container-lowest border-none border-b-2 border-
                                             ) ?>
 
                                         <?php endif; ?>
->>>>>>> Featshortlist
                                         <!-- inline upload form -->
                                         <?php $form = ActiveForm::begin(['id' => 'national-id-form', 'options' => ['name' => $file->formName()]]); ?>
                                         <?= $form->field($file, 'attachee_id')->hiddenInput(['value' => $model->attachee_reference])->label(false) ?>

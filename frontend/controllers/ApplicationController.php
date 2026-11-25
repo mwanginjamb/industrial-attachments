@@ -98,8 +98,6 @@ class ApplicationController extends Controller
      */
     public function actionView($id)
     {
-<<<<<<< HEAD
-=======
         $attachee = \frontend\models\Attachee::findOne(['user_id' => Yii::$app->user->id]);
         $total_templates = \frontend\models\AttacheeDocumentsTemplates::getTotalTemplates();
         $total_attachee_documents = \frontend\models\AttacheeDocuments::getDocumentsCount($attachee->attachee_reference);
@@ -133,7 +131,6 @@ class ApplicationController extends Controller
             Application::STATUS_ACCEPTED => 'check_circle',
             Application::STATUS_PLACED => 'verified',
         ];
->>>>>>> Featshortlist
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -201,8 +198,6 @@ class ApplicationController extends Controller
 
     public function actionApply($lot)
     {
-<<<<<<< HEAD
-=======
         // check lot exists
         $lot = \frontend\models\Lot::findOne(['id' => $lot]);
         if (!$lot) {
@@ -215,11 +210,21 @@ class ApplicationController extends Controller
             return $this->redirect(['site/index']);
         }
 
->>>>>>> Featshortlist
         // check if the user has a complete Attachee profile
         $attachee = Attachee::findOne(['user_id' => Yii::$app->user->id]);
 
-
+        // no profile yet - create a minimal one and send the user to complete it
+        if (!$attachee) {
+            Yii::$app->session->setFlash('info', 'Please complete your profile before applying for Industrial Attachment.');
+            // do minimal profile save  - save the user id
+            $attachee = $this->saveAttacheeProfile(Yii::$app->user->id);
+            if ($attachee === null) {
+                Yii::$app->session->setFlash('error', 'We could not start your profile. Please try again.');
+                return $this->redirect(['site/index']);
+            }
+            // redirect to attache update page
+            return $this->redirect(['attachee/update', 'id' => $attachee->id]);
+        }
 
         // check if an application already exists for this attachee + lot
         $existing = Application::findOne([
@@ -231,18 +236,6 @@ class ApplicationController extends Controller
             Yii::$app->session->addFlash('error', 'You have already applied for this lot.');
             return $this->redirect(['site/index']);
         }
-
-        // if not, redirect to the Attachee profile page
-        if (!$attachee) {
-            // add flash message for profile completion
-            Yii::$app->session->setFlash('info', 'Please complete your profile before applying for Industrial Attachment.');
-            // do minimal profile save  - save the user id
-            $attachee = $this->saveAttacheeProfile(Yii::$app->user->id);
-            // redirect to attache update page
-            return $this->redirect(['attachee/update', 'id' => $attachee->id]);
-        }
-<<<<<<< HEAD
-=======
 
         // Validate the attachee profile completeness - check if the required fields are filled
         if ($attachee && !\frontend\models\Attachee::isComplete($attachee)) {
@@ -262,11 +255,10 @@ class ApplicationController extends Controller
         }
 
 
->>>>>>> Featshortlist
         // if yes, make an application entry
         $application = new Application();
         $application->attachee_id = $attachee->id;
-        $application->lot_id = $lot;
+        $application->lot_id = $lot->id;
         if ($application->save()) {
             // redirect to site/index - dashboard
             Yii::$app->session->addFlash('success', 'Application submitted successfully');

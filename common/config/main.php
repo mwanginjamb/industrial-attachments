@@ -35,23 +35,13 @@ return [
                 'host' => env('SMTP_HOST'),
                 'username' => env('SMTP_USERNAME'),
                 'password' => env('SMTP_PASSWORD'),
-<<<<<<< HEAD
                 'port' => env('SMTP_PORT', 587),
-                // 'dsn' => 'native://default',
-            ],
-            // DSN example:
-            /*'transport' => [
-                'dsn' => 'smtp://' . env('SMTP_USERNAME') . ':' . env('SMTP_PASSWORD') . '@' . env('SMTP_HOST') . ':25',
-            ],*/
-=======
-                'port' => env('SMTP_PORT'),
                 // 'dsn' => 'native://default',
             ],
             // DSN example:
             //  'transport' => [
             //      'dsn' => 'smtp://' . env('SMTP_USERNAME') . ':' . env('SMTP_PASSWORD') . '@' . env('SMTP_HOST') . ':25',
             //   ],
->>>>>>> Featshortlist
 
         ],
         // Shared by frontend (push) and console (worker: php yii queue/listen)

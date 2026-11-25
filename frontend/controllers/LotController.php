@@ -5,17 +5,6 @@ namespace frontend\controllers;
 use frontend\models\Lot;
 use frontend\models\LotSearch;
 use frontend\models\PlacementArea;
-<<<<<<< HEAD
-use Yii;
-use yii\filters\AccessControl;
-use yii\filters\ContentNegotiator;
-use yii\filters\VerbFilter;
-use yii\helpers\ArrayHelper;
-use yii\httpclient\Client;
-use yii\httpclient\CurlTransport;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-=======
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -27,7 +16,6 @@ use yii\httpclient\CurlTransport;
 use frontend\models\Application;
 
 use Yii;
->>>>>>> Featshortlist
 
 /**
  * LotController implements the CRUD actions for lot model.
@@ -101,10 +89,6 @@ class LotController extends Controller
         );
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> Featshortlist
     public function beforeAction($action)
     {
 
@@ -120,10 +104,7 @@ class LotController extends Controller
         return parent::beforeAction($action);
     }
 
-<<<<<<< HEAD
-=======
 
->>>>>>> Featshortlist
     /**
      * Lists all lot models.
      *
@@ -182,12 +163,8 @@ class LotController extends Controller
 
         return $this->render('view', [
             'model' => $this->findModel($id),
-<<<<<<< HEAD
-            'applications' => $applications
-=======
             'applications' => $applications,
             'pas' => $placement_areas
->>>>>>> Featshortlist
         ]);
     }
 
@@ -266,10 +243,6 @@ class LotController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> Featshortlist
     public function actionCommit()
     {
         try {
@@ -323,8 +296,6 @@ class LotController extends Controller
         return $data;
     }
 
-<<<<<<< HEAD
-=======
     // Email Department with longlist link for selection after creating the longlist based on placement area (department, center, etc.)
     public function actionEmailDepartment($lotid, $placementid)
     {
@@ -374,5 +345,4 @@ class LotController extends Controller
         return $placementArea ? $placementArea->name : null;
     }
 
->>>>>>> Featshortlist
 }

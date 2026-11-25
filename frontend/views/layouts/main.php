@@ -6,11 +6,8 @@ use frontend\assets\AppAsset;
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
 use yii\bootstrap5\Alert;
-<<<<<<< HEAD
-=======
 use yii\web\View;
 use yii\helpers\Url;
->>>>>>> Featshortlist
 
 
 $this->registerCsrfMetaTags();
@@ -23,17 +20,12 @@ $this->registerLinkTag(['rel' => 'preconnect', 'href' => 'https://fonts.googleap
 $this->registerLinkTag(['rel' => 'preconnect', 'href' => 'https://fonts.gstatic.com', 'crossorigin' => true]);
 
 AppAsset::register($this);
-<<<<<<< HEAD
-
-$currentRoute = Yii::$app->controller->getRoute();
-=======
 $userTitle = '';
 if(!Yii::$app->user->isGuest) {
     $auth = Yii::$app->authManager;
     $role = implode(',', array_keys($auth->getRolesByUser(Yii::$app->user->id)));
     $userTitle = Yii::$app->user->identity->username.' - '.$role;
 }
->>>>>>> Featshortlist
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -84,18 +76,10 @@ if(!Yii::$app->user->isGuest) {
     <?php
     $sideNavItems = [
         //['label' => 'Overview',         'url' => ['/site/index'],       'icon' => 'dashboard'],
-<<<<<<< HEAD
-        ['label' => 'Student List',     'url' => ['/lot/index'],    'icon' => 'group'],
-        ['label' => 'Attachment Templates', 'url' => ['/attachee-documents-templates/index'],'icon' => 'business_center','title' => 'Required File Attachment Templates'], 
-        ['label' => 'Review Status', 'url' => ['/application-status/index'], 'icon' => 'checklist'],
-        ['label' => 'Placement Sections',           'url' => ['/placement-area/index'],        'icon' => 'work'], 
-        ['label' => 'Institutions',           'url' => ['/institution/index'],        'icon' => 'apartment'],
-=======
         ['label' => 'Student List',     'url' => ['/lot/index'],    'icon' => 'group', 'visible' => Yii::$app->user->can('view-lot')],
         ['label' => 'Institutions List', 'url' => ['/institution/index'],    'icon' => 'business_center', 'visible' => Yii::$app->user->can('view-institution')],
         ['label' => 'Placement Areas',  'url' => ['/placement-area/index'],   'icon' => 'map', 'visible' => Yii::$app->user->can('view-placement-area')],
        // ['label' => 'System Logs',      'url' => ['/log/index'],        'icon' => 'analytics'],
->>>>>>> Featshortlist
 
         // ── Nested group: add a 'children' key, no 'url' ──
         [
@@ -117,12 +101,6 @@ if(!Yii::$app->user->isGuest) {
 
     if (isset($item['group']) && $item['group'] === true): ?>
 
-<<<<<<< HEAD
-        <!-- GROUP HEADER -->
-        <div class="px-3 py-2 font-bold text-slate-700 dark:text-slate-300 flex items-center gap-3">
-            <span class="material-symbols-outlined"><?= $item['icon'] ?></span>
-            <span><?= Html::encode($item['label']) ?></span>
-=======
         if(isset($item['visible']) && !$item['visible']) {
             continue; // Skip items that are not visible to the user
             
@@ -186,7 +164,6 @@ if(!Yii::$app->user->isGuest) {
                     <?php endforeach; ?>
                 </div>
             </div>
->>>>>>> Featshortlist
         </div>
 
         <!-- CHILDREN -->
@@ -317,16 +294,8 @@ if(!Yii::$app->user->isGuest) {
                 </button>
                 <?= Html::a(
                     '<span class="material-symbols-outlined">settings</span>',
-<<<<<<< HEAD
-                    // if user identity has a attachee, go to attache/update else go to attachee create
-                    (Yii::$app->user->identity->attachee)?
-                    ['/attachee/update', 'id' => Yii::$app->user->identity->attachee->id]:
-                    ['/attachee/create'],
-                    ['class' => 'p-2 text-slate-600 hover:bg-slate-200/50 rounded-full transition-colors', 'encode' => false]
-=======
                     ['/lot/index'],
                     ['class' => 'p-2 text-slate-600 hover:bg-slate-200/50 rounded-full transition-colors', 'encode' => false, 'title' => 'HR Settings '.$userTitle ]
->>>>>>> Featshortlist
                 ) ?>
                 <!-- User avatar -->
                 <div class="h-8 w-8 rounded-full bg-primary-container overflow-hidden">

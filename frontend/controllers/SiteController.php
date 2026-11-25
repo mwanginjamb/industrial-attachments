@@ -112,35 +112,13 @@ class SiteController extends Controller
 
         $attachee = \frontend\models\Attachee::findOne(['user_id' => Yii::$app->user->id]);
         $total_templates = \frontend\models\AttacheeDocumentsTemplates::getTotalTemplates();
-<<<<<<< HEAD
-        $total_attachee_documents = ($attachee) ? \frontend\models\AttacheeDocuments::getDocumentsCount($attachee->attachee_reference) : 0;
-
-
-        $attachedDocuments = (Yii::$app->user->identity->attachee) ? \frontend\models\AttacheeDocumentsTemplates::find()->With([
-=======
         $total_attachee_documents = Yii::$app->user->identity->attachee ? \frontend\models\AttacheeDocuments::getDocumentsCount($attachee->attachee_reference) : 0;
         $attachedDocuments = Yii::$app->user->identity->attachee ? \frontend\models\AttacheeDocumentsTemplates::find()->With([
->>>>>>> Featshortlist
             'attacheeDocument' => function ($query) {
                 $query->andWhere(['not', ['path' => null]])
                     ->andWhere(['not', ['path' => '']])
                     ->andWhere(['attachee_id' => Yii::$app->user->identity->attachee->attachee_reference]);
             }
-<<<<<<< HEAD
-        ])->all() : 0;
-
-        $applications = [];
-        if ($attachee) {
-            $applications = \frontend\models\Application::find()
-                ->joinWith('lot')
-                ->joinWith('status0')
-                ->joinWith('attachee')
-                ->where(['attachee_id' => $attachee->id])
-                ->asArray()
-                ->limit(4)
-                ->all();
-        }
-=======
         ])->all() : [];
 
         $applications = (Yii::$app->user->identity->attachee) ? \frontend\models\Application::find()
@@ -152,7 +130,6 @@ class SiteController extends Controller
             ->limit(5)
             ->orderBy(['id' => SORT_DESC])
             ->all() : 0;
->>>>>>> Featshortlist
 
         $icons = [
             1 => 'description',
@@ -497,8 +474,6 @@ class SiteController extends Controller
         ]);
     }
 
-<<<<<<< HEAD
-=======
     /**
      * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -516,7 +491,6 @@ class SiteController extends Controller
         return $this->redirect(['users']);
     }
 
->>>>>>> Featshortlist
     public function actionLookupEmployee($employeeNumber)
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;

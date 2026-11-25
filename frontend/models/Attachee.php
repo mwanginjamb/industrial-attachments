@@ -22,8 +22,6 @@ use Yii;
  * @property int|null $level_of_education
  * @property string|null $attachee_reference
  * @property int $institution_id
-<<<<<<< HEAD
-=======
  * 
  * @property string $attachee_phone_number
  * @property string $email_address
@@ -31,7 +29,6 @@ use Yii;
  * @property string $nok_phone_number
  * @property string|null $other_institution_name
  * 
->>>>>>> Featshortlist
  * @property Application[] $applications
  * @property AttacheeDocuments[] $attacheeDocuments
  * @property User $user
@@ -80,11 +77,6 @@ class Attachee extends \yii\db\ActiveRecord
 
             //set attachee reference to be unique
             ['attachee_reference', 'unique'],
-<<<<<<< HEAD
-            ['institution_id', 'integer'],
-            ['institution_id', 'exist', 'skipOnError' => true, 'targetClass' => Institution::class, 'targetAttribute' => ['institution_id' => 'id']],
-            ['institution_id', 'required'],
-=======
             ['institution_id', 'safe'],
             [
                 'institution_id',
@@ -115,7 +107,6 @@ class Attachee extends \yii\db\ActiveRecord
                     return $('#attachee-institution_id').val() == 'other';
                 }",
             ],
->>>>>>> Featshortlist
         ];
     }
 
@@ -142,8 +133,6 @@ class Attachee extends \yii\db\ActiveRecord
         ];
     }
 
-<<<<<<< HEAD
-=======
     //validates if attachee profile is complete by checking if the required fields are filled
     public static function isComplete($attachee)
     {
@@ -162,7 +151,6 @@ class Attachee extends \yii\db\ActiveRecord
         );
     }
 
->>>>>>> Featshortlist
     /**
      * Gets query for [[Applications]].
      *
@@ -181,12 +169,6 @@ class Attachee extends \yii\db\ActiveRecord
     public function getAttacheeDocuments()
     {
         return $this->hasMany(AttacheeDocuments::class, ['attachee_id' => 'id']);
-    }
-
-    // Get institution
-    public function getInstitution()
-    {
-        return $this->hasOne(Institution::class, ['id' => 'institution_id']);
     }
 
     // Get institution
@@ -242,24 +224,6 @@ class Attachee extends \yii\db\ActiveRecord
         return false;
     }
 
-<<<<<<< HEAD
-    // Generate Abbreviations of the first 2 names given on $name attribute and use them as initials in the avatar
-    public static function getInitials($name)
-    {
-        $names = preg_split('/\s+/', trim($name));
-
-        $initials = '';
-
-        foreach ($names as $index => $name) {
-            if ($index >= 2) {
-                break; // Only first 2 words
-            }
-
-            $initials .= mb_strtoupper(mb_substr($name, 0, 1));
-        }
-
-        return $initials;
-=======
 
     // Academic Levels
     public static function getAcademicLevels()
@@ -270,7 +234,6 @@ class Attachee extends \yii\db\ActiveRecord
             3 => 'Masters',
             4 => 'PhD',
         ];
->>>>>>> Featshortlist
     }
 
 }

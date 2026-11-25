@@ -11,10 +11,7 @@ use yii\grid\GridView;
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Institutions';
-<<<<<<< HEAD
-=======
 $this->params['breadcrumbs'][] = ['label' => 'Institutions', 'url' => ['index']];
->>>>>>> Featshortlist
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="institution-index">

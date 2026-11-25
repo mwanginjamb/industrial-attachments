@@ -18,13 +18,9 @@ return [
             'csrfParam' => '_csrf-frontend',
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',
-<<<<<<< HEAD
-            ]
-=======
             ],
             'enableCsrfValidation' => YII_ENV === 'dev' ? false : true, // disable csrf validation on test only
             'enableCookieValidation' => true,
->>>>>>> Featshortlist
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -35,12 +31,7 @@ return [
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
-<<<<<<< HEAD
-             // this is the name of the session cookie used for login on the frontend
-            'name' => 'advanced-frontend-attachee',
-=======
             'name' => 'advanced-frontend',
->>>>>>> Featshortlist
             'class' => 'yii\web\Session',
             'timeout' => 3600, // 60 min
             'useCookies' => true,
@@ -58,15 +49,6 @@ return [
                     'class' => \yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
                 ],
-<<<<<<< HEAD
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['info'],
-                    'logVars' => [],
-                    'categories' => ['api_debug'],
-                    'logFile' => '@runtime/logs/api.log',
-                ]
-=======
                 // Queue notification logs
                 [
                     'class' => \yii\log\FileTarget::class,
@@ -77,7 +59,6 @@ return [
                     'logFile' => '@runtime/logs/queue-notifications.log',
                     'logVars' => [],
                 ],
->>>>>>> Featshortlist
             ],
         ],
         'errorHandler' => [
@@ -91,10 +72,7 @@ return [
                     'class' => yii\rest\UrlRule::class,
                     'controller' => [
                         'apiv1/application',
-<<<<<<< HEAD
-=======
                         'apiv1/long-list-application',
->>>>>>> Featshortlist
                     ],
                 ]
             ],

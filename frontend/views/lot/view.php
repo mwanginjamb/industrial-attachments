@@ -25,13 +25,6 @@ ICO;
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
         <div>
             <h1 class="text-4xl font-extrabold tracking-tight text-on-surface"><?= Html::encode($this->title) ?></h1>
-<<<<<<< HEAD
-            <p class="text-on-surface-variant mt-2 max-w-2xl font-['Inter']">Application window:
-                <strong>Opening</strong> <?= Yii::$app->formatter->asDate($model->opening_date) ?> <strong>Closing
-                    Date:</strong> <?= Yii::$app->formatter->asDate($model->closing_date) ?>
-            </p>
-
-=======
 
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-1 mb-10">
@@ -42,7 +35,6 @@ ICO;
                 <span class="text-on-surface-variant text-sm font-medium">Processing Deadline:
                     <?= Yii::$app->formatter->asDate($model->placementDeadline) ?></span>
             </div>
->>>>>>> Featshortlist
         </div>
         <div class="flex gap-3">
             <?php Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -62,13 +54,8 @@ ICO;
         <div class="md:col-span-1 bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
             <span class="text-on-surface-variant text-sm font-medium">Total Applicants</span>
             <div class="mt-4">
-<<<<<<< HEAD
-                <span class="text-3xl font-black text-on-surface">142</span>
-                <span class="text-green-600 text-xs font-bold ml-2">↑ 12%</span>
-=======
                 <span class="text-3xl font-black text-on-surface"><?= $model->applicationsCount ?></span>
                 <span class="text-green-600 text-xs font-bold ml-2"></span>
->>>>>>> Featshortlist
             </div>
         </div>
         <div class="md:col-span-1 bg-surface-container-low p-6 rounded-xl flex flex-col justify-between">
@@ -163,25 +150,6 @@ ICO;
                 <thead>
                     <tr
                         class="bg-surface-container-low text-on-surface-variant uppercase text-[10px] font-black tracking-widest">
-<<<<<<< HEAD
-                        <th class="px-8 py-4">Name &amp; ID</th>
-                        <th class="px-6 py-4">Year / Level</th>
-                        <th class="px-6 py-4">Institution</th>
-                        <th class="px-6 py-4">Preferred Placement</th>
-                        <th class="px-6 py-4">Status</th>
-                        <th class="px-8 py-4 text-right">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-surface-container">
-
-                    <?php foreach ($applications as $application):
-                        // check if the application has an attachee and institution before trying to access their properties
-                        if (!array_key_exists('attachee', $application) || !array_key_exists('institution', $application['attachee']) || is_null($application['attachee']['institution'])) {
-                            continue; // skip this application if attachee or institution is missing
-                        }
-
-
-=======
                         <th class="px-8 py-4" data-priority="1">Name &amp; ID</th>
                         <th class="px-6 py-4" data-priority="2">Year</th>
                         <th class="px-6 py-4" data-priority="3">Level</th>
@@ -199,7 +167,6 @@ ICO;
                         if ($application?->attachee?->name == null)
                             continue;
                         $endpoint = \yii\helpers\Url::home(true) . 'apiv1/applications/' . $application->id;
->>>>>>> Featshortlist
                         ?>
                         <!-- Row 1 -->
                         <tr class="hover:bg-surface-container-low/50 transition-colors group">
@@ -207,61 +174,14 @@ ICO;
                                 <div class="flex items-center gap-3">
                                     <div
                                         class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
-<<<<<<< HEAD
-                                        <?= \frontend\models\Attachee::getInitials($application['attachee']['name']) ?>
-                                    </div>
-                                    <div>
-                                        <p class="font-bold text-on-surface">
-                                            <?= $application['attachee']['name'] ?>
-                                        </p>
-=======
                                         <?= ($application?->attachee?->name) ? strtoupper(substr($application?->attachee?->name, 0, 1)) : '' ?>
                                     </div>
                                     <div>
                                         <p class="font-bold text-on-surface"><?= $application['attachee']['name'] ?></p>
->>>>>>> Featshortlist
                                         <p class="text-xs text-on-surface-variant">ID:
                                             <?= $application['attachee']['attachee_reference'] ?>
                                         </p>
                                     </div>
-<<<<<<< HEAD
-                            </td>
-                            <td class="px-6 py-5">
-                                <p class="text-sm font-medium"><?= $application['attachee']['year_of_study'] ?></p>
-                                <p class="text-xs text-on-surface-variant"><?= $application['attachee']['course_name'] ?>
-                                </p>
-                            </td>
-                            <td class="px-6 py-5 text-sm">
-                                <span class="text-on-surface-variant font-medium">
-                                    <?= $application['attachee']['institution']['name'] ?>
-                                </span>
-                                <p class="text-xs text-on-surface-variant text-wrap max-w-xs">
-                                    <strong>Interests: </strong> <?= $application['attachee']['area_of_interest'] ?>
-                                </p>
-                            </td>
-                            <td class="px-6 py-5 text-sm" data-key="<?= $application['id'] ?>" data-name="placement"
-                                data-service="<?= $endpoint ?>" ondblclick="addDropDown(this,'placements')">
-                                <span class="text-on-surface-variant font-medium">
-                                    <?= !is_null($application['placement']) ? $application['placement']['name'] : 'N/A' ?>
-                                </span>
-                            </td>
-                            <td class="px-6 py-5">
-                                <span
-                                    class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-[11px] font-bold uppercase tracking-tight"><?= !is_null($application['status0']) ? $application['status0']['description'] : 'N/A' ?></span>
-                            </td>
-                            <td class="px-8 py-5 text-right">
-                                <div class="flex justify-end gap-2">
-                                    <?= Html::a('Review Application', ['application/view', 'id' => $application['id']], ['class' => 'px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary/10 rounded-lg transition-colors']) ?>
-                                </div>
-                            </td>
-                        </tr>
-
-                    <?php endforeach; ?>
-
-                </tbody>
-            </table>
-        </div>
-=======
                                 </div>
                             </td>
                             <td class="px-6 py-5">
@@ -334,7 +254,6 @@ ICO;
             </table>
         </div>
         <!-- / Table Div -->
->>>>>>> Featshortlist
 
     </div>
 

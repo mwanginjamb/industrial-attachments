@@ -55,40 +55,6 @@ AppAsset::register($this);
 
 
 
-<<<<<<< HEAD
-
-        <!-- Flash Alerts -->
-        <?php foreach (Yii::$app->session->getAllFlashes() as $type => $messages): ?>
-            <?php
-            // Map Yii flash types → Tailwind color tokens
-            $alertConfig = match($type) { 
-                'success' => ['bg' => 'bg-secondary-fixed',      'text' => 'text-on-secondary-fixed', 'icon' => 'check_circle',      'dot' => 'bg-primary'],
-                'error',
-                'danger'  => ['bg' => 'bg-error-container',      'text' => 'text-on-error-container', 'icon' => 'error',             'dot' => 'bg-error'],
-                'warning' => ['bg' => 'bg-tertiary-fixed',        'text' => 'text-on-tertiary-fixed',  'icon' => 'warning',           'dot' => 'bg-tertiary'],
-                'info'    => ['bg' => 'bg-primary-fixed',         'text' => 'text-on-primary-fixed',   'icon' => 'info',              'dot' => 'bg-primary'],
-                default   => ['bg' => 'bg-surface-container-high','text' => 'text-on-surface-variant', 'icon' => 'notifications',     'dot' => 'bg-outline'],
-            };
-            $messages = (array) $messages;
-            foreach ($messages as $message):
-            ?>
-            <div
-                role="alert"
-                class="flex items-start gap-4 mb-4 px-5 py-4 rounded-2xl <?= $alertConfig['bg'] ?> <?= $alertConfig['text'] ?> shadow-sm"
-                x-data="{ show: true }"
-            >
-                <span class="material-symbols-outlined mt-0.5 flex-shrink-0"><?= $alertConfig['icon'] ?></span>
-                <span class="flex-1 text-sm font-medium font-['Inter']"><?= Html::encode($message) ?></span>
-                <!-- Dismiss button (purely CSS-driven; swap for JS if needed) -->
-                <button
-                    type="button"
-                    class="ml-auto p-1 rounded-lg hover:bg-black/10 transition-colors flex-shrink-0"
-                    onclick="this.closest('[role=alert]').remove()"
-                    aria-label="Dismiss"
-                >
-                    <span class="material-symbols-outlined text-base">close</span>
-                </button>
-=======
     <main class="min-h-screen flex flex-col md:flex-row">
         <section
             class="relative w-full md:w-1/2 lg:w-3/5 min-h-[400px] md:min-h-screen hero-gradient flex flex-col justify-between p-8 md:p-16 overflow-hidden">
@@ -97,7 +63,6 @@ AppAsset::register($this);
                 <img alt="" class="w-full h-full object-cover mix-blend-overlay"
                     data-alt="Abstract architectural lines of a modern university building with sunlight filtering through glass panels, high-end editorial style"
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHr91z-B7uSN3-pLPvhgNPQW70czsvURlJe2zO-OKFcdUlP9NujIhI6f3ZCusOdqwr70zKun0H2mKw0u4_505VT3SnktOfYTALF4OoxtUZszBzpSPMNdFDmOI22bdRtpqJgORUJXA-iLRCW6MCdHcL7Oq4bmLwFtnFk4ROelcErFeFYvH2Mctp9HjpCU6dQSNkJdThB4CmspaocJDrWp_jHimrKu5UvxkI8rmFFwFv3RNlYavUpufZg7RfMU1CxH5IjZCefdINoYU" />
->>>>>>> Featshortlist
             </div>
             <!-- Header/Logo Area -->
             <div class="relative z-10 flex items-center gap-4">

@@ -7,8 +7,6 @@ use frontend\assets\AppAsset;
 use yii\bootstrap5\Html;
 use yii\web\View;
 use yii\helpers\Url;
-<<<<<<< HEAD
-=======
 
 
 
@@ -17,7 +15,6 @@ $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
 $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1.0']);
 $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/png', 'href' => Yii::$app->request->baseUrl . '/icons/icon-32x32.png']);
 
->>>>>>> Featshortlist
 
 AppAsset::register($this);
 
@@ -69,14 +66,7 @@ $this->beginPage();
                     <span class="material-symbols-outlined text-on-surface">menu</span>
                 </button>
 
-<<<<<<< HEAD
-                <span
-                    class="text-xl md:text-2xl font-black text-blue-900 dark:text-blue-100 tracking-tighter font-headline">
-                    Academic Curator
-                </span>
-=======
                 <?= Html::a('<span class="text-xl md:text-2xl font-black text-blue-900 dark:text-blue-100 tracking-tighter font-headline">' . Yii::$app->name . '</span>', ['site/index'], ['class' => 'flex items-center gap-2']) ?>
->>>>>>> Featshortlist
 
                 <div class="hidden md:flex items-center gap-6">
                     <?php
@@ -105,12 +95,9 @@ $this->beginPage();
                     class="p-2 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-full transition-colors duration-200">
                     <span class="material-symbols-outlined text-on-surface-variant">notifications</span>
                 </button>
-<<<<<<< HEAD
-=======
 
                 <?= (Yii::$app->user->can('hr') || Yii::$app->user->can('admin')) ? Html::a(' <span class="material-symbols-outlined text-on-surface-variant">settings</span> Settings', ['lot/index'], ['class' => 'hidden md:block p-2 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 rounded-full transition-colors duration-200','encode' => false,'title' => 'HR Settings']): '' ?>
                 
->>>>>>> Featshortlist
 
                 <!-- Profile Dropdown -->
                 <div class="flex items-center gap-3 md:pl-4 md:ml-4 md:border-l border-outline-variant/30 cursor-pointer relative group"
@@ -135,22 +122,6 @@ $this->beginPage();
                         <div class="hidden absolute right-0 top-full mt-2 w-56 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-outline-variant/20 overflow-hidden z-[60] py-2"
                             id="profile-dropdown">
 
-<<<<<<< HEAD
-                            <!-- check if identity has attachee -->
-                            <?php if (Yii::$app->user->identity->attachee): ?>
-                                <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                                    href="<?= Url::to(['/attachee/update', 'id' => Yii::$app->user->identity->attachee->id]) ?>">
-                                    <span class="material-symbols-outlined text-primary">person_outline</span>
-                                    <?= (Yii::$app->user->identity->attachee) ? 'View Profile' : 'Create Profile' ?>
-                                </a>
-                            <?php else: ?>
-                                <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                                    href="<?= Url::to(['/attachee/create']) ?>">
-                                    <span class="material-symbols-outlined text-primary">add</span>
-                                    Create Profile
-                                </a>
-                            <?php endif; ?>
-=======
 
                             <?php if (!Yii::$app->user->isGuest && !is_null(Yii::$app->user->identity->attachee)): ?>
                             <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
@@ -159,7 +130,6 @@ $this->beginPage();
                                 View Profile
                             </a>
                             <?php else: ?>
->>>>>>> Featshortlist
                             <a class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
                                 href="<?= Url::to(['/attachee/create']) ?>">
                                 <span class="material-symbols-outlined text-primary">person_outline</span>

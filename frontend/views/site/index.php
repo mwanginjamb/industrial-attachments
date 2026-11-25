@@ -224,9 +224,6 @@ use yii\helpers\Url;
             </section>
         </div>
     </div>
-<<<<<<< HEAD
-</div>
-=======
 </div>
 
 
@@ -246,4 +243,3 @@ JS;
 
 $this->registerJs($script);
 ?>
->>>>>>> Featshortlist

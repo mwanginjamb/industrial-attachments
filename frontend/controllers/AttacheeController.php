@@ -91,14 +91,10 @@ class AttacheeController extends Controller
      */
     public function actionView($id)
     {
-<<<<<<< HEAD
-        $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
-=======
         $this->layout = 'dashboard';
         $model = $this->findModel($id);
         $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
 
->>>>>>> Featshortlist
         return $this->render('view', [
             'model' => $this->findModel($id),
             'templates' => $templates,
@@ -114,14 +110,9 @@ class AttacheeController extends Controller
     {
         $this->layout = 'dashboard';
         $model = new Attachee();
-<<<<<<< HEAD
-        $model->user_id = Yii::$app->user->id;
-        $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
-=======
         // $model->scenario = 'create';
         $model->user_id = Yii::$app->user->id;
 
->>>>>>> Featshortlist
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 // Flash message for successful creation
@@ -142,10 +133,7 @@ class AttacheeController extends Controller
             'model' => $model,
             'fileModel' => new \frontend\models\File(),
             'docTemplates' => $templates,
-<<<<<<< HEAD
-=======
             'institutions' => $institutions,
->>>>>>> Featshortlist
         ]);
     }
 
@@ -160,29 +148,13 @@ class AttacheeController extends Controller
     {
         $this->layout = 'dashboard';
         $model = $this->findModel($id);
-<<<<<<< HEAD
-=======
         $model->scenario = 'update';
 
->>>>>>> Featshortlist
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Profile updated successfully.');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-<<<<<<< HEAD
-        return $this->render('update', [
-            'model' => $model,
-            'fileModel' => new \frontend\models\File(),
-            'docTemplates' => \frontend\models\AttacheeDocumentsTemplates::find()->With([
-                'attacheeDocument' => function ($query) {
-                    $query->andWhere(['not', ['path' => null]])
-                        ->andWhere(['not', ['path' => '']])
-                        ->andWhere(['not', ['attachee_id' => null]])
-                        ->andWhere(['not', ['attachee_id' => '']]);
-                }
-            ])->all(),
-=======
         $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
         $institutions = \yii\helpers\ArrayHelper::merge(
             ['other' => 'Other'],
@@ -194,7 +166,6 @@ class AttacheeController extends Controller
             'fileModel' => new \frontend\models\File(),
             'docTemplates' => $templates,
             'institutions' => $institutions,
->>>>>>> Featshortlist
         ]);
     }
 
