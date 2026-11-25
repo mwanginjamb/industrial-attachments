@@ -96,8 +96,9 @@ class AttacheeController extends Controller
         $templates = \frontend\models\AttacheeDocumentsTemplates::find()->all();
 
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
             'templates' => $templates,
+            'file' => new \frontend\models\File()
         ]);
     }
 
@@ -215,21 +216,20 @@ class AttacheeController extends Controller
 
     public function actionUpload()
     {
-
-        $targetPath = '';
-        if ($_FILES) {
-            $uploadedFile = $_FILES['attachment']['name'];
-            list($pref, $ext) = explode('.', $uploadedFile);
-            $targetPath = './plogs/' . Yii::$app->utility->processPath($pref) . '.' . $ext; // Create unique target upload path
-            $attachmentName = Yii::$app->utility->processPath($pref) . '.' . $ext;
-        }
-
         // Upload
         if (Yii::$app->request->isPost) {
-            $DocumentService = new AttacheeDocuments();
-            $DocumentService->attachee_id = Yii::$app->request->post('attachee_reference');
-            $DocumentService->document_type = Yii::$app->request->post('document_type');
-            $DocumentService->save();
+            $attachee_id = Yii::$app->request->post('attachee_reference');
+            $document_type = Yii::$app->request->post('document_type');
+            // implement updateOrCreate pattern
+            $model = \frontend\models\AttacheeDocuments::findOne([
+                'attachee_id' => $attachee_id,
+                'document_type' => $document_type,
+            ]) ?? new \frontend\models\AttacheeDocuments([
+                    'attachee_id' => $attachee_id,
+                    'document_type' => $document_type,
+                ]);
+
+            $model->save();
 
             $parentDocument = Attachee::findOne(['attachee_reference' => Yii::$app->request->post('attachee_reference')]);
             // Yii::$app->utility->printrr($parentDocument);
@@ -247,6 +247,7 @@ class AttacheeController extends Controller
             $folder = Yii::$app->sharepoint->createFolder($parentDocument->attachee_reference);
             //Yii::$app->utility->printrr($folder);
 
+            $attachmentName = $_FILES['attachment']['name'];
             $file = $_FILES['attachment']['tmp_name'];
             $binary = file_get_contents($file);
             //Return JSON
@@ -273,19 +274,26 @@ class AttacheeController extends Controller
         if (Yii::$app->request->isGet) {
             $fileName = basename(Yii::$app->request->get('filePath'));
 
-            // $AttacheDocument = AttacheeDocuments::findOne(['attachee_id' => Yii::$app->request->get('No')]);
-            $AttacheDocument = new AttacheeDocuments();
-            $AttacheDocument->attachee_id = Yii::$app->request->get('No');
-            $AttacheDocument->path = Yii::$app->request->get('filePath');
-            $AttacheDocument->document_type = Yii::$app->request->get('documentType');
 
-            $result = $AttacheDocument->save();
+            $model = \frontend\models\AttacheeDocuments::findOne([
+                'attachee_id' => Yii::$app->request->get('No'),
+                'document_type' => Yii::$app->request->get('documentType'),
+            ]) ?? new \frontend\models\AttacheeDocuments([
+                    'attachee_id' => Yii::$app->request->get('No'),
+                    'document_type' => Yii::$app->request->get('documentType'),
+                ]);
+            $model->attributes = [
+                'path' => Yii::$app->request->get('filePath')
+            ];
+            $result = $model->save();
+
+
 
             Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             if ($result) {
                 return ['status' => 'success', 'message' => 'Document saved successfully'];
             } else {
-                return ['status' => 'error', 'message' => json_encode($AttacheDocument->getErrors())];
+                return ['status' => 'error', 'message' => json_encode($model->getErrors())];
             }
         }
     }
