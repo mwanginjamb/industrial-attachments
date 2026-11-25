@@ -28,13 +28,19 @@ use yii\behaviors\BlameableBehavior;
 class Application extends \yii\db\ActiveRecord
 {
 
-    // status constants : submitted, under review, accepted, placed
+    // Status ids are primary keys of the application_status table (application.status has a
+    // foreign key to it). Keep these in step with that table's rows:
+    //   1 Submitted, 2 Under Review, 3 Accepted, 4 Rejected, 5 Placed
     const STATUS_SUBMITTED = 1;
     const STATUS_UNDER_REVIEW = 2;
     const STATUS_ACCEPTED = 3;
-    const STATUS_PLACED = 4;
-    const STATUS_SELECTED = 5;
-    const STATUS_UNSUCCESSFUL = 6;
+    const STATUS_REJECTED = 4;
+    const STATUS_PLACED = 5;
+
+    // Shortlisting outcomes (LongListController): a selected applicant is Accepted,
+    // an unsuccessful one is Rejected.
+    const STATUS_SELECTED = self::STATUS_ACCEPTED;
+    const STATUS_UNSUCCESSFUL = self::STATUS_REJECTED;
 
 
 
