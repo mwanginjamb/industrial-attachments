@@ -153,8 +153,8 @@ class SiteController extends Controller
     {
 
         $this->layout = 'dashboard';
-        // Get all lots with their related applications and applicants
-        $lots = \frontend\models\Lot::find()->all();
+        // All lots, open ones first; the view marks each Active/Inactive via Lot::isActive
+        $lots = \frontend\models\Lot::find()->orderByActive()->all();
         return $this->render('listing', [
             'lots' => $lots
         ]);

@@ -15,34 +15,36 @@ class LotQuery extends \yii\db\ActiveQuery
         return $this->andWhere('[[status]]=1');
     }*/
 
-  public function active($date = null)
+    /**
+     * SQL condition for "the application window is open on :lotActiveDate".
+     * Mirrors Lot::getIsActive(): the window runs from (opening - deadlineDays - windowDays)
+     * to the application deadline (opening - deadlineDays), inclusive on both days.
+     */
+    private function activeCondition($date)
     {
-        $date = $date ?: date('Y-m-d');
+        $windowDays = (int) Yii::$app->params['lotApplicationWindowDays'];     // 75, counted back from the deadline
+        $deadlineDays = (int) Yii::$app->params['lotApplicationDeadlineDays']; // 14, counted back from opening
+        $startDays = $windowDays + $deadlineDays;
 
-        // Application window (days)
-        $days = Yii::$app->params['lotApplicationWindowDays'];
-
-         return $this->andWhere([
-            'and',
-            ['<=', new \yii\db\Expression("DATE_SUB(opening_date, INTERVAL {$days} DAY)"), $date],
-            ['>', 'opening_date', $date],
-        ]);
+        return new \yii\db\Expression(
+            "(:lotActiveDate >= DATE_SUB(DATE(opening_date), INTERVAL {$startDays} DAY)"
+            . " AND :lotActiveDate <= DATE_SUB(DATE(opening_date), INTERVAL {$deadlineDays} DAY))",
+            [':lotActiveDate' => $date ?: date('Y-m-d')]
+        );
     }
 
-    // Add a scope for ordering by active state
+    // Lots whose application window is open (same rule as Lot::getIsActive())
+    public function active($date = null)
+    {
+        return $this->andWhere($this->activeCondition($date));
+    }
+
+    // Order lots with an open application window first
     public function orderByActive($date = null)
     {
-        $date = $date ?: date('Y-m-d');
-        $days = Yii::$app->params['lotApplicationWindowDays'];
+        $cond = $this->activeCondition($date);
 
-        return $this->addOrderBy(new \yii\db\Expression("
-            CASE 
-                WHEN '{$date}' >= DATE_SUB(opening_date, INTERVAL {$days} DAY)
-                AND '{$date}' < opening_date
-                THEN 1
-                ELSE 0
-            END DESC
-        "));
+        return $this->addOrderBy(new \yii\db\Expression("CASE WHEN {$cond->expression} THEN 1 ELSE 0 END DESC", $cond->params));
     }
 
     /**

@@ -40,7 +40,7 @@ use yii\helpers\Html;
     </div>
 </section>
 <!-- Active Lots Section -->
-<section class="px-8 py-20 bg-surface-container-low">
+<section class="px-8 py-10 bg-surface-container-low">
     <div class="max-w-screen-2xl mx-auto">
         <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
             <div>
@@ -49,7 +49,7 @@ use yii\helpers\Html;
                     <span class="font-label text-sm font-semibold text-primary uppercase tracking-widest">Enrollment
                         Open</span>
                 </div>
-                <h2 class="font-headline font-bold text-4xl text-on-surface">Active Admission Lots</h2>
+                <h2 class="font-headline font-bold text-4xl text-on-surface">Industrial Attachment Opportunities - <?= date('Y') ?></h2>
             </div>
             <div class="flex gap-3">
                 <button class="p-3 bg-[#1f74bf] text-white rounded-full transition-all ghost-border" id="grid-view-btn">
@@ -69,7 +69,11 @@ use yii\helpers\Html;
 
                 <?php if (is_array($lots) && count($lots)):
 
-                    foreach ($lots as $lot): ?>
+                    foreach ($lots as $lot): 
+                    $active = $lot->isActive ? 'Active' : 'Inactive';
+                    $activeClass = $lot->isActive ? 'bg-secondary-fixed' : 'bg-surface-container-highest';
+                   
+                   ?>
 
                         <!-- Card 1 -->
                         <div
@@ -80,7 +84,7 @@ use yii\helpers\Html;
                                     <span class="material-symbols-outlined text-3xl" data-weight="fill">engineering</span>
                                 </div>
                                 <span
-                                    class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed text-xs font-bold rounded-full uppercase tracking-tighter">Active</span>
+                                    class="px-3 py-1 <?= $activeClass ?> text-on-secondary-fixed text-xs font-bold rounded-full uppercase tracking-tighter"><?= $active?></span>
                             </div>
                             <h3
                                 class="font-headline font-bold text-2xl mb-2 text-on-surface group-hover:text-primary transition-colors">
@@ -101,9 +105,21 @@ use yii\helpers\Html;
                                     class="w-full py-4 hero-gradient text-on-primary font-headline font-bold rounded-xl transition-all hover:brightness-110 active:scale-[0.98]">Apply
                                     Now</button> -->
 
-                                <?= Html::a('Apply Now', ['/application/apply', 'lot' => $lot->id], [
-                                    'class' => 'block text-center w-full py-4 hero-gradient text-on-primary font-headline font-bold rounded-xl transition-all hover:brightness-110 active:scale-[0.98]'
-                                ]) ?>
+                                    <!-- Disable apply button if lot is not active and apply suitable css class -->
+                                    <?php 
+                                        $applyButtonClass = 'block text-center w-full py-4 hero-gradient text-on-primary font-headline font-bold rounded-xl transition-all hover:brightness-110 active:scale-[0.98]';
+
+                                        $url = ['/application/apply', 'lot' => $lot->id];
+
+                                        if (!$lot->isActive) {
+                                            $applyButtonClass = 'block text-center w-full py-4 bg-surface-container-high text-on-surface-variant font-headline font-bold rounded-xl cursor-not-allowed';
+                                            $url = 'javascript:void(0);'; // disable navigation
+                                        }
+                                        ?>
+
+                                        <?= Html::a('Apply Now', $url, [
+                                            'class' => $applyButtonClass,
+                                        ]) ?>
                             </div>
                         </div>
                         <?php
@@ -122,7 +138,7 @@ use yii\helpers\Html;
                 <!-- Card 4 Featured -->
 
                 <!-- Stat Card -->
-                <div
+                <!-- <div
                     class="bg-primary text-on-primary rounded-3xl p-8 flex flex-col justify-center items-center text-center">
                     <div class="text-5xl font-headline font-extrabold mb-2">450+</div>
                     <div class="font-headline font-bold text-lg opacity-90 uppercase tracking-widest mb-6">Placements
@@ -132,7 +148,7 @@ use yii\helpers\Html;
                     <button
                         class="w-full py-3 bg-white/20 backdrop-blur-md text-white font-headline font-bold rounded-xl border border-white/30 hover:bg-white/30 transition-all">View
                         All Labs</button>
-                </div>
+                </div> -->
             </div>
             <!-- List View (Hidden by default) -->
             <div class="hidden overflow-hidden" id="list-view-container">
@@ -174,9 +190,13 @@ use yii\helpers\Html;
                                         <td class="p-6 text-right">
 
 
-                                            <?= Html::a('Apply Now', ['/application/apply', 'lot' => $lot->id], [
-                                                'class' => 'block text-center text-sm px-4 py-2 hero-gradient text-on-primary font-bold rounded-lg transition-all hover:brightness-110 active:scale-[0.98]'
-                                            ]) ?>
+                                            <?php if ($lot->isActive): ?>
+                                                <?= Html::a('Apply Now', ['/application/apply', 'lot' => $lot->id], [
+                                                    'class' => 'block text-center text-sm px-4 py-2 hero-gradient text-on-primary font-bold rounded-lg transition-all hover:brightness-110 active:scale-[0.98]'
+                                                ]) ?>
+                                            <?php else: ?>
+                                                <span class="block text-center text-sm px-4 py-2 bg-surface-container-high text-on-surface-variant font-bold rounded-lg cursor-not-allowed">Closed</span>
+                                            <?php endif; ?>
 
                                         </td>
                                     </tr>
