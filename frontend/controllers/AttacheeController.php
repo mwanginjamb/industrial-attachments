@@ -198,8 +198,8 @@ class AttacheeController extends Controller
             throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
         }
 
-        // HR and Staff can access  any record
-        if(Yii::$app->user->can('hr') || Yii::$app->user->can('staff')){
+        // Admin, HR and Staff can access any record
+        if(Yii::$app->user->can('admin') || Yii::$app->user->can('hr') || Yii::$app->user->can('staff')){
             return $model;
         }
 
