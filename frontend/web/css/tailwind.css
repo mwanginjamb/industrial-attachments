@@ -2668,6 +2668,25 @@ h1,
   transition-duration: 700ms;
 }
 
+/*
+ * DataTables "entries per page" and search controls.
+ * Kept outside @layer on purpose: DataTables adds these class names from JavaScript, so
+ * Tailwind's content scan never sees them and would purge a layered rule.
+ * The Tailwind forms plugin otherwise gives the length <select> just enough width for the
+ * number, so "100" collides with the dropdown arrow. Pages with their own DataTables CSS
+ * (lot/view, long-list/review) register it later and still override these defaults.
+ */
+
+div.dt-container .dt-length select {
+  min-width: 5rem;
+  padding: .375rem 2.25rem .375rem .75rem;
+  margin-right: .5rem;
+}
+
+div.dt-container .dt-search input {
+  margin-left: .5rem;
+}
+
 .selection\:bg-secondary-fixed *::-moz-selection {
   --tw-bg-opacity: 1;
   background-color: rgb(205 229 255 / var(--tw-bg-opacity, 1));
