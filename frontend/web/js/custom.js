@@ -1084,8 +1084,9 @@ async function InlineGlobalUpload(attachmentService, entity, fieldName, document
     const formField = '.' + $(form).find('input[type="file"]').parent()[0].classList[1];
     //console.log(formField); return ;
     const model = entity.toLowerCase();
-    const attacheeReference = $(form).find(`#${model}-attachee_id`).val()
-    const docummentType = $(form).find(`#${model}-document_type`).val()
+    // look fields up by name within this form: ids are made unique per template (e.g. file-document_type-3)
+    const attacheeReference = $(form).find('input[name$="[attachee_id]"]').val()
+    const docummentType = $(form).find('input[name$="[document_type]"]').val()
 
 
     var endPoint = './upload/';
