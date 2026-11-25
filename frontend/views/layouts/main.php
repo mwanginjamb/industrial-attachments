@@ -81,6 +81,7 @@ if(!Yii::$app->user->isGuest) {
         ['label' => 'Student List',     'url' => ['/lot/index'],    'icon' => 'group', 'visible' => Yii::$app->user->can('view-lot')],
         ['label' => 'Institutions List', 'url' => ['/institution/index'],    'icon' => 'business_center', 'visible' => Yii::$app->user->can('view-institution')],
         ['label' => 'Placement Areas',  'url' => ['/placement-area/index'],   'icon' => 'map', 'visible' => Yii::$app->user->can('view-placement-area')],
+        ['label' => 'Document Templates', 'url' => ['/attachee-documents-templates/index'], 'icon' => 'description', 'visible' => Yii::$app->user->can('hr')],
        // ['label' => 'System Logs',      'url' => ['/log/index'],        'icon' => 'analytics'],
 
         // ── Nested group: add a 'children' key, no 'url' ──

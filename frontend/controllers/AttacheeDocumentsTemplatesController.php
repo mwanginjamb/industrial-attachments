@@ -7,6 +7,7 @@ use frontend\models\SearchAttacheeDocumentsTemplates;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * AttacheeDocumentsTemplatesController implements the CRUD actions for AttacheeDocumentsTemplates model.
@@ -25,6 +26,16 @@ class AttacheeDocumentsTemplatesController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                    ],
+                ],
+                // Document templates are set up by HR only
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['hr'],
+                        ],
                     ],
                 ],
             ]
