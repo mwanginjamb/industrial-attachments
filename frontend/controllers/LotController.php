@@ -61,7 +61,7 @@ class LotController extends Controller
                         [
                             'actions' => ['create'],
                             'allow' => true,
-                            'roles' => ['create-lot'],
+                            'roles' => ['add-lot'],
                         ],
                         [
                             'actions' => ['update'],
