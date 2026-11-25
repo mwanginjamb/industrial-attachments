@@ -84,7 +84,7 @@ class AttacheeDocuments extends \yii\db\ActiveRecord
     }
 
     // Get Attached Dococuments Count for an Attachee
-    public static function getDocumentsCount($attacheeId)
+    public static function getDocumentsCount($attachee_id)
     {
 
     // select distinct attachee_id, document_type from attachee_documents where attachee_id = $attachee_id and path is not null and path != ''

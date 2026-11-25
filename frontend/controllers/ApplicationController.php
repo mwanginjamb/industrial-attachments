@@ -98,39 +98,6 @@ class ApplicationController extends Controller
      */
     public function actionView($id)
     {
-        $attachee = \frontend\models\Attachee::findOne(['user_id' => Yii::$app->user->id]);
-        $total_templates = \frontend\models\AttacheeDocumentsTemplates::getTotalTemplates();
-        $total_attachee_documents = \frontend\models\AttacheeDocuments::getDocumentsCount($attachee->attachee_reference);
-        $attachedDocuments = \frontend\models\AttacheeDocumentsTemplates::find()->With([
-            'attacheeDocument' => function ($query) {
-                $query->andWhere(['not', ['path' => null]])
-                    ->andWhere(['not', ['path' => '']])
-                    ->andWhere(['attachee_id' => Yii::$app->user->identity->attachee->attachee_reference]);
-            }
-        ])->all();
-
-        $applications = \frontend\models\Application::find()
-            ->joinWith('lot')
-            ->joinWith('status0')
-            ->joinWith('attachee')
-            ->where(['attachee_id' => $attachee->id])
-            ->asArray()
-            ->limit(4)
-            ->all();
-
-        $icons = [
-            1 => 'description',
-            2 => 'school',
-            3 => 'badge',
-            4 => 'health_and_safety'
-        ];
-
-        $StatusIcons = [
-            Application::STATUS_SUBMITTED => 'hourglass_top',
-            Application::STATUS_UNDER_REVIEW => 'search',
-            Application::STATUS_ACCEPTED => 'check_circle',
-            Application::STATUS_PLACED => 'verified',
-        ];
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);

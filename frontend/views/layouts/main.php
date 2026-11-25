@@ -63,15 +63,17 @@ if(!Yii::$app->user->isGuest) {
 ═══════════════════════════════════════════ -->
 <aside class="h-screen w-64 fixed left-0 top-0 overflow-y-auto bg-slate-100 dark:bg-slate-950 flex flex-col gap-2 p-4 border-r border-slate-200/10 z-40">
 
-    <!-- Brand -->
+    <!-- Brand  -->
+     <a href="<?= Url::toRoute('site/index') ?>">
     <div class="mb-8 px-2">
         <h2 class="font-['Manrope'] font-bold text-lg text-slate-900 dark:text-slate-50">
             <?= Html::encode(Yii::$app->name) ?>
         </h2>
-        <p class="text-xs text-on-surface-variant opacity-70">Institutional Access</p>
+        <p class="text-xs text-on-surface-variant opacity-70"><?= Html::encode(env('CUSTOMER')) ?></p>
     </div>
+    </a>
 
-    <!-- Primary Nav -->
+    <!-- Primary Navigation -->
     <nav class="flex-1 space-y-1">
     <?php
     $sideNavItems = [
@@ -91,15 +93,19 @@ if(!Yii::$app->user->isGuest) {
                 ['label' => 'Roles',  'url' => ['/rbac/index'],        'icon' => 'security_update_good'],
                 ['label' => 'Permissions',         'url' => ['/rbac/permissions'],        'icon' => 'security'],
                 ['label' => 'System Users',           'url' => ['/site/users'],        'icon' => 'group'],
-               
+                ['label' => 'Review Status', 'url' => ['/application-status/index'], 'icon' => 'checklist'],
+                ['label' => 'Placement Areas',           'url' => ['/placement-area/index'],        'icon' => 'map'],
+                ['label' => 'Intake Lots',           'url' => ['/lot/index'],        'icon' => 'view_list'],
             ],
             'visible' => Yii::$app->user->can('admin'),
         ],
     ];
 
-   foreach ($sideNavItems as $item): 
+    $currentRoute = '/' . Yii::$app->controller->id . '/' . Yii::$app->controller->action->id;
+    $activeClasses   = 'bg-white dark:bg-slate-900 text-blue-700 dark:text-blue-400 rounded-lg shadow-sm font-bold';
+    $inactiveClasses = 'text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 hover:pl-2 transition-all duration-300 font-medium';
 
-    if (isset($item['group']) && $item['group'] === true): ?>
+    foreach ($sideNavItems as $idx => $item):
 
         if(isset($item['visible']) && !$item['visible']) {
             continue; // Skip items that are not visible to the user
@@ -166,59 +172,23 @@ if(!Yii::$app->user->isGuest) {
             </div>
         </div>
 
-        <!-- CHILDREN -->
-        <div class="ml-6 space-y-1">
-            <?php foreach ($item['children'] as $child): ?>
-
-                <?php
-                $isActive = (
-                    Yii::$app->urlManager->createUrl($child['url']) ===
-                    Yii::$app->urlManager->createUrl([$currentRoute])
-                );
-
-                $activeClasses   = 'bg-white dark:bg-slate-900 text-blue-700 dark:text-blue-400 rounded-lg shadow-sm font-bold';
-                $inactiveClasses = 'text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 hover:pl-2 transition-all duration-300 font-medium';
-                ?>
-
-                <?= Html::a(
-                    '<span class="material-symbols-outlined">' . $child['icon'] . '</span><span>' . Html::encode($child['label']) . '</span>',
-                    $child['url'],
-                    [
-                        'class' => 'flex items-center gap-3 px-3 py-2 text-sm ' .
-                            ($isActive ? $activeClasses : $inactiveClasses),
-                        'encode' => false,
-                    ]
-                ) ?>
-
-            <?php endforeach; ?>
-        </div>
-
-    <?php else: ?>
-
-        <?php
-        $isActive = (
-            Yii::$app->urlManager->createUrl($item['url']) ===
-            Yii::$app->urlManager->createUrl([$currentRoute])
-        );
-
-        $activeClasses   = 'bg-white dark:bg-slate-900 text-blue-700 dark:text-blue-400 rounded-lg shadow-sm font-bold';
-        $inactiveClasses = 'text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 hover:pl-2 transition-all duration-300 font-medium';
-        ?>
-
+    <?php
+        // ── FLAT LINK ──────────────────────────────────────────────────────────
+        else:
+            $isActive = Yii::$app->urlManager->createUrl($item['url']) === Yii::$app->urlManager->createUrl([$currentRoute]);
+    ?>
         <?= Html::a(
-            '<span class="material-symbols-outlined">' . $item['icon'] . '</span><span>' . Html::encode($item['label']) . '</span>',
+            '<span class="material-symbols-outlined">' . $item['icon'] . '</span>'
+            . '<span>' . Html::encode($item['label']) . '</span>',
             $item['url'],
             [
-                'class' => 'flex items-center gap-3 px-3 py-2 text-sm ' .
-                    ($isActive ? $activeClasses : $inactiveClasses),
+                'class'  => 'flex items-center gap-3 px-3 py-2 text-sm ' . ($isActive ? $activeClasses : $inactiveClasses),
                 'encode' => false,
             ]
         ) ?>
-
     <?php endif; ?>
-
-<?php endforeach; ?>
-    </nav>
+    <?php endforeach; ?>
+</nav>
 
     <!-- Bottom Actions -->
     <div class="mt-auto pt-4 space-y-1">
@@ -254,16 +224,16 @@ if(!Yii::$app->user->isGuest) {
 
             <!-- Left: Brand + Top Nav -->
             <div class="flex items-center gap-8">
-                <span class="text-2xl font-black text-blue-900 dark:text-blue-100 tracking-tighter font-['Manrope']">
+                <!-- <span class="text-2xl font-black text-blue-900 dark:text-blue-100 tracking-tighter font-['Manrope']">
                     <?= Html::encode(Yii::$app->name) ?>
-                </span>
+                </span> -->
                 <nav class="hidden md:flex items-center gap-6">
                     <?php
                     $topNavItems = [
                         ['label' => 'Dashboard',     'url' => ['/site/index']],
-                        ['label' => 'Applications',  'url' => ['/lot/index']],
-                        ['label' => 'Placements',    'url' => ['/placement/index']],
-                        ['label' => 'Resources',     'url' => ['/resource/index']],
+                        //['label' => 'My Applications',  'url' => ['/site/my-applications']],
+
+                       
                     ];
                     foreach ($topNavItems as $nav):
                         $isTopActive = str_starts_with($currentRoute, '/' . explode('/', $nav['url'][0])[1]);
